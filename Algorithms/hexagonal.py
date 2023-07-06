@@ -1,5 +1,6 @@
 from Utils.geometry import *
 
+
 # Заполнение путём построения шестиугольной сетки.
 # Строит сетку и возвращает центры шестиугольников,
 # которые попали внутрь заданного многоугольника
@@ -40,6 +41,7 @@ def hexagonal(P, sx=0, sy=0, a=1, alpha=0):
                 inside.append(C)
     return inside
 
+
 def get_parallel(S, i, ort_i, P):
     # пересечь с каждой стороной и проверить, что хотя бы одно
     # пересечение лежит на границе многоугольника.
@@ -64,5 +66,3 @@ def get_parallel(S, i, ort_i, P):
         iteration += 1
 
     return parallel
-
-

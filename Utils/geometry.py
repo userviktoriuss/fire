@@ -17,7 +17,7 @@ class Point:
 
 
 class Vector:
-    def __init__(self, A, B):
+    def __init__(self, A: Point, B: Point):
         self.x = B.x - A.x
         self.y = B.y - A.y
 
@@ -47,15 +47,13 @@ class Vector:
 class Polygon:
     """
     Описывает n-угольник.
-
-    Примечание: вершины указывать в порядке обхода против часовой стрелки
     """
 
     def __init__(self, vertexes):
         self.vertexes = vertexes
         self.n = len(vertexes)
 
-    def point_inside(self, A):
+    def point_inside(self, A):  # TODO: переписать, чтобы считалось за log
         """
         Проверяет, что точка лежит внутри многоугольника.
 
@@ -73,7 +71,6 @@ class Polygon:
             angle += alp
 
         return abs(angle) > math.pi
-
 
     def intersects_line(self, A: Point, AB: Vector):
         """
@@ -93,6 +90,7 @@ class Polygon:
             if vector_between_vectors(v1, AB, v2):
                 return True
         return False
+
 
 def dot(u, v):
     """
@@ -124,30 +122,30 @@ def vector_between_vectors(OA, OC, OB):
     :param OA: Первый вектор.
     :param OC: Вектор, расположение которого проверяем.
     :param OB: Второй вектор.
-    :return: True, если лекжит лежит нестрого между
+    :return: True, если лежит нестрого между
     данными векторами, False - иначе.
     """
 
     return cross(OA, OC) * cross(OC, OB) >= 0
 
 
-def intersect(A: Point, AB: Vector, C: Point, CD:Vector):
+def intersect(A: Point, AB: Vector, C: Point, CD: Vector):
     """
     Пересекает прямые, заданные точкой и вектором.
+    Прямые не должны быть параллельны.
 
     :param A: Точка первой прямой.
     :param AB: Направляющий вектор первой прямой.
     :param C: Точка второй прямой.
     :param CD: Направляющий вектор второй прямой.
     :return: Точку пересечения прямых. Выбрасывает ошибку TBA,
-    если прямые параллельны
+    если прямые параллельны.
     """
     numer = (A.y - C.y) * CD.x - (A.x - C.x) * CD.y
     denom = cross(AB, CD)
     t = numer / denom
     return A + t * AB
 
-    raise Exception("not implemented")
 
 def sign(a):
     """
@@ -155,7 +153,7 @@ def sign(a):
      0 - a = 0
     -1 - a < 0
      1 - a > 0
-    :param a: Переданное число
+    :param a: Переданное число.
     :return: -1/0/1
     """
 

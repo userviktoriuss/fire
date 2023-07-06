@@ -1,9 +1,12 @@
+import random
+
+from Utils.geometry import Point
+
+
 class Resource:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.timer = 0
-        self.owners = 0
+    def __init__(self, A):
+        self.A = A  # Точка.
+        self.reset()
 
     def reset(self, timer=0):
         self.owners = 0
@@ -11,9 +14,8 @@ class Resource:
 
 
 class Baron:
-    def __init__(self, x, y, r):
-        self.x = x
-        self.y = y
+    def __init__(self, C, r):
+        self.C = C  # Точка.
         self.r = r
 
     def get_wealth(self):
@@ -36,7 +38,7 @@ class Market:
      за всю систему в целом
     """
 
-    def __init__(self, P, baron_count, net_resolution):
+    def __init__(self, P, baron_count, r, net_resolution):
         """
         Создаёт рынок
         :param P: Многоугольник.
@@ -46,20 +48,51 @@ class Market:
         self.timer = 0
         self.P = P
         self.net = self.create_net(net_resolution)
-        self.barons = self.create_barons(baron_count)
-        # создаём baron_count баронов
-        raise Exception("not implemented")
+        self.barons = self.create_barons(baron_count, r)
 
     def create_net(self, net_resolution):
+        if net_resolution <= 0:
+            return []
+
         net = []
-        left = min(map(lambda p: p.x, self.P.vertexes))
-        right = max(map(lambda p: p.x, self.P.vertexes))
-        down = min(map(lambda p: p.y, self.P.vertexes))
-        up = max(map(lambda p: p.y, self.P.vertexes))
+        xs = map(lambda p: p.x, self.P.vertexes)
+        ys = map(lambda p: p.y, self.P.vertexes)
+        left = min(xs)
+        right = max(xs)
+        down = min(ys)
+        up = max(ys)
+        x = left
+
+        while x <= right:
+            y = down
+            while y <= up:
+                pnt = Point(x, y)
+                if self.P.point_inside(pnt):
+                    net.append(Resource(pnt))
+                y += net_resolution
+            x += net_resolution
+        return net
+
+    def create_barons(self, baron_count, r):
+        barons = []
+        xs = map(lambda p: p.x, self.P.vertexes)
+        ys = map(lambda p: p.y, self.P.vertexes)
+        left = min(xs)
+        right = max(xs)
+        down = min(ys)
+        up = max(ys)
+
+        for i in range(baron_count):
+            x = random.uniform(left, right)
+            y = random.uniform(down, up)
+            baron = Baron(Point(x, y), r)
+            barons.append(baron)
+
+        return barons
 
     def update_ownership(self):
         """
-        Пересчитывает для каждой точки, сколько баронов ей владеет
+        Пересчитывает для каждой точки, сколько баронов ей владеет.
         """
         pass
 
