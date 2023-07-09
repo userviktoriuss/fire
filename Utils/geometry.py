@@ -1,5 +1,7 @@
 import math
 
+EPS = 1e-16
+
 
 class Point:
     def __init__(self, x, y):
@@ -20,6 +22,12 @@ class Vector:
     def __init__(self, A: Point, B: Point):
         self.x = B.x - A.x
         self.y = B.y - A.y
+
+    def __sub__(self, other):
+        v = Vector(Point(0, 0), Point(0, 0))
+        v.x = self.x - other.x
+        v.y = self.y - other.y
+        return v
 
     def __rmul__(self, other):
         return Vector(Point(0, 0), Point(self.x * other, self.y * other))
@@ -66,7 +74,10 @@ class Polygon:
             j = (i + 1) % self.n
             v1 = Vector(A, self.vertexes[i])
             v2 = Vector(A, self.vertexes[j])
+            if v1.length() <= EPS or v2.length() <= EPS:
+                continue  # Считаем угол равным нулю.
             sin = cross(v1, v2) / v1.length() / v2.length()
+            sin = min(1, max(-1, sin))
             alp = math.asin(sin)
             angle += alp
 

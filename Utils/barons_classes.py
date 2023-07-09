@@ -1,6 +1,7 @@
+import math
 import random
 
-from Utils.geometry import Point
+from Utils.geometry import Point, Vector
 
 
 class Resource:
@@ -17,19 +18,26 @@ class Baron:
     def __init__(self, C, r):
         self.C = C  # Точка.
         self.r = r
+        self.reset()
 
-    def get_wealth(self):
-        """
-        :return: Считает уровень богатства барона
-        """
-        pass
+    def reset(self, wealth=0, owns=0):
+        self.wealth = wealth  # Богатство барона
+        self.owns = owns  # Количество подвластных точек
 
-    def move(self, distance):
+    def is_owner_of(self, res):
+        """
+        Проверяет, что барон владеет точкой ресурсов.
+        :param res: Точка ресурсов.
+        :return: True/False - барон владеет/не владеет переданной точкой ресурсов.
+        """
+        return Vector(res.A, self.C).length() <= self.r
+
+    def move(self, vector):
         """
         Сдвигает барона в сторону наибольшего дохода на distance.
-        :param distance: Величина перемещения.
+        :param vector: Вектор перемещения.
         """
-        pass
+        self.C += vector
 
 
 class Market:
@@ -55,8 +63,8 @@ class Market:
             return []
 
         net = []
-        xs = map(lambda p: p.x, self.P.vertexes)
-        ys = map(lambda p: p.y, self.P.vertexes)
+        xs = [p.x for p in self.P.vertexes]
+        ys = [p.y for p in self.P.vertexes]
         left = min(xs)
         right = max(xs)
         down = min(ys)
@@ -75,8 +83,8 @@ class Market:
 
     def create_barons(self, baron_count, r):
         barons = []
-        xs = map(lambda p: p.x, self.P.vertexes)
-        ys = map(lambda p: p.y, self.P.vertexes)
+        xs = [p.x for p in self.P.vertexes]
+        ys = [p.y for p in self.P.vertexes]
         left = min(xs)
         right = max(xs)
         down = min(ys)
@@ -90,15 +98,52 @@ class Market:
 
         return barons
 
-    def update_ownership(self):
+    def update_ownership(self):  # TODO: как-то умнее и быстрее
         """
         Пересчитывает для каждой точки, сколько баронов ей владеет.
+        Пересчитывает для баронов средний доход.
         """
-        pass
+        for point in self.net:
+            point.owners = 0
 
-    def next_iteration(self):
+        for baron in self.barons:
+            baron.reset()
+            for point in self.net:
+                if baron.is_owner_of(point):
+                    point.owners += 1
+                    baron.owns += 1
+                    baron.wealth += self.timer - point.timer  # TODO: надо ли добавить вес?
+                    point.reset(self.timer)
+
+    def next_iteration(self, step):
         """
         Производит следующую итерацию рынка: пересчитывает владения,
         двигает баронов, обновляет таймер
+
+        :param step: Шаг обучения.
         """
-        pass
+        self.timer += 1  # Или в конце?
+        self.update_ownership()
+        changes = []
+        # Векторы, которые показывают, как сдвинуться баронам
+        # в сторону увеличения прибыли.
+        # -Вычисление-: посчитаем средний уровень прибыли для барона.
+        # Далее найдём среднее взвешенное всех подвластных точек
+        # ресурсов: (отклонение от среднего) * (точка - центр).
+        # -Искомый вектор-: (-step) * (средний взвешенный вектор).
+
+        for baron in self.barons:
+            if baron.owns == 0:
+                changes.append(step * (baron.r / 2) * Vector(Point(0, 0), Point(math.sqrt(2) / 2, math.sqrt(2) / 2)))
+                continue  # TODO: что делать здесь?
+
+            v = Vector(Point(0, 0), Point(0, 0))
+            avg = baron.wealth / baron.owns
+            for point in self.net:
+                if baron.is_owner_of(point):
+                    v = v - Vector(baron.C, point.A)
+            v = (step / baron.owns) * v
+            changes.append(v)
+
+        for i in range(len(changes)):
+            self.barons[i].move(changes[i])
