@@ -1,20 +1,20 @@
 import math
 
-EPS = 1e-16
+EPS = 1e-16  # Эта константа показывает, какие значения считаем нулевыми.
 
 
 class Point:
-    def __init__(self, x, y):
+    def __init__(self, x: float, y: float):
         self.x = x
         self.y = y
 
-    def __add__(self, other):
+    def __add__(self, other: 'Vector') -> 'Point':
         return Point(self.x + other.x, self.y + other.y)
 
-    def __sub__(self, other):
+    def __sub__(self, other: 'Vector') -> 'Point':
         return self + (-1 * other)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"(x={self.x}, y={self.y})"
 
 
@@ -23,16 +23,25 @@ class Vector:
         self.x = B.x - A.x
         self.y = B.y - A.y
 
-    def __sub__(self, other):
+    def __sub__(self, other: 'Vector') -> 'Vector':
         v = Vector(Point(0, 0), Point(0, 0))
         v.x = self.x - other.x
         v.y = self.y - other.y
         return v
 
-    def __rmul__(self, other):
+    def __add__(self, other: 'Vector') -> 'Vector':
+        v = Vector(Point(0, 0), Point(0, 0))
+        v.x = self.x + other.x
+        v.y = self.y + other.y
+        return v
+
+    def __rmul__(self, other: float) -> 'Vector':
         return Vector(Point(0, 0), Point(self.x * other, self.y * other))
 
-    def rotate(self, alpha):
+    def __truediv__(self, other: float):
+        return (1 / other) * self
+
+    def rotate(self, alpha: float) -> 'Vector':
         """
         Поворачивает вектор на заданный угол.
 
@@ -44,7 +53,7 @@ class Vector:
         p_y = self.x * math.sin(alpha) + self.y * math.cos(alpha)
         return Vector(Point(0, 0), Point(p_x, p_y))
 
-    def length(self):
+    def length(self) -> float:
         """
         Вычисляет длину текущего вектора.
         :return: Длину вектора.
@@ -57,11 +66,12 @@ class Polygon:
     Описывает n-угольник.
     """
 
-    def __init__(self, vertexes):
+    def __init__(self, vertexes: list):
         self.vertexes = vertexes
         self.n = len(vertexes)
+        self.geom_center = geom_center([(p, 1) for p in vertexes])  # Взвешенный центр многоугольника.
 
-    def point_inside(self, A):  # TODO: переписать, чтобы считалось за log
+    def point_inside(self, A: Point) -> bool:  # TODO: переписать, чтобы считалось за log
         """
         Проверяет, что точка лежит внутри многоугольника.
 
@@ -83,7 +93,7 @@ class Polygon:
 
         return abs(angle) > math.pi
 
-    def intersects_line(self, A: Point, AB: Vector):
+    def intersects_line(self, A: Point, AB: Vector) -> bool:
         """
         Проверяет, пересекается ли этот многоугольник с прямой,
         заданной точкой и вектором
@@ -103,7 +113,7 @@ class Polygon:
         return False
 
 
-def dot(u, v):
+def dot(u: Vector, v: Vector) -> float:
     """
     Скалярное произведение двух векторов.
 
@@ -114,7 +124,7 @@ def dot(u, v):
     return u.x * v.x + u.y * v.y
 
 
-def cross(u, v):
+def cross(u: Vector, v: Vector) -> float:
     """
     Косое произведение двух векторов.
 
@@ -125,7 +135,7 @@ def cross(u, v):
     return u.x * v.y - u.y * v.x
 
 
-def vector_between_vectors(OA, OC, OB):
+def vector_between_vectors(OA: Vector, OC: Vector, OB: Vector) -> bool:
     """
     Проверяет, что вектор лежит нестрого между
     двумя данными векторами, образующими угол.
@@ -140,7 +150,7 @@ def vector_between_vectors(OA, OC, OB):
     return cross(OA, OC) * cross(OC, OB) >= 0
 
 
-def intersect(A: Point, AB: Vector, C: Point, CD: Vector):
+def intersect(A: Point, AB: Vector, C: Point, CD: Vector) -> Point:
     """
     Пересекает прямые, заданные точкой и вектором.
     Прямые не должны быть параллельны.
@@ -158,7 +168,7 @@ def intersect(A: Point, AB: Vector, C: Point, CD: Vector):
     return A + t * AB
 
 
-def sign(a):
+def sign(a: float) -> int:
     """
     Возвращает знак переданного числа:
      0 - a = 0
@@ -173,3 +183,22 @@ def sign(a):
     elif a < 0:
         return 1
     return -1
+
+
+def geom_center(arr: list) -> Point:
+    """
+    Вычисляет взвешенное среднее точек.
+
+    :param arr: Массив пар (точка, вес)
+    :return: Точка - среднее взвешенное.
+    """
+
+    sum_x = 0
+    sum_y = 0
+    sum_m = 0
+    for (p, m) in arr:
+        sum_x += p.x * m
+        sum_y += p.y * m
+        sum_m += m
+
+    return Point(sum_x / sum_m, sum_y / sum_m)

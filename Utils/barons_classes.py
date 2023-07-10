@@ -1,4 +1,3 @@
-import math
 import random
 
 from Utils.geometry import Point, Vector
@@ -9,9 +8,9 @@ class Resource:
         self.A = A  # Точка.
         self.reset()
 
-    def reset(self, timer=0):
+    def reset(self, value=0):
         self.owners = 0
-        self.timer = timer
+        self.value = value
 
 
 class Baron:
@@ -43,18 +42,21 @@ class Baron:
 class Market:
     """
     Содержит всех баронов и все точки. Отвечает
-     за всю систему в целом
+     за всю систему в целом.
     """
 
     def __init__(self, P, baron_count, r, net_resolution):
         """
-        Создаёт рынок
+        Создаёт рынок.
+
         :param P: Многоугольник.
         :param baron_count:  Количество баронов.
+        :param r: Радиус влияния барона.
         :param net_resolution: Разрешение сети - расстояние между соседними точками.
         """
-        self.timer = 0
+
         self.P = P
+        self.net_resolution = net_resolution
         self.net = self.create_net(net_resolution)
         self.barons = self.create_barons(baron_count, r)
 
@@ -112,8 +114,19 @@ class Market:
                 if baron.is_owner_of(point):
                     point.owners += 1
                     baron.owns += 1
-                    baron.wealth += self.timer - point.timer  # TODO: надо ли добавить вес?
-                    point.reset(self.timer)
+
+        for baron in self.barons:
+            for point in self.net:
+                if baron.is_owner_of(point):
+                    baron.wealth += point.value / point.owners  # TODO: надо ли добавить вес?
+
+    def update_accumulated(self):
+        """
+        Очищает ресурсы, отошедшие баронам.
+        """
+        for point in self.net:
+            if point.owners != 0:
+                point.value = 0
 
     def next_iteration(self, step):
         """
@@ -122,7 +135,11 @@ class Market:
 
         :param step: Шаг обучения.
         """
-        self.timer += 1  # Или в конце?
+
+        # Увеличим все ресурсы
+        for point in self.net:
+            point.value += 1
+
         self.update_ownership()
         changes = []
         # Векторы, которые показывают, как сдвинуться баронам
@@ -134,16 +151,20 @@ class Market:
 
         for baron in self.barons:
             if baron.owns == 0:
-                changes.append(step * (baron.r / 2) * Vector(Point(0, 0), Point(math.sqrt(2) / 2, math.sqrt(2) / 2)))
-                continue  # TODO: что делать здесь?
+                # Возьмём вектор по направлению к центру многоугольника длиной r
+                to_center = Vector(baron.C, self.P.geom_center)
+                to_center = baron.r / to_center.length() * to_center
+                changes.append(to_center)
+                continue
 
             v = Vector(Point(0, 0), Point(0, 0))
-            avg = baron.wealth / baron.owns
             for point in self.net:
                 if baron.is_owner_of(point):
-                    v = v - Vector(baron.C, point.A)
-            v = (step / baron.owns) * v
+                    v = v + (point.value / point.owners) * Vector(baron.C, point.A)
+            v = (step / baron.owns) * v  # TODO: теперь нужно по-другому считать?
             changes.append(v)
 
         for i in range(len(changes)):
             self.barons[i].move(changes[i])
+
+        self.update_accumulated()
