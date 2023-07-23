@@ -19,9 +19,21 @@ class Point:
 
 
 class Vector:
+    @classmethod
+    def zeros(cls):
+        v = Vector(Point(0, 0), Point(0, 0))
+        return v
+
+    @classmethod
+    def cords(cls, x, y):
+        return Vector(Point(0, 0), Point(x, y))
+
     def __init__(self, A: Point, B: Point):
         self.x = B.x - A.x
         self.y = B.y - A.y
+
+    def __neg__(self):
+        return Vector.cords(-self.x, -self.y)
 
     def __sub__(self, other: 'Vector') -> 'Vector':
         v = Vector(Point(0, 0), Point(0, 0))
@@ -202,3 +214,7 @@ def geom_center(arr: list) -> Point:
         sum_m += m
 
     return Point(sum_x / sum_m, sum_y / sum_m)
+
+
+def norm(v: Vector):
+    return v / v.length()
