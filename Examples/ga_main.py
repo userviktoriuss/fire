@@ -14,7 +14,7 @@ alg = GeneticAlgorithm(
 )
 
 alg.run_algorithm(
-    max_epochs=100,
+    max_epochs=10,
     verbose=True
 )
 

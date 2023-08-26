@@ -337,7 +337,7 @@ class Population():
             self._bfgs_target_func,
             initial,  # TODO: type mismatch. will it work? list instead of ndarray
             args=(being.polygon, radius),
-            method='BFGS')
+            method='L-BFGS-B')
 
         new_being = Being.from_circles(
             polygon=being.polygon,
@@ -351,7 +351,7 @@ class Population():
                           radius: float) -> float:  # TODO: переделать для набора с разными радиусами
         """Целевая функция, оптимизируемая алгоритмом BFGS."""
         circles = [Circle(Point(c.x, c.y), radius).polygon for c in group_n(2, centers)]
-        ar = unary_union(circles).intersect(polygon).area
+        ar = unary_union(circles).intersection(polygon).area
         s = 3
         soft_inv = 1 / ((1 + (ar ** s)) ** (1 / s))
 
