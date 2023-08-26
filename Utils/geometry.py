@@ -218,3 +218,25 @@ def geom_center(arr: list) -> Point:
 
 def norm(v: Vector):
     return v / v.length()
+
+
+class Bounding:
+    """Описывает прямоугольник, в который заключена
+    интересующая область плоскости."""
+
+    def __init__(self,
+                 left: float,
+                 right: float,
+                 up: float,
+                 down: float):
+        self.left = left
+        self.right = right
+        self.up = up
+        self.down = down
+
+    @classmethod
+    def from_polygon(cls, P: Polygon):
+        xs = [p.x for p in P.vertexes]
+        ys = [p.y for p in P.vertexes]
+        return cls(min(xs), max(xs), max(ys), min(ys))
+
