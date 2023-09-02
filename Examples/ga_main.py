@@ -1,7 +1,7 @@
 # from Utils.genetic_classes import GeneticAlgorithm
 from shapely import Polygon, Point
 import matplotlib.pyplot as plt
-from Utils.genetic_classes import GeneticAlgorithm
+from Algorithms.Genetic.genetic_classes import GeneticAlgorithm
 
 # Зародыш TDD
 P = Polygon([Point(0, 0), Point(2, 0), Point(6, 2), Point(1, 5), Point(1, 4)])
