@@ -104,6 +104,16 @@ def border_like_physical_main():
         plt.scatter(p.A.x, p.A.y, color=random.choice('rgb'))
     plt.show()
 
+def some_weird_test():
+    vertexes = [Point(20, 0),
+                Point(0, 20),
+                Point(20, 40),
+                Point(40, 30),
+                Point(30, 5)]
+    P = Polygon(vertexes)
+    bounding = Bounding.from_polygon(P)
+    print(bounding)
+
 
 if __name__ == '__main__':
-    border_like_physical_main()
+    some_weird_test()
