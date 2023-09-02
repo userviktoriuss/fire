@@ -355,7 +355,7 @@ class Population():
         """
         while True:
             being = Being(self.polygon, radius, n_circles=self.init_circles)
-            being = self._repair_being(being)
+            being = self._repair_being(self._repair_being(being))
             if being.covers_polygon:
                 if verbose:
                     print("Created successfully")

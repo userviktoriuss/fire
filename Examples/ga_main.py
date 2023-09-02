@@ -13,13 +13,8 @@ alg = GeneticAlgorithm(
     radius=1.0,
     verbose=True
 )
-# TODO: grid search
-# TODO: параметры обучения типа tolerance помогут?
 
-# TODO: Как ускорить?
-# 1. Несколько потоков?
-# 2. Считать на видеокарте?
-# 3. Другой алгоритм?
+
 alg.run_algorithm(
     max_epochs=5,
     verbose=True
