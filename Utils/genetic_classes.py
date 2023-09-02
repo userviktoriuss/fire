@@ -7,6 +7,7 @@ import math
 import scipy.optimize as optimize
 from scipy.spatial import Voronoi
 from Utils.misc_funcs import group_n, point_inside_polygon
+import time
 
 # CONSTANTS
 CIRCLE_RESOLUTION = 100
@@ -30,7 +31,8 @@ class GeneticAlgorithm:  # TODO: изменить порядок классов,
                  MOVE_RATE: float = 0.2,
                  ALPHA: float = 2.1,
                  BETA: float = 0.8,
-                 GAMMA: float = 0.5):
+                 GAMMA: float = 0.5,
+                 verbose: bool = False):
         self.SURVIVE_RATE = SURVIVE_RATE
         self.REMOVE_RATE = REMOVE_RATE
         self.MOVE_RATE = MOVE_RATE
@@ -39,7 +41,9 @@ class GeneticAlgorithm:  # TODO: изменить порядок классов,
         self.GAMMA = GAMMA
 
         self.population = Population(polygon, init_circles)
-        self.population.fill_population(n_beings, radius)
+        self.population.fill_population(n_beings, radius, verbose=verbose)
+
+        self.verbose = False
 
     def run_algorithm(self,
                       max_epochs: int = 10,
@@ -50,21 +54,38 @@ class GeneticAlgorithm:  # TODO: изменить порядок классов,
         :param max_epochs: Максимальное количество эпох алгоритма.
         :param verbose: Выводить ли информацию об обучении.
         """
+        self.population.fitness(self.ALPHA, self.BETA, self.GAMMA)
 
         for epoch in range(1, max_epochs + 1):
             if len(self.population) == 0:
                 break
 
-            # self.population.repair()  # TODO: А надо ли? можно же лениво чинить их в других местах
+            print(f'epoch #{epoch} started')
+
+            t0 = time.perf_counter()
+
+            self.population.select(self.SURVIVE_RATE)
+            t_select = time.perf_counter()
+
+            self.population.crossover()  # TODO: дебажим кроссовер, видимо
+            t_crossover = time.perf_counter()
+
+            self.population.mutate(remove_rate=self.REMOVE_RATE, move_rate=self.MOVE_RATE)
+            t_mutate = time.perf_counter()
+
             self.population.fitness(self.ALPHA, self.BETA, self.GAMMA)
             if verbose:
+                print('-=time consumption=-')
+                print(f'select: {t_select - t0}')
+                print(f'crossover: {t_crossover - t_select}')
+                print(f'mutate: {t_mutate - t_crossover}')
+
                 max_metric = self.ALPHA + self.BETA + self.GAMMA
+                self.population.beings.sort(key=lambda being: being.fitness,
+                                 reverse=True)
                 best = self.population.beings[0]
                 print(
-                    f'#{epoch}. best_fitness={best.fitness} / {max_metric}; has_circles={len(best.circles)}; n_beings={len(self.population)}')
-            self.population.select(self.SURVIVE_RATE)
-            self.population.crossover()  # TODO: дебажим кроссовер, видимо
-            self.population.mutate(remove_rate=self.REMOVE_RATE, move_rate=self.MOVE_RATE)
+                    f'best_fitness={best.fitness} / {max_metric}; has_circles={len(best.circles)}; n_beings={len(self.population)}')
         if verbose:
             print('done!')
 
@@ -73,6 +94,8 @@ class GeneticAlgorithm:  # TODO: изменить порядок классов,
         if len(self.population) == 0:
             raise Exception("Unable to get best being: population is empty!")
         self.population.fitness(self.ALPHA, self.BETA, self.GAMMA)
+        self.population.beings.sort(key=lambda being: being.fitness,
+                                    reverse=True)
         best = self.population.beings[0]
         return best.circles
 
@@ -89,14 +112,21 @@ class Population():
 
     def fill_population(self,
                         n_beings: int,
-                        radius: float) -> None:
+                        radius: float,
+                        verbose: bool) -> None:
         """
         Заполняет популяцию особями.
         :param n_beings: Количество особей.
         :param radius: Радиус кругов особей.
         """
+        if verbose:
+            print("filling population:")
         for i in range(n_beings):
-            self.beings.append(self._create_being(radius))
+            t0 = time.perf_counter()
+            self.beings.append(self._create_being(radius, verbose=verbose))
+            t1 = time.perf_counter()
+            if verbose:
+                print(f'being {i + 1} created in {t1 - t0} sec')
 
     def fitness(self, ALPHA: float, BETA: float, GAMMA: float):
         """
@@ -318,7 +348,7 @@ class Population():
     def __len__(self):
         return len(self.beings)
 
-    def _create_being(self, radius: float):
+    def _create_being(self, radius: float, verbose: bool):
         """
         Возвращает гарантированно корректную особь.
         :param radius: Радиус кругов особи.
@@ -327,9 +357,10 @@ class Population():
             being = Being(self.polygon, radius, n_circles=self.init_circles)
             being = self._repair_being(being)
             if being.covers_polygon:
-                print("Created successfully")
+                if verbose:
+                    print("Created successfully")
                 return being
-            else:
+            elif verbose:
                 print("Failed to create. Trying again...")
 
     def _repair_being(self, being: 'Being') -> 'Being':  # TODO: переделать для набора с разными радиусами
@@ -356,7 +387,7 @@ class Population():
             polygon=being.polygon,
             circles=[Circle(Point(c[0], c[1]), radius) for c in group_n(2, minimum.x)])
 
-        return self._remove_unnec_circles(new_being, 0.05, 0.01)
+        return self._remove_unnec_circles(new_being, 0.05, 0.05)
 
     def _bfgs_target_func(self,
                           centers,

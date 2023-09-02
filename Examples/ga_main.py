@@ -8,19 +8,20 @@ P = Polygon([Point(0, 0), Point(2, 0), Point(6, 2), Point(1, 5), Point(1, 4)])
 
 alg = GeneticAlgorithm(
     polygon=P,
-    init_circles=30,
-    n_beings=2,
-    radius=1.0
+    init_circles=20,
+    n_beings=4,
+    radius=1.0,
+    verbose=True
 )
 # TODO: grid search
 # TODO: параметры обучения типа tolerance помогут?
 
-# Как ускорить?
+# TODO: Как ускорить?
 # 1. Несколько потоков?
 # 2. Считать на видеокарте?
 # 3. Другой алгоритм?
 alg.run_algorithm(
-    max_epochs=10,
+    max_epochs=5,
     verbose=True
 )
 
