@@ -10,6 +10,7 @@ from Utils.misc_funcs import group_n, point_inside_polygon
 
 # CONSTANTS
 CIRCLE_RESOLUTION = 100
+EPS = 1e-7
 
 
 # END CONSTANTS
@@ -62,7 +63,7 @@ class GeneticAlgorithm:  # TODO: изменить порядок классов,
                 print(
                     f'#{epoch}. best_fitness={best.fitness} / {max_metric}; has_circles={len(best.circles)}; n_beings={len(self.population)}')
             self.population.select(self.SURVIVE_RATE)
-            self.population.crossover()
+            self.population.crossover()  # TODO: дебажим кроссовер, видимо
             self.population.mutate(remove_rate=self.REMOVE_RATE, move_rate=self.MOVE_RATE)
         if verbose:
             print('done!')
@@ -71,9 +72,9 @@ class GeneticAlgorithm:  # TODO: изменить порядок классов,
         """Возвращает результат работы алгоритма - многоугольники, приближающие искомые круги."""
         if len(self.population) == 0:
             raise Exception("Unable to get best being: population is empty!")
-        self.population.fitness()
+        self.population.fitness(self.ALPHA, self.BETA, self.GAMMA)
         best = self.population.beings[0]
-        return [circle.exterior for circle in best.circles]
+        return best.circles
 
 
 class Population():
@@ -105,9 +106,9 @@ class Population():
             outside = 0
             self_inter = 0
             for circle in being.circles:
-                outside += circle.area - being.polygon.intersect(circle.polygon).area
+                outside += circle.area - being.polygon.intersection(circle.polygon).area
                 without = [c.polygon for c in being.circles if c != circle]
-                self_inter += unary_union(without).intersect(circle).area / circle.area
+                self_inter += unary_union(without).intersection(circle.polygon).area / circle.area
 
             outside /= being.polygon.area
             self_inter /= unary_union([c.polygon for c in being.circles]).area
@@ -179,7 +180,7 @@ class Population():
             (minx, miny, maxx, maxy) = being.polygon.bounds
             diameter = np.sqrt((maxx - minx) ** 2 + (maxy - miny) ** 2)
 
-            vor = Voronoi([c.center for c in being.circles])
+            vor = Voronoi([np.array([c.center.x, c.center.y]) for c in being.circles])
 
             # Заранее выясним направление каждой бесконечной грани.
             centroid = vor.points.mean(axis=0)
@@ -192,7 +193,7 @@ class Population():
                 u, v = sorted(rv)
                 if u == -1:  # Бесконечная грань Вороного.
                     t = vor.points[p] - vor.points[q]  # Вектор pq.
-                    n = np.array(-t[1], t[0]) / np.linalg.norm(t)  # Нормаль к pq.
+                    n = np.array([-t[1], t[0]]) / np.linalg.norm(t)  # Нормаль к pq.
                     mid = vor.points[[p, q]].mean(axis=0)
                     # Повернём нормаль в сторону от центроида многоугольника.
                     dir = n * np.sign(np.dot(n, mid - centroid))
@@ -228,7 +229,10 @@ class Population():
                     vor.vertices[prev] + dir_prev * length_coef,
                     vor.vertices[next] + dir_next * length_coef
                 ])
-                cell_points = vor.vertices[:ind] + new_edge + vor.vertices[ind + 1:]
+                cell_points = np.concatenate((vor.vertices[region[:ind]],
+                                              new_edge,
+                                              vor.vertices[region[ind + 1:]]),
+                                             axis=0)
                 ans.append((i, Polygon(cell_points)))
             return ans
 
@@ -264,7 +268,8 @@ class Population():
             else:
                 return [(1 - i, polygons[i]) for i in range(2)]
         else:
-            return [(i, being.polygon.intersection(cell)) for (i, cell) in multicircle_case(being)]
+            tmp = multicircle_case(being)
+            return [(i, being.polygon.intersection(cell)) for (i, cell) in tmp]
 
     def mutate(self,
                remove_rate: float,
@@ -278,7 +283,7 @@ class Population():
         for being in self.beings:
             # Remove:
             if len(being.circles) > 1 and random.random() < remove_rate:
-                being.circles.sort(key=lambda circle: circle.polygon.intersect(self.polygon))
+                being.circles.sort(key=lambda circle: circle.polygon.intersection(self.polygon).area)
                 being1 = Being.from_circles(being.polygon, being.circles[1:])
                 being1 = self._repair_being(being1)
                 if being1.covers_polygon:
@@ -286,7 +291,7 @@ class Population():
 
                 being.circles.sort(
                     key=lambda circle:
-                    sum([c2.polygon.intersect(circle.polygon) for c2 in
+                    sum([c2.polygon.intersection(circle.polygon) for c2 in
                          being.circles]))  # TODO: проверить на корректность
                 being2 = Being.from_circles(being.polygon, being.circles[:-1])
                 being2 = self._repair_being(being2)
@@ -319,9 +324,13 @@ class Population():
         :param radius: Радиус кругов особи.
         """
         while True:
-            being = self._repair_being(Being(self.polygon, radius, n_circles=self.init_circles))
+            being = Being(self.polygon, radius, n_circles=self.init_circles)
+            being = self._repair_being(being)
             if being.covers_polygon:
+                print("Created successfully")
                 return being
+            else:
+                print("Failed to create. Trying again...")
 
     def _repair_being(self, being: 'Being') -> 'Being':  # TODO: переделать для набора с разными радиусами
         """
@@ -329,28 +338,32 @@ class Population():
         :param being: Особь.
         :return: Новая особь.
         """
+        # TODO: fix problem when zero circles
         radius = being.circles[0].radius if len(being.circles) else 0
         tupled = [(c.center.x, c.center.y) for c in being.circles]
-        initial = [item for pair in tupled for item in pair]
+        initial = np.array([item for pair in tupled for item in pair])
 
+        #print("started minimization")
         minimum = optimize.minimize(
             self._bfgs_target_func,
             initial,  # TODO: type mismatch. will it work? list instead of ndarray
             args=(being.polygon, radius),
-            method='L-BFGS-B')
+            method='L-BFGS-B',
+            options={'gtol': 1e-6, 'disp': False})
+        #print("ended minimization")
 
         new_being = Being.from_circles(
             polygon=being.polygon,
-            circles=[Circle(Point(c.x, c.y), radius) for c in group_n(2, minimum)])
+            circles=[Circle(Point(c[0], c[1]), radius) for c in group_n(2, minimum.x)])
 
-        return self._remove_unnec_circles(new_being, 0.05, 0.05)
+        return self._remove_unnec_circles(new_being, 0.05, 0.01)
 
     def _bfgs_target_func(self,
-                          centers: list[float],
-                          polygon: Polygon,
-                          radius: float) -> float:  # TODO: переделать для набора с разными радиусами
+                          centers,
+                          polygon,
+                          radius):  # TODO: переделать для набора с разными радиусами
         """Целевая функция, оптимизируемая алгоритмом BFGS."""
-        circles = [Circle(Point(c.x, c.y), radius).polygon for c in group_n(2, centers)]
+        circles = [Circle(Point(c[0], c[1]), radius).polygon for c in group_n(2, centers)]
         ar = unary_union(circles).intersection(polygon).area
         s = 3
         soft_inv = 1 / ((1 + (ar ** s)) ** (1 / s))
@@ -369,9 +382,10 @@ class Population():
         :param thr_self: Минимальная допустимая доля площади пересечения с другими кругами. (см. код для уточнения)
         :return: Особь с обновлённым набором кругов.
         """
+        # TODO: ПЕРЕЧИТАТЬ ВНИМАТЕЛЬНО
         kept_circles = []
         for circle in being.circles:
-            rate = circle.polygon.intersect(
+            rate = circle.polygon.intersection(
                 being.polygon).area / circle.area  # TODO: circle.polygon.intersect -> circle.intersect
             if rate >= thr_region:
                 kept_circles.append(circle)
@@ -382,9 +396,9 @@ class Population():
             tmp = [
                 c.polygon
                 for c in circle_list
-                if c not in removed_circles and c != circle
+                if (c not in removed_circles) and (c != circle)
             ]
-            rate = np.abs(unary_union(tmp).intersect(circle.polygon) - circle.area) / circle.area
+            rate = np.abs(unary_union(tmp).intersection(circle.polygon).area - circle.area) / circle.area
             if rate >= thr_self:
                 kept_circles.append(circle)
             else:
@@ -399,8 +413,7 @@ class Being():
                  radius: float,
                  circles=None,
                  n_circles=None):  # TODO: поправить этот конструктор и from_circles, его проблемы с безопасностью: не гарпантирует корректнрость особи
-        if circles is None:
-            circles = list()
+
         self.fitness = None  # Значение фитнес-функции.
         self.polygon = polygon
         if circles == None:
@@ -411,8 +424,8 @@ class Being():
     @property
     def covers_polygon(self):
         """Важно: Работает не слишком быстро, не стоит злоупотреблять."""
-        united = unary_union(self.circles)
-        return united.contains(self.polygon)
+        inter = unary_union([c.polygon for c in self.circles]).intersection(self.polygon)
+        return np.abs(inter.area - self.polygon.area) < EPS
 
     @classmethod
     def from_circles(cls,
@@ -444,4 +457,4 @@ class Circle():
         Возвращает внешнюю границу круга.
         :return: Многоугольник, приближающий внешнюю границу круга.
         """
-        return self.polygon.exterior.xy
+        return self.polygon.exterior
