@@ -1,4 +1,4 @@
-from Utils.barons_classes import Market
+from Algorithms.Baron.barons_classes import Market
 
 
 # Заполняет многоугольник кругами по методу "Баронов"
