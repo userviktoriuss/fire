@@ -1,5 +1,5 @@
 from shapely import Polygon, Point
-from Algorithms.Genetic.genetic_classes import Population, Being, Circle
+from Algorithms.Genetic.GeneticAlgorithm import Population, Being, Circle
 
 polygon = Polygon([Point(0, 0), Point(20, 0), Point(60, 20), Point(10, 50), Point(-10, 40)])
 population = Population(polygon, 10)
