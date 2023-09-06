@@ -13,10 +13,9 @@ alg = BaronsAlgorithm(
 
 
 alg.run_algorithm(
-    max_epochs=5,
     init_tau=0.5,
     end_tau=1e-8,
-    change_tau=0.99
+    change_tau=0.99,
     verbose=True
 )
 
