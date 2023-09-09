@@ -1,5 +1,5 @@
 from Utils.Circle import *
-
+from Algorithms.Baron import Market
 
 class BaronsAlgorithm:
     def __init__(self,
@@ -12,13 +12,14 @@ class BaronsAlgorithm:
         :param n_barons: Стартовое количество баронов.
         :param radius: Радиус круга, соответствующего барону.
         """
-        self.barons = Market(polygon, grid_size=2 * radius)
-        self.barons.fill_barons(n_barons, radius)
+        self.market = Market(polygon, grid_size=2 * radius)
+        self.market.fill_barons(n_barons, radius)
 
-    def run_algorithm(self, 
+    def run_algorithm(self,
                       init_tau: float = 0.5,
-                 end_tau: float = 1e-8,
-                 change_tau: float = 0.99,):
+                      end_tau: float = 1e-8,
+                      change_tau: float = 0.99,
+                      verbose: bool = False):
         """
         Запускает алгоритм.
         
