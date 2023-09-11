@@ -1,5 +1,8 @@
+import time
+
 from Utils.Circle import *
-from Algorithms.Baron import Market
+from Algorithms.Baron.Market import Market
+
 
 class BaronsAlgorithm:
     def __init__(self,
@@ -28,7 +31,20 @@ class BaronsAlgorithm:
         :param change_tau: Изменение скорости обучения.
         :return: 
         """
+        if verbose:
+            print("Initiating algorithm")
+            t0 = time.perf_counter()
         tau = init_tau
         while tau > end_tau:
             self.market.next_iteration(tau)
             tau *= change_tau
+            # TODO: progress bar
+
+        if verbose:
+            elapsed = time.perf_counter() - t0
+            print(f'Algorithm ended in {elapsed} sec.')
+
+    def get_circles(self):
+        return [Circle(baron.center.x, baron.center.y)
+                for cords in self.market.grid
+                for baron in self.market.grid[cords]]

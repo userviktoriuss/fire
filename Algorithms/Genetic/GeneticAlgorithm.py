@@ -30,7 +30,7 @@ class GeneticAlgorithm:  # TODO: изменить порядок классов,
         self.population = Population(polygon, init_circles)
         self.population.fill_population(n_beings, radius, verbose=verbose)
 
-        self.verbose = False
+        self.verbose = verbose
 
     def run_algorithm(self,
                       max_epochs: int = 10,
