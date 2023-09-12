@@ -1,6 +1,6 @@
 import random
 
-from Algorithms.Baron.barons_classes import BaronsAlgorithm
+from Algorithms.Baron.BaronsAlgorithm import BaronsAlgorithm
 from shapely import Polygon, Point
 import matplotlib.pyplot as plt
 
