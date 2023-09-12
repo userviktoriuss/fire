@@ -1,4 +1,4 @@
-from Utils.barons_classes import Market
+from Algorithms.Baron.BaronsAlgorithm import Market
 from Utils.geometry import *
 from Algorithms.hexagonal import hexagonal
 import matplotlib.pyplot as plt

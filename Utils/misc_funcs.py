@@ -18,3 +18,20 @@ def group_n(n, iterable, fill_value=None):
     """Вот это мощь питона!"""
     args = [iter(iterable)] * n
     return list(zip_longest(fillvalue=fill_value, *args))
+
+
+def sign(a: float) -> int:
+    """
+    Возвращает знак переданного числа:
+     0 - a = 0
+    -1 - a < 0
+     1 - a > 0
+    :param a: Переданное число.
+    :return: -1/0/1
+    """
+
+    if a == 0:
+        return 0
+    elif a > 0:
+        return 1
+    return -1

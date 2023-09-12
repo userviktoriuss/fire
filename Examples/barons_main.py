@@ -1,26 +1,30 @@
-# from Utils.genetic_classes import GeneticAlgorithm
+import random
+
+from Algorithms.Baron.BaronsAlgorithm import BaronsAlgorithm
 from shapely import Polygon, Point
 import matplotlib.pyplot as plt
-from Algorithms.Genetic.GeneticAlgorithm import GeneticAlgorithm
 
 # Зародыш TDD
 P = Polygon([Point(0, 0), Point(2, 0), Point(6, 2), Point(1, 5), Point(1, 4)])
 
-alg = GeneticAlgorithm(
+alg = BaronsAlgorithm(
     polygon=P,
-    init_circles=20,
-    n_beings=4,
+    n_barons=12,
     radius=1.0,
-    verbose=True
 )
-
 
 alg.run_algorithm(
-    max_epochs=5,
+    init_tau=0.5,
+    end_tau=1e-4,
+    change_tau=0.99,
+    regular_mult=1,
+    half_mult=1.3,
+    far_mult=1.7,
+    covered_mult=1,
     verbose=True
-)
+) # avg time 32 sec
 
-circles = alg.get_best()
+circles = alg.get_circles()
 
 plt.plot(P.exterior.xy[0], P.exterior.xy[1])
 for circle in circles:

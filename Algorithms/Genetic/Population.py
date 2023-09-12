@@ -1,103 +1,19 @@
 import random
 from collections import defaultdict
 import numpy as np
-from shapely import Polygon, Point, LineString
-from shapely.ops import unary_union, linemerge, polygonize
-import math
 import scipy.optimize as optimize
 from scipy.spatial import Voronoi
 from Utils.misc_funcs import group_n, point_inside_polygon
+from shapely import Polygon, Point, LineString
+from shapely.ops import unary_union, linemerge, polygonize
 import time
+from Utils.Circle import *
 
 # CONSTANTS
-CIRCLE_RESOLUTION = 100
 EPS = 1e-7
-
+# TODO: пофиксить расположение констант
 
 # END CONSTANTS
-
-class GeneticAlgorithm:  # TODO: изменить порядок классов, чтобы правильно указывать типы без кавычек
-    """
-    Моделирует естественный отбор.
-    """
-
-    def __init__(self,
-                 polygon: Polygon,
-                 init_circles: int,
-                 n_beings: int = 10,
-                 radius: float = 1.0,
-                 SURVIVE_RATE: float = 0.8,
-                 REMOVE_RATE: float = 0.1,
-                 MOVE_RATE: float = 0.2,
-                 ALPHA: float = 2.1,
-                 BETA: float = 0.8,
-                 GAMMA: float = 0.5,
-                 verbose: bool = False):
-        self.SURVIVE_RATE = SURVIVE_RATE
-        self.REMOVE_RATE = REMOVE_RATE
-        self.MOVE_RATE = MOVE_RATE
-        self.ALPHA = ALPHA
-        self.BETA = BETA
-        self.GAMMA = GAMMA
-
-        self.population = Population(polygon, init_circles)
-        self.population.fill_population(n_beings, radius, verbose=verbose)
-
-        self.verbose = False
-
-    def run_algorithm(self,
-                      max_epochs: int = 10,
-                      verbose: bool = False
-                      ) -> None:
-        """
-        Запускает алгоритм.
-        :param max_epochs: Максимальное количество эпох алгоритма.
-        :param verbose: Выводить ли информацию об обучении.
-        """
-        self.population.fitness(self.ALPHA, self.BETA, self.GAMMA)
-
-        for epoch in range(1, max_epochs + 1):
-            if len(self.population) == 0:
-                break
-
-            print(f'epoch #{epoch} started')
-
-            t0 = time.perf_counter()
-
-            self.population.select(self.SURVIVE_RATE)
-            t_select = time.perf_counter()
-
-            self.population.crossover()  # TODO: дебажим кроссовер, видимо
-            t_crossover = time.perf_counter()
-
-            self.population.mutate(remove_rate=self.REMOVE_RATE, move_rate=self.MOVE_RATE)
-            t_mutate = time.perf_counter()
-
-            self.population.fitness(self.ALPHA, self.BETA, self.GAMMA)
-            if verbose:
-                print('-=time consumption=-')
-                print(f'select: {t_select - t0}')
-                print(f'crossover: {t_crossover - t_select}')
-                print(f'mutate: {t_mutate - t_crossover}')
-
-                max_metric = self.ALPHA + self.BETA + self.GAMMA
-                self.population.beings.sort(key=lambda being: being.fitness,
-                                 reverse=True)
-                best = self.population.beings[0]
-                print(
-                    f'best_fitness={best.fitness} / {max_metric}; has_circles={len(best.circles)}; n_beings={len(self.population)}')
-        if verbose:
-            print('done!')
-
-    def get_best(self):
-        """Возвращает результат работы алгоритма - многоугольники, приближающие искомые круги."""
-        if len(self.population) == 0:
-            raise Exception("Unable to get best being: population is empty!")
-        self.population.fitness(self.ALPHA, self.BETA, self.GAMMA)
-        self.population.beings.sort(key=lambda being: being.fitness,
-                                    reverse=True)
-        best = self.population.beings[0]
-        return best.circles
 
 
 class Population():
@@ -374,14 +290,14 @@ class Population():
         tupled = [(c.center.x, c.center.y) for c in being.circles]
         initial = np.array([item for pair in tupled for item in pair])
 
-        #print("started minimization")
+        # print("started minimization")
         minimum = optimize.minimize(
             self._bfgs_target_func,
             initial,  # TODO: type mismatch. will it work? list instead of ndarray
             args=(being.polygon, radius),
             method='L-BFGS-B',
             options={'gtol': 1e-6, 'disp': False})
-        #print("ended minimization")
+        # print("ended minimization")
 
         new_being = Being.from_circles(
             polygon=being.polygon,
@@ -463,29 +379,3 @@ class Being():
                      polygon: Polygon,
                      circles: list['Circle']) -> 'Being':
         return cls(polygon, 1, circles)
-
-
-class Circle():
-    def __init__(self,
-                 center: Point,
-                 radius: float):
-        self.center = center
-        self.radius = radius
-
-        points = []
-        for i in range(CIRCLE_RESOLUTION):
-            theta = 2 * math.pi * i / CIRCLE_RESOLUTION
-            x = center.x + radius * math.cos(theta)
-            y = center.y + radius * math.sin(theta)
-            points.append(Point(x, y))
-
-        self.polygon = Polygon(points)
-        self.area = self.polygon.area
-
-    @property
-    def exterior(self):
-        """
-        Возвращает внешнюю границу круга.
-        :return: Многоугольник, приближающий внешнюю границу круга.
-        """
-        return self.polygon.exterior
