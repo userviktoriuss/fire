@@ -279,7 +279,8 @@ class Population():
             elif verbose:
                 print("Failed to create. Trying again...")
 
-    def _repair_being(self, being: 'Being') -> 'Being':  # TODO: переделать для набора с разными радиусами
+    @staticmethod
+    def _repair_being(being: 'Being') -> 'Being':  # TODO: переделать для набора с разными радиусами
         """
         Пытается увеличить площадь покрытия многоугольника для данной особи.
         :param being: Особь.
@@ -292,7 +293,7 @@ class Population():
 
         # print("started minimization")
         minimum = optimize.minimize(
-            self._bfgs_target_func,
+            Population._bfgs_target_func,
             initial,  # TODO: type mismatch. will it work? list instead of ndarray
             args=(being.polygon, radius),
             method='L-BFGS-B',
@@ -303,10 +304,10 @@ class Population():
             polygon=being.polygon,
             circles=[Circle(Point(c[0], c[1]), radius) for c in group_n(2, minimum.x)])
 
-        return self._remove_unnec_circles(new_being, 0.05, 0.05)
+        return Population._remove_unnec_circles(new_being, 0.05, 0.05)
 
-    def _bfgs_target_func(self,
-                          centers,
+    @staticmethod
+    def _bfgs_target_func(centers,
                           polygon,
                           radius):  # TODO: переделать для набора с разными радиусами
         """Целевая функция, оптимизируемая алгоритмом BFGS."""
@@ -317,8 +318,8 @@ class Population():
 
         return soft_inv
 
-    def _remove_unnec_circles(self,
-                              being: 'Being',
+    @staticmethod
+    def _remove_unnec_circles(being: 'Being',
                               thr_region: float,
                               thr_self: float) -> 'Being':  # TODO: перепроверить, не доверяю ему
         """

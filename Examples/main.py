@@ -1,6 +1,6 @@
 from Algorithms.Baron.BaronsAlgorithm import Market
 from Utils.geometry import *
-from Algorithms.hexagonal import hexagonal
+from Algorithms.Deprecated.hexagonal import hexagonal
 import matplotlib.pyplot as plt
 import math
 import random
