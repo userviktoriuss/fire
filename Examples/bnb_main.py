@@ -7,7 +7,10 @@ from matplotlib import pyplot as plt
 # from Algorithms.hexagonal import hexagonal
 
 from shapely import Point, Polygon, unary_union
+
+from Algorithms.BranchesAndBounds.BranchesAndBounds import bnb
 from Algorithms.Hexagonal.hexagonal import hexagonal
+from Examples.polygons import polygons_dict
 from Utils.Circle import Circle
 
 EPS = 1e-3
@@ -35,7 +38,7 @@ def get_important(P_described, P, S, alpha):
 
 # Main part
 
-P = Polygon([Point(0, 0), Point(16, 0), Point(15, 2), Point(14, 3), Point(12, 4), Point(4, 4), Point(2, 3), Point(1, 2)])
+P = polygons_dict['P8']
 (minx, miny, maxx, maxy) = P.bounds
 P_described = Polygon([Point(minx - 1, miny - 1), Point(maxx + 1, miny - 1), Point(maxx + 1, maxy + 1), Point(minx - 1, maxy + 1)])
 inners = []
@@ -81,24 +84,6 @@ for p_int in P.interiors:
     yy = [c[1] for c in p_int.coords]
     plt.plot(xx, yy, color='tab:blue')
 
-"""
-outer_grid = hexagonal(P_described, Point(best_ops[0], best_ops[1]), 1, best_ops[2])
-for p in outer_grid:
-    c = 'springgreen'
-    if P.contains(p):
-        continue
-    circle = plt.Circle((p.x, p.y), 1, color=c, clip_on=False)
-    ax.add_patch(circle)
-
-for p in outer_grid:
-    if P.contains(p):
-        c = 'deepskyblue'
-        circle = plt.Circle((p.x, p.y), 1, color=c, clip_on=False)
-        ax.add_patch(circle)
-
-plt.scatter([p.x for p in outer_grid], [p.y for p in outer_grid])
-# plt.scatter([p.x for p in grid], [p.y for p in grid])
-"""
 
 best_grid = get_important(P_described, P, Point(best_ops[0], best_ops[1]), best_ops[2])
 for p in best_grid:
@@ -107,5 +92,27 @@ for p in best_grid:
     ax.add_patch(circle)
 
 plt.scatter([p.x for p in best_grid], [p.y for p in best_grid], color='darkblue')
+plt.show()
 
+# ------------------------------------
+bnb_grid = bnb(P, best_grid, is_repaired=True)
+print(f'BnB results: {len(bnb_grid)}.')
+
+fig = plt.figure()
+ax = fig.gca()
+ax.set_aspect('equal', adjustable='box')
+
+plt.plot(P.exterior.xy[0], P.exterior.xy[1])
+for p_int in P.interiors:
+    xx = [c[0] for c in p_int.coords]
+    yy = [c[1] for c in p_int.coords]
+    plt.plot(xx, yy, color='tab:blue')
+
+
+for p in bnb_grid:
+    c = 'turquoise'
+    circle = plt.Circle((p.x, p.y), 1, color=c, clip_on=False)
+    ax.add_patch(circle)
+
+plt.scatter([p.x for p in bnb_grid], [p.y for p in bnb_grid], color='darkblue')
 plt.show()

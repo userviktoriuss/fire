@@ -4,7 +4,7 @@ import random
 import numpy as np
 from shapely.ops import unary_union
 
-from Algorithms.Genetic.Population import Being
+from Algorithms.Genetic.Population import Being, Population
 from Utils.Circle import Circle, Point
 from shapely import Polygon
 
@@ -28,11 +28,12 @@ from shapely import Polygon
 def bnb(P: Polygon,
         centers: list[Point],
         radius: float = 1,
-        max_iterations: int = 100,
+        max_iterations: int = 75,
         is_repaired: bool = False,
-        ALPHA: float = 2.1,
-        BETA: float = 0.8,
-        GAMMA: float = 0.5,
+        ALPHA: float = -0.3,  # Влияние самопересечений.
+        BETA: float = 0.3,  # Влияние отношения покрытой площади вне многоугольника к площади многоугольника.
+        GAMMA: float = 0.005,  # Влияние количества кругов по отношению к стартовому.
+        LAMBDA: float = 1.0,  # Влияние процента покрытия.
         ANGLE_RESOLUTION: int=6,
         MOVE_MULTIPLIER: float=1.5):
     circles = [Circle(p, radius) for p in centers]
@@ -40,19 +41,22 @@ def bnb(P: Polygon,
     best = b
     init_circles = len(centers)
 
-    while max_iterations > 0 and not b.covers_polygon:
+    fitness([best], ALPHA, BETA, GAMMA, LAMBDA, init_circles)
+
+    while max_iterations > 0 and not b.covers_polygon and len(b.circles) > 0:
         bad_inds = find_bad_circles(b)  # Найдём плохие круги.
         branches = create_branches(b, bad_inds, ANGLE_RESOLUTION, MOVE_MULTIPLIER)  # Построим ветви
-        fitness(branches, ALPHA, BETA, GAMMA, init_circles)  # Оценить перспективность ветвей
+        fitness(branches, ALPHA, BETA, GAMMA, LAMBDA, init_circles)  # Оценить перспективность ветвей
         cur_best = np.argmax([being.fitness for being in branches])  # Выбрать лучшую из встретившихся ветвей
         b = branches[cur_best]  # Выбрать ветвь.
 
         if best.fitness < branches[cur_best].fitness:
             best = branches[cur_best]  # Сохранить лучшую из всех особей.
+        print(best.fitness)
+        max_iterations -= 1
 
     if is_repaired:
-        # TODO: запустить BFGS или barons с маоенькими значениями, чтобы увеличить площадь покрытия
-        pass  # чиним best
+        pass # TODO: чинить (но repair - долго)
     return [p.center for p in best.circles]
 
 
@@ -60,6 +64,7 @@ def fitness(beings: list[Being],
             ALPHA: float,
             BETA: float,
             GAMMA: float,
+            LAMBDA: float,
             init_circles):
     for being in beings:
         outside = 0
@@ -70,11 +75,16 @@ def fitness(beings: list[Being],
             self_inter += unary_union(without).intersection(circle.polygon).area / circle.area
 
         outside /= being.polygon.area
-        self_inter /= unary_union([c.polygon for c in being.circles]).area
+        all_union = unary_union([c.polygon for c in being.circles])
+        self_inter /= all_union.area
         circle_count = len(being.circles) / init_circles
+
+        coverage = all_union.intersection(being.polygon).area / being.polygon.area
+
         being.fitness = (ALPHA * (1 - self_inter) +
                          BETA * (1 - outside) +
-                         GAMMA * (1 - circle_count))
+                         GAMMA * (1 - circle_count) +
+                         LAMBDA * coverage)
 
 
 # Находит плохие круги
@@ -96,8 +106,8 @@ def find_bad_circles(b: Being) -> list[int]:
 
         near = [c.polygon
                 for c in b.circles
-                if c != b.circles[i] and c.distance(b.circles[i]) < 2 * b.circles[i].radius]
-        cur_self = unary_union(near).intersection(b.circles[i]).area
+                if c != b.circles[i] and c.center.distance(b.circles[i].center) < 2 * b.circles[i].radius]
+        cur_self = unary_union(near).intersection(b.circles[i].polygon).area
 
         if cur_self > max_self:
             max_self = cur_self
@@ -113,13 +123,15 @@ def create_branches(b: Being,
     for bad_ind in bad_inds:
         without = [b.circles[i] for i in range(len(b.circles)) if i != bad_ind]
         bad = b.circles[bad_ind]
+
         # Удалим круг
         branches.append(Being.from_circles(b.polygon, without))
 
         # Подвигаем круг
         for i in range(ANGLE_RESOLUTION):
             angle = 360 * i / ANGLE_RESOLUTION
-            dist = random.uniform(0, MOVE_MULTIPLIER * b.circles[0].radius)  # TODO: или другое распределение
+            sigma = MOVE_MULTIPLIER * b.circles[0].radius / 3 #  По правилу трёх сигм получаем среднеквадратическое отклонение.
+            dist = random.uniform(0, sigma * sigma)  # TODO: или другое распределение
             dx = dist * math.cos(angle)
             dy = dist * math.sin(angle)
             new_circle = Circle(Point(bad.center.x + dx, bad.center.y + dy),
