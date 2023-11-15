@@ -35,7 +35,8 @@ def bnb(P: Polygon,
         GAMMA: float = 0.005,  # Влияние количества кругов по отношению к стартовому.
         LAMBDA: float = 1.0,  # Влияние процента покрытия.
         ANGLE_RESOLUTION: int=6,
-        MOVE_MULTIPLIER: float=1.5):
+        MOVE_MULTIPLIER: float=1.5,
+        DELETE_PROB: float=0.05):
     circles = [Circle(p, radius) for p in centers]
     b = Being(P, radius, circles)
     best = b
@@ -45,7 +46,7 @@ def bnb(P: Polygon,
 
     while max_iterations > 0 and not b.covers_polygon and len(b.circles) > 0:
         bad_inds = find_bad_circles(b)  # Найдём плохие круги.
-        branches = create_branches(b, bad_inds, ANGLE_RESOLUTION, MOVE_MULTIPLIER)  # Построим ветви
+        branches = create_branches(b, bad_inds, ANGLE_RESOLUTION, MOVE_MULTIPLIER, DELETE_PROB)  # Построим ветви
         fitness(branches, ALPHA, BETA, GAMMA, LAMBDA, init_circles)  # Оценить перспективность ветвей
         cur_best = np.argmax([being.fitness for being in branches])  # Выбрать лучшую из встретившихся ветвей
         b = branches[cur_best]  # Выбрать ветвь.
@@ -118,14 +119,16 @@ def find_bad_circles(b: Being) -> list[int]:
 def create_branches(b: Being,
                     bad_inds: list[int],
                     ANGLE_RESOLUTION: int,
-                    MOVE_MULTIPLIER: float) -> list[Being]:
+                    MOVE_MULTIPLIER: float,
+                    DELETE_PROB: float) -> list[Being]:
     branches = []
     for bad_ind in bad_inds:
         without = [b.circles[i] for i in range(len(b.circles)) if i != bad_ind]
         bad = b.circles[bad_ind]
 
         # Удалим круг
-        branches.append(Being.from_circles(b.polygon, without))
+        if random.random() < DELETE_PROB:
+            branches.append(Being.from_circles(b.polygon, without))
 
         # Подвигаем круг
         for i in range(ANGLE_RESOLUTION):
