@@ -1,116 +1,38 @@
-import math
 import time
-
 from matplotlib import pyplot as plt
-
-# from Utils.geometry import Polygon, Point
-# from Algorithms.hexagonal import hexagonal
-
-from shapely import Point, Polygon, unary_union
-
 from Algorithms.BranchesAndBounds.BranchesAndBounds import bnb
-from Algorithms.Hexagonal.hexagonal import hexagonal
+from Algorithms.Hexagonal.hexagonal import HexagonalAlgorithm
 from Examples.polygons import polygons_dict
-from Utils.Circle import Circle
-
-EPS = 1e-3
-RESOLUTION = 5
-ALPHA_RESOLUTION = 5
-
-def get_important(P_described, P, S, alpha):
-    outer_grid = hexagonal(P_described, S, 1, alpha)
-
-    inside = [Circle(c, 1) for c in outer_grid if P.contains(c)]
-    outside = [Circle(c, 1) for c in outer_grid if not P.contains(c)]
-    union = unary_union([c.polygon for c in inside])
-
-    outside.sort(key=
-                 lambda c: P.intersection(c.polygon).area,
-                 reverse=True)
-    for c in outside:
-        c_inside_polygon = P.intersection(c.polygon)
-        united = unary_union([union, c_inside_polygon])
-        if abs(united.area - union.area) > EPS:
-            inside.append(c)
-            union = unary_union([union, c_inside_polygon])
-    return [c.center for c in inside]
-
-
-# Main part
+from Utils.drawing import draw_polygon, draw_circles
 
 P = polygons_dict['P8']
-(minx, miny, maxx, maxy) = P.bounds
-P_described = Polygon([Point(minx - 1, miny - 1), Point(maxx + 1, miny - 1), Point(maxx + 1, maxy + 1), Point(minx - 1, maxy + 1)])
-inners = []
-
-for inn in inners:
-    P = P.difference(inn)
-
+# Запуск алгоритма
 t0 = time.perf_counter()
-best_ops = (0, 0, 0)
-best_val = 1e20
 
-step_alpha = math.pi / 3 / ALPHA_RESOLUTION
-step_x = 1 / RESOLUTION
-step_y = 1 / RESOLUTION
-alpha = 0
-while alpha < math.pi / 3:
-    x = 0
-    while x < 1:
-        y = 0
-        while y < 1:
-            S = Point(x, y)
+alg = HexagonalAlgorithm(P, 1)  # Укажем данные.
+alg.set_params()  # Укажем параметры решения.
+alg.run_algorithm()  # Запустим алгоритм.
+ans = alg.get_result()  # Получим результат - list[Circle].
 
-            important = get_important(P_described, P, S, alpha)
-
-            if len(important) < best_val:
-                best_val = len(important)
-                best_ops = (x, y, alpha)
-            y += step_y
-        x += step_x
-    alpha += step_alpha
+bnb_grid = bnb(P, ans, is_repaired=True)
 
 t1 = time.perf_counter()
+
+# Выведем числовые результаты работы.
 print(f'Elapsed time: {t1 - t0} sec.')
-print(f'Best value is: {best_val} circles')
-print(f'Best ops: ({best_ops[0]}; {best_ops[1]}), alpha={best_ops[2]}')
+print(f'Inner result: {len(ans)} circles')
+print(f'BnB results:  {len(bnb_grid)} circles.')
+
 fig, ax = plt.subplots(nrows=1, ncols=2)
+# Отрисуем результат до запуска внутреннего алгоритма.
 ax[0].set_aspect('equal', adjustable='box')
+draw_polygon(ax[0], P)
+draw_circles(ax[0], ans)
 
-
-ax[0].plot(P.exterior.xy[0], P.exterior.xy[1])
-for p_int in P.interiors:
-    xx = [c[0] for c in p_int.coords]
-    yy = [c[1] for c in p_int.coords]
-    ax[0].plot(xx, yy, color='tab:blue')
-
-
-best_grid = get_important(P_described, P, Point(best_ops[0], best_ops[1]), best_ops[2])
-for p in best_grid:
-    c = 'turquoise'
-    circle = plt.Circle((p.x, p.y), 1, color=c, clip_on=False)
-    ax[0].add_patch(circle)
-
-ax[0].scatter([p.x for p in best_grid], [p.y for p in best_grid], color='darkblue')
-
-
-# ------------------------------------
-bnb_grid = bnb(P, best_grid, is_repaired=True)
-print(f'BnB results: {len(bnb_grid)}.')
-
+# Отрисуем результат после запуска внутреннего алгоритма.
 
 ax[1].set_aspect('equal', adjustable='box')
-ax[1].plot(P.exterior.xy[0], P.exterior.xy[1])
-for p_int in P.interiors:
-    xx = [c[0] for c in p_int.coords]
-    yy = [c[1] for c in p_int.coords]
-    ax[1].plot(xx, yy, color='tab:blue')
+draw_polygon(ax[1], P)
+draw_circles(ax[1], bnb_grid)
 
-
-for p in bnb_grid:
-    c = 'turquoise'
-    circle = plt.Circle((p.x, p.y), 1, color=c, clip_on=False)
-    ax[1].add_patch(circle)
-
-ax[1].scatter([p.x for p in bnb_grid], [p.y for p in bnb_grid], color='darkblue')
 plt.show()

@@ -5,7 +5,7 @@ import numpy as np
 from shapely.ops import unary_union
 
 from Algorithms.Baron.BaronsAlgorithm import BaronsAlgorithm
-from Algorithms.Genetic.Population import Being, Population
+from Algorithms.Genetic.Population import Being
 from Utils.Circle import Circle, Point
 from shapely import Polygon
 
@@ -28,7 +28,7 @@ from shapely import Polygon
 
 
 def bnb(P: Polygon,
-        centers: list[Point],
+        circles: list[Circle],
         radius: float = 1,
         max_iterations: int = 60, # 2.5 n работает неплохо
         is_repaired: bool = False,
@@ -39,10 +39,9 @@ def bnb(P: Polygon,
         ANGLE_RESOLUTION: int=6,
         MOVE_MULTIPLIER: float=1.5,
         DELETE_PROB: float=0.05):
-    circles = [Circle(p, radius) for p in centers]
     b = Being(P, radius, circles)
     best = b
-    init_circles = len(centers)
+    init_circles = len(circles)
 
     fitness([best], ALPHA, BETA, GAMMA, LAMBDA, init_circles)
 
@@ -77,9 +76,8 @@ def bnb(P: Polygon,
             verbose=True
         )
 
-        best = alg.get_circles()
-        return [p.center for p in best]
-    return [p.center for p in best.circles]
+        return alg.get_circles()
+    return best.circles
 
 
 def fitness(beings: list[Being],
