@@ -8,7 +8,8 @@ class BaronsAlgorithm:
     def __init__(self,
                  polygon: Polygon,
                  n_barons: int,
-                 radius: float):
+                 radius: float,
+                 init_circles: list[Circle]=None):
         """
         Создаёт рынок баронов.
         :param polygon: Многоугольник, на котором ищем.
@@ -17,7 +18,7 @@ class BaronsAlgorithm:
         """
         self.radius = radius
         self.market = Market(polygon, grid_size=2 * radius)
-        self.market.fill_barons(n_barons, radius)
+        self.market.fill_barons(n_barons, radius, init_circles)
 
     def run_algorithm(self,
                       init_tau: float = 0.5,

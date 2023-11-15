@@ -4,10 +4,12 @@ import random
 import numpy as np
 from shapely.ops import unary_union
 
+from Algorithms.Baron.BaronsAlgorithm import BaronsAlgorithm
 from Algorithms.Genetic.Population import Being, Population
 from Utils.Circle import Circle, Point
 from shapely import Polygon
 
+# TODO: оформить устройство, чтобы потом в доку было проще писать
 """
 Устройство метода:
 1) Найдём плохие круги
@@ -28,7 +30,7 @@ from shapely import Polygon
 def bnb(P: Polygon,
         centers: list[Point],
         radius: float = 1,
-        max_iterations: int = 75,
+        max_iterations: int = 60, # 2.5 n работает неплохо
         is_repaired: bool = False,
         ALPHA: float = -0.3,  # Влияние самопересечений.
         BETA: float = 0.3,  # Влияние отношения покрытой площади вне многоугольника к площади многоугольника.
@@ -57,7 +59,26 @@ def bnb(P: Polygon,
         max_iterations -= 1
 
     if is_repaired:
-        pass # TODO: чинить (но repair - долго)
+        alg = BaronsAlgorithm(
+            polygon=P,
+            n_barons=len(b.circles),
+            radius=radius,
+            init_circles=b.circles
+        )
+
+        alg.run_algorithm(
+            init_tau=1e-3,
+            end_tau=1e-5,
+            change_tau=0.995,
+            regular_mult=1,
+            half_mult=1.3,
+            far_mult=1.7,
+            covered_mult=1,
+            verbose=True
+        )
+
+        best = alg.get_circles()
+        return [p.center for p in best]
     return [p.center for p in best.circles]
 
 
@@ -105,7 +126,7 @@ def find_bad_circles(b: Being) -> list[int]:
             min_inter = cur_inter
             min_inter_ind = i
 
-        near = [c.polygon
+        near = [c.polygon  # TODO: создать сетку, чтобы не делать такой сложный цикл
                 for c in b.circles
                 if c != b.circles[i] and c.center.distance(b.circles[i].center) < 2 * b.circles[i].radius]
         cur_self = unary_union(near).intersection(b.circles[i].polygon).area
@@ -134,7 +155,7 @@ def create_branches(b: Being,
         for i in range(ANGLE_RESOLUTION):
             angle = 360 * i / ANGLE_RESOLUTION
             sigma = MOVE_MULTIPLIER * b.circles[0].radius / 3 #  По правилу трёх сигм получаем среднеквадратическое отклонение.
-            dist = random.uniform(0, sigma * sigma)  # TODO: или другое распределение
+            dist = random.uniform(0, sigma * sigma)
             dx = dist * math.cos(angle)
             dy = dist * math.sin(angle)
             new_circle = Circle(Point(bad.center.x + dx, bad.center.y + dy),

@@ -74,45 +74,43 @@ t1 = time.perf_counter()
 print(f'Elapsed time: {t1 - t0} sec.')
 print(f'Best value is: {best_val} circles')
 print(f'Best ops: ({best_ops[0]}; {best_ops[1]}), alpha={best_ops[2]}')
-fig = plt.figure()
-ax = fig.gca()
-ax.set_aspect('equal', adjustable='box')
+fig, ax = plt.subplots(nrows=1, ncols=2)
+ax[0].set_aspect('equal', adjustable='box')
 
-plt.plot(P.exterior.xy[0], P.exterior.xy[1])
+
+ax[0].plot(P.exterior.xy[0], P.exterior.xy[1])
 for p_int in P.interiors:
     xx = [c[0] for c in p_int.coords]
     yy = [c[1] for c in p_int.coords]
-    plt.plot(xx, yy, color='tab:blue')
+    ax[0].plot(xx, yy, color='tab:blue')
 
 
 best_grid = get_important(P_described, P, Point(best_ops[0], best_ops[1]), best_ops[2])
 for p in best_grid:
     c = 'turquoise'
     circle = plt.Circle((p.x, p.y), 1, color=c, clip_on=False)
-    ax.add_patch(circle)
+    ax[0].add_patch(circle)
 
-plt.scatter([p.x for p in best_grid], [p.y for p in best_grid], color='darkblue')
-plt.show()
+ax[0].scatter([p.x for p in best_grid], [p.y for p in best_grid], color='darkblue')
+
 
 # ------------------------------------
 bnb_grid = bnb(P, best_grid, is_repaired=True)
 print(f'BnB results: {len(bnb_grid)}.')
 
-fig = plt.figure()
-ax = fig.gca()
-ax.set_aspect('equal', adjustable='box')
 
-plt.plot(P.exterior.xy[0], P.exterior.xy[1])
+ax[1].set_aspect('equal', adjustable='box')
+ax[1].plot(P.exterior.xy[0], P.exterior.xy[1])
 for p_int in P.interiors:
     xx = [c[0] for c in p_int.coords]
     yy = [c[1] for c in p_int.coords]
-    plt.plot(xx, yy, color='tab:blue')
+    ax[1].plot(xx, yy, color='tab:blue')
 
 
 for p in bnb_grid:
     c = 'turquoise'
     circle = plt.Circle((p.x, p.y), 1, color=c, clip_on=False)
-    ax.add_patch(circle)
+    ax[1].add_patch(circle)
 
-plt.scatter([p.x for p in bnb_grid], [p.y for p in bnb_grid], color='darkblue')
+ax[1].scatter([p.x for p in bnb_grid], [p.y for p in bnb_grid], color='darkblue')
 plt.show()

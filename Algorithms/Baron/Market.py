@@ -20,11 +20,16 @@ class Market:
 
     def fill_barons(self,
                     n_barons: int,
-                    radius: float):
+                    radius: float,
+                    init_circles: list[Circle]):
         #random.seed(42)
         for i in range(n_barons):
-            c = point_inside_polygon(self.polygon)
-            baron = Baron(c, radius)
+            if init_circles is None:
+                c = point_inside_polygon(self.polygon)
+                baron = Baron(c, radius)
+            else:
+                c = init_circles[i].center
+                baron = Baron(c, init_circles[i].radius)
             crds = self.grid_cords(c)
             self.grid[crds].append(baron)
 
