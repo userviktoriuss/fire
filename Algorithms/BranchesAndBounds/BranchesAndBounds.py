@@ -1,11 +1,12 @@
 import math
 import random
+import time
 
 import numpy as np
 from shapely.ops import unary_union
 
 from Algorithms.Baron.BaronsAlgorithm import BaronsAlgorithm
-from Algorithms.Genetic.Population import Being
+from Algorithms.Genetic.Population import Being, Population
 from Utils.Circle import Circle, Point
 from shapely import Polygon
 
@@ -32,14 +33,20 @@ def bnb(P: Polygon,
         radius: float = 1,
         max_iterations: int = 60, # 2.5 n работает неплохо
         is_repaired: bool = False,
+        remove_unnecessary: bool = False,
         ALPHA: float = -0.3,  # Влияние самопересечений.
         BETA: float = 0.3,  # Влияние отношения покрытой площади вне многоугольника к площади многоугольника.
         GAMMA: float = 0.005,  # Влияние количества кругов по отношению к стартовому.
         LAMBDA: float = 1.0,  # Влияние процента покрытия.
         ANGLE_RESOLUTION: int=6,
         MOVE_MULTIPLIER: float=1.5,
+        MOVE_SCHEDULE=(lambda x: x),
         DELETE_PROB: float=0.05):
     b = Being(P, radius, circles)
+
+    if remove_unnecessary:
+        b = Population._remove_unnec_circles(b, 0.05, 0.05)
+
     best = b
     init_circles = len(circles)
 
@@ -54,10 +61,12 @@ def bnb(P: Polygon,
 
         if best.fitness < branches[cur_best].fitness:
             best = branches[cur_best]  # Сохранить лучшую из всех особей.
-        print(best.fitness)
+        #print(best.fitness)
+        MOVE_MULTIPLIER = MOVE_SCHEDULE(MOVE_MULTIPLIER)
         max_iterations -= 1
 
     if is_repaired:
+        t0 = time.perf_counter()
         alg = BaronsAlgorithm(
             polygon=P,
             n_barons=len(b.circles),
@@ -73,9 +82,10 @@ def bnb(P: Polygon,
             half_mult=1.3,
             far_mult=1.7,
             covered_mult=1,
-            verbose=True
+            verbose=False
         )
-
+        t1 = time.perf_counter()
+        print(f'Repair ended in {t1 - t0} sec.')
         return alg.get_circles()
     return best.circles
 

@@ -5,7 +5,7 @@ from Algorithms.Hexagonal.hexagonal import HexagonalAlgorithm
 from Examples.polygons import polygons_dict
 from Utils.drawing import draw_polygon, draw_circles
 
-P = polygons_dict['P8']
+P = polygons_dict['P6']
 # Запуск алгоритма
 t0 = time.perf_counter()
 
@@ -13,13 +13,18 @@ alg = HexagonalAlgorithm(P, 1)  # Укажем данные.
 alg.set_params()  # Укажем параметры решения.
 alg.run_algorithm()  # Запустим алгоритм.
 ans = alg.get_result()  # Получим результат - list[Circle].
-
-bnb_grid = bnb(P, ans, is_repaired=True)
-
 t1 = time.perf_counter()
+bnb_grid = bnb(P,
+               ans,
+               max_iterations=34,
+               is_repaired=True)
+
+t2 = time.perf_counter()
 
 # Выведем числовые результаты работы.
-print(f'Elapsed time: {t1 - t0} sec.')
+print(f'Inner time: {t1 - t0} sec.')
+print(f'BnB time: {t2 - t1} sec.')
+print(f'Elapsed time: {t2 - t0} sec.')
 print(f'Inner result: {len(ans)} circles')
 print(f'BnB results:  {len(bnb_grid)} circles.')
 
