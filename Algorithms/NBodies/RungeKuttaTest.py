@@ -39,7 +39,7 @@ if __name__ == '__main__':
         t = delta.t
         points += np.array(group_n(2, delta.f))
         ax.scatter(points[:, 0], points[:, 1])
-        camera.snap()
+        camera.snap()  # TODO: поправить алгоритм, чтобы использовал step
 
     animation = camera.animate()
     animation.save('runge_kutta_points.gif', writer='imagemagick')
