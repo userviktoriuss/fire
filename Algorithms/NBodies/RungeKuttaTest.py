@@ -20,11 +20,6 @@ def __rk_sub(t, y: np.array):
             fn[i:i + 2] += tmp
     return fn
 
-
-def RungeKutta(points, t_start, t_end):
-    return RK45(__rk_sub, t_start, points, t_end)
-
-
 if __name__ == '__main__':
     points = np.array([[randint(-5, 5), randint(-5, 5)] for i in range(10)]).astype('float')
 
@@ -32,14 +27,14 @@ if __name__ == '__main__':
     ax = plt.axes(xlim=(-6, 6), ylim=(-6, 6))
     camera = Camera(fig)
 
-    t = 0
-    t_delta_max = 0.5
-    for i in range(100):
-        delta = RungeKutta(points.flatten(), t, t_delta_max)
-        t = delta.t
-        points += np.array(group_n(2, delta.f))
+    t_start = 0
+    t_end = 50
+    alg = RK45(__rk_sub, t_start, points.flatten(), t_end, rtol=0.000001, atol=0.005)
+    while alg.status == 'running':
+        alg.step()
+        points = np.array(group_n(2, alg.y))
         ax.scatter(points[:, 0], points[:, 1])
-        camera.snap()  # TODO: поправить алгоритм, чтобы использовал step
+        camera.snap()
 
     animation = camera.animate()
     animation.save('runge_kutta_points.gif', writer='imagemagick')

@@ -14,12 +14,13 @@ class RungeKuttaAlgorithm:
         self.fixed = np.zeros(len(centers))
 
     def set_params(self,
-                   fixed: np.array = None,
+                   fixed: np.array = None,  # По умолчанию все точки подвижны.
                    G: float = 0.1,
                    STOP_RADIUS: float = None,
                    TIME_START: float = 0,
-                   TIME_STEP: float = 0.5,
                    TIME_STOP: float = 50,
+                   RTOL: float = 0.000001,
+                   ATOL: float = 0.005,  # При таких ATOL и RTOL ошибка будет в +- пол сантиметра
                    gravity: 'gravity function' = smooth_gravity_with_sign):
         if fixed is not None:
             self.fixed = fixed
@@ -31,8 +32,9 @@ class RungeKuttaAlgorithm:
             self.STOP_RADIUS = STOP_RADIUS
 
         self.TIME_START = TIME_START
-        self.TIME_STEP = TIME_STEP
         self.TIME_STOP = TIME_STOP
+        self.RTOL = RTOL
+        self.ATOL = ATOL
         self.gravity = gravity
 
     def __gravity(self, t, y: np.array):
@@ -55,36 +57,21 @@ class RungeKuttaAlgorithm:
                 B = np.array([y[j], y[j + 1]])
                 # Вычислим попарную силу взаимодействия всех точек с данной.
                 # Функция гравитации должна для совпадающих точек возвращать 0.
-                fn[i:i + 2] += smooth_gravity_with_sign(A,
-                                                        B,
-                                                        G=self.G,
-                                                        STOP_RADIUS=self.STOP_RADIUS)
+                fn[i:i + 2] += self.gravity(A,
+                                            B,
+                                            G=self.G,
+                                            STOP_RADIUS=self.STOP_RADIUS)
         return fn
 
     def run_algorithm(self):
-        """
-        centers = np.array([p.xy for p in self.centers]).flatten()
-
-        t = self.TIME_START
-        t_delta_max = self.TIME_STEP
-        while t < self.TIME_STOP:
-            delta = RK45(self.__gravity, t, centers, t + t_delta_max)
-            t += t_delta_max
-            centers += delta.f
-
-        self.centers = [Point(p) for p in group_n(2, centers)]
-        """
-
         centers = np.array([p.xy for p in self.centers]).flatten()
         t = self.TIME_START
-        t_delta_max = self.TIME_STEP
-        alg = RK45(self.__gravity, t, centers, self.TIME_STOP)
-        while alg.t < self.TIME_STOP:
-            alg.step() # Настроить параметр, чтобы не считалось так дотошно по 0.05 - мне так мелко не надо
+        alg = RK45(self.__gravity, t, centers, self.TIME_STOP, rtol=self.RTOL, atol=self.ATOL)
+        while alg.status == 'running':
+            alg.step()
 
         centers = alg.y  # Прибавим значение дискретной производной.
         self.centers = [Point(p) for p in group_n(2, centers)]
 
-
-    def get_result(self):
+    def get_result(self):  # TODO: Может ему не надо строить прямо-таки круги?
         return [Circle(Point(c), self.radius) for c in self.centers]

@@ -18,10 +18,10 @@ P = polygons_dict['P3']
 t0 = time.perf_counter()
 
 numpy.random.seed(42)
-centers = [Point(randint(-5, 5), randint(-5, 5)) for i in range(10)]
+centers = [Point(randint(-5, 5), randint(-5, 5)) for i in range(30)]
 alg = RungeKuttaAlgorithm(centers, 1.5)  # Укажем данные.
 alg.set_params(
-    fixed=[0, 1, 1, 1, 0, 0, 0, 0, 0, 0]  # TODO: покрасить цветом, чтобы было видно на графике, что не двигалось
+    #fixed=[0, 1, 1, 1, 0, 0, 0, 0, 0, 0]  # TODO: покрасить цветом, чтобы было видно на графике, что не двигалось
 )  # Укажем параметры решения.
 # Запуск алгоритма
 t1 = time.perf_counter()
