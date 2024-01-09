@@ -60,7 +60,7 @@ class RungeKuttaAlgorithm:
                 fn[i:i + 2] += self.gravity(A,
                                             B,
                                             G=self.G,
-                                            STOP_RADIUS=self.STOP_RADIUS)
+                                            STOP_RADIUS=self.STOP_RADIUS)  # TODO: унифицировать все гравитации и добавить им в шаблонную сигнатуру время.
         return fn
 
     def run_algorithm(self):
