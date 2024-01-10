@@ -32,7 +32,7 @@ def get_layers(P: Polygon, circles: list[Circle]) -> np.array:
     outside = get_touch_outside(P,
                                 circles)  # TODO: можно чуть быстрее, проверяя расстояние до каждой грани многоугольника.
     layers = np.full(n, INT_MAX).astype('int')
-    layers[outside] = 1  # Положим слой всех внешних вершин равным 1.
+    layers[outside == 1] = 1  # Положим слой всех внешних вершин равным 1.
 
     # grid[(x, y)] = {Индексы всех кругов в клетке сетки}
     # Ширина сетки - 2r, где r - радиус кругов.

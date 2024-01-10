@@ -75,3 +75,10 @@ def smooth_gravity_with_sign(A, B, G=6.67430, STOP_RADIUS=1.5):
         dir = (B - A) / ln
     module = a * ln ** 2 + b * ln + c
     return module * dir
+
+
+def smooth_gravity_on_region_with_sign(A, B, G=6.67430, STOP_RADIUS=1.5, REGION_RADIUS=2.5):
+    ln = np.linalg.norm(B - A)
+    if ln > REGION_RADIUS:
+        return np.zeros(2)
+    return smooth_gravity_with_sign(A, B, G, STOP_RADIUS)

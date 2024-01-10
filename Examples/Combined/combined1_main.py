@@ -2,7 +2,7 @@ import time
 
 import numpy as np
 from matplotlib import pyplot as plt
-from Algorithms.BranchesAndBounds.BranchesAndBounds import bnb
+from Algorithms.BranchesAndBounds.BranchesAndBounds import BnBAlgorithm
 from Algorithms.Hexagonal.hexagonal import HexagonalAlgorithm
 from Algorithms.NBodies.RungeKuttaAlgorithm import RungeKuttaAlgorithm
 from Examples.polygons import polygons_dict
@@ -45,10 +45,12 @@ rk_ans = rk_alg.get_result()
 
 t3 = time.perf_counter()
 # Починим методом ветвей и границ
-bnb_grid = bnb(P,
-               rk_ans,
-               max_iterations=10,
-               is_repaired=True)  # TODO: метод ветвей и границ только для некоторых вершин (параметр fixed)
+bnb_alg = BnBAlgorithm(P, rk_ans)
+bnb_alg.set_params(
+    max_iterations=15  # TODO: fixed
+) # is_repaired = True
+bnb_alg.run_algorithm()
+bnb_grid = bnb_alg.get_result()
 
 t4 = time.perf_counter()
 

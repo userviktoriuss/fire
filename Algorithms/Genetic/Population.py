@@ -334,7 +334,7 @@ class Population():
         kept_circles = []
         for circle in being.circles:
             rate = circle.polygon.intersection(
-                being.polygon).area / circle.area  # TODO: circle.polygon.intersect -> circle.intersect
+                being.polygon).area / circle.area
             if rate >= thr_region:
                 kept_circles.append(circle)
 

@@ -2,16 +2,17 @@ import time
 
 import numpy as np
 from matplotlib import pyplot as plt
-from Algorithms.BranchesAndBounds.BranchesAndBounds import bnb
+from Algorithms.BranchesAndBounds.BranchesAndBounds import BnBAlgorithm
 from Algorithms.Hexagonal.hexagonal import HexagonalAlgorithm
+from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign
 from Algorithms.NBodies.RungeKuttaAlgorithm import RungeKuttaAlgorithm
 from Examples.polygons import polygons_dict
 from Utils.drawing import draw_polygon, draw_circles
 from Utils.layering import get_layers
 
-P = polygons_dict['P3']
+P = polygons_dict['P1']
 R = 1  # Радиус.
-INNER_BOUND = 2  # Начиная с этого слоя по удалению от внешних границ многоугольника круг считается внутренним.
+INNER_BOUND = 3  # Начиная с этого слоя по удалению от внешних границ многоугольника круг считается внутренним.
 
 # Построим покрытие шестиугольной сеткой.
 t0 = time.perf_counter()
@@ -22,21 +23,23 @@ hex_alg.run_algorithm()  # Запустим алгоритм.
 hex_ans = hex_alg.get_result()  # Получим результат - list[Circle].
 t1 = time.perf_counter()
 
+# Починим методом ветвей и границ
+bnb_alg = BnBAlgorithm(P, hex_ans)
+bnb_alg.set_params(
+    max_iterations=15  # TODO: fixed
+)
+bnb_alg.run_algorithm()
+bnb_grid = bnb_alg.get_result()
+
+
+t2 = time.perf_counter()
+
 # Разложим круги по уровням дальности до края многоугольника
-layers = get_layers(P, hex_ans)
+layers = get_layers(P, bnb_grid)
 
 # Выделим "внутренние" круги.
 inners = np.zeros(len(layers))
 inners[layers >= INNER_BOUND] = 1
-
-t2 = time.perf_counter()
-
-# Починим методом ветвей и границ
-bnb_grid = bnb(P,
-               hex_ans,
-               max_iterations=10,
-               is_repaired=True)  # TODO: метод ветвей и границ только для некоторых вершин (параметр fixed)
-
 
 t3 = time.perf_counter()
 
@@ -46,8 +49,9 @@ rk_alg = RungeKuttaAlgorithm(
     R)
 rk_alg.set_params(
     fixed=inners,  # TODO: другие параметры???,
-    STOP_RADIUS=1.5 * R,
-    TIME_STOP=20
+    STOP_RADIUS=1.6 * R,
+    TIME_STOP=10,
+    gravity=smooth_gravity_on_region_with_sign
 )
 rk_alg.run_algorithm()
 rk_ans = rk_alg.get_result()
@@ -56,8 +60,8 @@ t4 = time.perf_counter()
 
 # Выведем числовые результаты работы.
 print(f'Hex creation time: {t1 - t0} sec.')
-print(f'Get layers time: {t2 - t1} sec.')
-print(f'BnB time: {t3 - t2} sec.')
+print(f'BnB time: {t2 - t1} sec.')
+print(f'Get layers time: {t3 - t2} sec.')
 print(f'Runge-Kutta time: {t4 - t3} sec.')
 print(f'Elapsed time: {t4 - t0} sec.')
 print(f'Before BnB result: {len(hex_ans)} circles')
@@ -77,8 +81,10 @@ draw_circles(ax[1], bnb_grid)
 # Отрисуем результат после запуска метода ветвей и границ.
 ax[2].set_aspect('equal', adjustable='box')
 draw_polygon(ax[2], P)
-draw_circles(ax[2], rk_ans)
+draw_circles(ax[2], [rk_ans[i] for i in range(len(rk_ans)) if not rk_alg.fixed[i]])
+draw_circles(ax[2],
+             [rk_ans[i] for i in range(len(rk_ans)) if rk_alg.fixed[i]],
+             'red',
+             'darkred')
 
 plt.show()
-
-print('aboba')
