@@ -7,11 +7,11 @@ polygons_dict = dict()
 # Описание многоугольников
 
 # P1 ----------------------------------------------------------------
-P1 = [Point(0, 0), Point(2, 0), Point(6, 2), Point(1, 5), Point(1, 4)]
+P1 = Polygon([Point(0, 0), Point(2, 0), Point(6, 2), Point(1, 5), Point(1, 4)])
 polygons_dict['P1'] = P1
 
 # P2 ----------------------------------------------------------------
-P2 = [Point(0, 0), Point(8, 0), Point(8, 2), Point(7, 2), Point(7, 1.5), Point(2, 1.5), Point(2, 2), Point(0, 2)]
+P2 = Polygon([Point(0, 0), Point(8, 0), Point(8, 2), Point(7, 2), Point(7, 1.5), Point(2, 1.5), Point(2, 2), Point(0, 2)])
 polygons_dict['P2'] = P2
 
 # P3 ----------------------------------------------------------------
