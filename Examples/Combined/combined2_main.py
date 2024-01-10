@@ -10,7 +10,7 @@ from Examples.polygons import polygons_dict
 from Utils.drawing import draw_polygon, draw_circles
 from Utils.layering import get_layers
 
-P = polygons_dict['P1']
+P = polygons_dict['P9']
 R = 1  # Радиус.
 INNER_BOUND = 2  # Начиная с этого слоя по удалению от внешних границ многоугольника круг считается внутренним.
 

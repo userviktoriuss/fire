@@ -82,9 +82,12 @@ class BnBAlgorithm:
             cur_best = np.argmax(
                 [being.fitness for (being, action, ind) in branches])  # Выбрать лучшую из встретившихся ветвей
             b = branches[cur_best][0]  # Выбрать ветвь.
-            if branches[cur_best][
-                1] == 'delete':  # Если выбрали ветвь с удалением, нужно поправить массив неподвижных кругов.
+            if branches[cur_best][1] == 'delete':  # Если выбрали ветвь с удалением, нужно поправить массив неподвижных кругов.
                 del self.fixed[branches[cur_best][2]]
+            else: # Если выбрали ветвь с передвижением, сдвинутый круг стал последним (особенность реализации)
+                save = self.fixed[branches[cur_best][2]]
+                del self.fixed[branches[cur_best][2]]
+                self.fixed.append(save)
 
             if best.fitness < b.fitness:
                 best = b  # Сохранить лучшую из всех особей.
@@ -113,12 +116,12 @@ class BnBAlgorithm:
             )
             t1 = time.perf_counter()
             print(f'Repair ended in {t1 - t0} sec.')
-            self.best = alg.get_circles()
+            self.circles = alg.get_circles()
             return
-        self.best = best.circles
+        self.circles = best.circles
 
     def get_result(self):
-        return self.best
+        return self.circles
 
     def __fitness(self, beings: list[Being]):
         for being in beings:
@@ -147,10 +150,10 @@ class BnBAlgorithm:
     #   2) Имеющий наименьшее пересечение с многоугольником.
     def __find_bad_circles(self, b: Being) -> list[int]:
         min_inter = float('inf')  # Минимальное пересечение с многоугольником.
-        min_inter_ind = 0  # Соответствующий круг.
+        min_inter_ind = -1  # Соответствующий круг.
 
         max_self = -1  # Максимальное пересечение с другими кругами.
-        max_self_ind = 0  # Соответствующий круг.
+        max_self_ind = -1  # Соответствующий круг.
 
         for i in range(len(b.circles)):
             if self.fixed[i]:
@@ -168,7 +171,13 @@ class BnBAlgorithm:
             if cur_self > max_self:
                 max_self = cur_self
                 max_self_ind = i
-        return [min_inter_ind, max_self_ind]
+
+        ans = []
+        if min_inter_ind != -1:
+            ans.append(min_inter_ind)
+        if max_self_ind != -1:
+            ans.append(max_self_ind)
+        return ans
 
     # Создаёт несколько возможных ветвей для существа
     def __create_branches(self,
