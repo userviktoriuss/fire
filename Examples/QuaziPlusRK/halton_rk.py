@@ -8,25 +8,34 @@ import matplotlib.pyplot as plt
 
 from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign
 from Algorithms.NBodies.RungeKuttaAlgorithm import RungeKuttaAlgorithm
-from Algorithms.Sobol.Sobol import sobol
 from Examples.polygons import polygons_dict
 from Utils.drawing import draw_polygon, draw_circles
 
 R = 1
 P = polygons_dict['P9']
+(minx, miny, maxx, maxy) = P.bounds
+P_described = Polygon([Point(minx - R, miny - R), Point(maxx + R, miny - R), Point(maxx + R, maxy + R), Point(minx - R, maxy + R)])
 
 t0 = time.perf_counter()
-centers = [c.center for c in sobol(P, 32, R)]
+centers = halton(
+    P=P_described,
+    n_points=4,
+    p1=2,
+    p2=3,
+    start=1,
+    step=1,
+)
 
 t1 = time.perf_counter()
 rk_alg = RungeKuttaAlgorithm(centers, R)
 rk_alg.set_params(
     STOP_RADIUS=1.5 * R,
-    TIME_STOP=70,
+    TIME_STOP=50,
     gravity=smooth_gravity_on_region_with_sign
 )
 rk_alg.run_algorithm()
 ans = rk_alg.get_result()
+#ans = list(filter(lambda c: P.contains(c.center), ans))
 
 t2 = time.perf_counter()
 
