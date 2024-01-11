@@ -37,7 +37,12 @@ t2 = time.perf_counter()
 bnb_alg = BnBAlgorithm(P, hex_ans)
 bnb_alg.set_params(
     max_iterations=15,
-    fixed=list(inners)  # TODO: пофиксить костыль с типами
+    fixed=list(inners),  # TODO: пофиксить костыль с типами
+    ALPHA = 0,  # Влияние самопересечений.
+    BETA = 0.05,  # Влияние отношения покрытой площади вне многоугольника к площади многоугольника.
+    GAMMA = 0.005,  # Влияние количества кругов по отношению к стартовому.
+    LAMBDA = 1.5,  # Влияние процента покрытия.
+    DELETE_PROB=1
 )
 bnb_alg.run_algorithm()
 bnb_grid = bnb_alg.get_result()
@@ -50,8 +55,8 @@ rk_alg = RungeKuttaAlgorithm(
     R)
 rk_alg.set_params(
     fixed=bnb_alg.fixed,  # TODO: другие параметры???,
-    STOP_RADIUS=1.6 * R,
-    TIME_STOP=10,
+    STOP_RADIUS=1.5 * R,
+    TIME_STOP=20,
     gravity=smooth_gravity_on_region_with_sign
 )
 rk_alg.run_algorithm()

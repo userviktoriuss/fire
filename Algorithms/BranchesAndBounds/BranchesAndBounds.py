@@ -60,7 +60,7 @@ class BnBAlgorithm:
         self.MOVE_MULTIPLIER = MOVE_MULTIPLIER
         self.MOVE_SCHEDULE = MOVE_SCHEDULE
         self.DELETE_PROB = DELETE_PROB
-        if fixed == None:
+        if fixed is None:
             self.fixed = [0] * len(self.circles)
         else:
             self.fixed = fixed

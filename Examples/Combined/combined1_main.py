@@ -4,12 +4,13 @@ import numpy as np
 from matplotlib import pyplot as plt
 from Algorithms.BranchesAndBounds.BranchesAndBounds import BnBAlgorithm
 from Algorithms.Hexagonal.hexagonal import HexagonalAlgorithm
+from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign
 from Algorithms.NBodies.RungeKuttaAlgorithm import RungeKuttaAlgorithm
 from Examples.polygons import polygons_dict
 from Utils.drawing import draw_polygon, draw_circles
 from Utils.layering import get_layers
 
-P = polygons_dict['P3']
+P = polygons_dict['P9']
 R = 1  # Радиус.
 INNER_BOUND = 2  # Начиная с этого слоя по удалению от внешних границ многоугольника круг считается внутренним.
 
@@ -38,7 +39,8 @@ rk_alg = RungeKuttaAlgorithm(
 rk_alg.set_params(
     fixed=inners,  # TODO: другие параметры???,
     STOP_RADIUS=1.5 * R,
-    TIME_STOP=20
+    TIME_STOP=10,
+    gravity=smooth_gravity_on_region_with_sign
 )
 rk_alg.run_algorithm()
 rk_ans = rk_alg.get_result()
@@ -47,7 +49,13 @@ t3 = time.perf_counter()
 # Починим методом ветвей и границ
 bnb_alg = BnBAlgorithm(P, rk_ans)
 bnb_alg.set_params(
-    max_iterations=15  # TODO: fixed
+    max_iterations=30,
+    fixed=list(rk_alg.fixed),
+    ALPHA = 0,  # Влияние самопересечений.
+    BETA = 0.05,  # Влияние отношения покрытой площади вне многоугольника к площади многоугольника.
+    GAMMA = 0.005,  # Влияние количества кругов по отношению к стартовому.
+    LAMBDA = 1.5,  # Влияние процента покрытия.
+    DELETE_PROB=1
 ) # is_repaired = True
 bnb_alg.run_algorithm()
 bnb_grid = bnb_alg.get_result()
