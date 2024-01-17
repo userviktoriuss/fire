@@ -3,6 +3,7 @@ import math
 import numpy as np
 from shapely import Polygon, unary_union, Point
 
+from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
 from Algorithms.BranchesAndBounds.Branch import Branch
 from Utils.Circle import Circle
 
@@ -13,6 +14,7 @@ class FlexibleBnBParams:
     Алгоритм использует интерфейс этого класса, так что для создания
     своих реализаций стоит наследоваться от этого класса.
     """
+
     def __init__(self,
                  P: Polygon,
                  init_circles: int,
@@ -22,7 +24,8 @@ class FlexibleBnBParams:
                  COVERAGE_W: float = 1.5,
                  ANGLE_RESOLUTION: int = 6,
                  MOVE_MULTIPLIER: float = 1.5,
-                 MOVE_SCHEDULE=(lambda x: x)):
+                 MOVE_SCHEDULE=(lambda x: x),
+                 animation_logger: BnBAnimationLogger = None):
         self.P = P
         self.init_circles = init_circles
 
@@ -36,12 +39,16 @@ class FlexibleBnBParams:
         self.MOVE_MULTIPLIER = MOVE_MULTIPLIER
         self.MOVE_SCHEDULE = MOVE_SCHEDULE
 
+        self.animation_logger = animation_logger
+
     def reset(self):
         """
         Готовит параметры для новой итерации алгоритма.
         """
         self.cur_multplier = self.MOVE_MULTIPLIER
-        pass
+        if self.animation_logger:
+            (minx, miny, maxx, maxy) = self.P.bounds
+            self.animation_logger.reset((minx - 1, maxx + 1), (miny - 1, maxy + 1))
 
     def find_bad_circles(self, branch: Branch) -> list[int]:
         """
@@ -139,7 +146,8 @@ class FlexibleBnBParams:
                 without = [c.polygon
                            for c in branch.circles
                            if c != circle and
-                           c.center.distance(circle.center) < 2 * circle.radius]  # TODO: проверить, что работает корректно
+                           c.center.distance(
+                               circle.center) < 2 * circle.radius]  # TODO: проверить, что работает корректно
                 self_inter += unary_union(without).intersection(circle.polygon).area / circle.area
 
             outside /= branch.polygon.area

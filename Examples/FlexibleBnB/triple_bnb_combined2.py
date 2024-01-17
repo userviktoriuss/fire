@@ -3,7 +3,7 @@ import time
 import numpy as np
 from matplotlib import pyplot as plt
 from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
-from Algorithms.BranchesAndBounds.ParamsClasses.FlexibleBnBParams import FlexibleBnBParams
+from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
 from Algorithms.BranchesAndBounds.ParamsClasses.TripleBnBParams import TripleBnBParams
 from Algorithms.Hexagonal.hexagonal import HexagonalAlgorithm
 from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign
@@ -12,7 +12,8 @@ from Examples.polygons import polygons_dict
 from Utils.drawing import draw_polygon, draw_circles
 from Utils.layering import get_layers
 
-P = polygons_dict['P8']
+poly_name = 'P9'
+P = polygons_dict[poly_name]
 R = 1  # Радиус.
 INNER_BOUND = 2  # Начиная с этого слоя по удалению от внешних границ многоугольника круг считается внутренним.
 
@@ -39,11 +40,14 @@ t2 = time.perf_counter()
 bnb_alg = FlexibleBnBAlgorithm(P, hex_ans)
 bnb_alg.set_params(
     max_iterations=30,
-    params=TripleBnBParams(P, len(hex_ans)),
+    params=TripleBnBParams(
+        P,
+        len(hex_ans),
+        animation_logger=BnBAnimationLogger()),
     fixed=list(inners)
 )
 bnb_alg.run_algorithm()
-bnb_grid = bnb_alg.get_result()
+bnb_grid = bnb_alg.get_result(f'triple_bnb_combined2/{poly_name}.gif')
 
 t3 = time.perf_counter()
 

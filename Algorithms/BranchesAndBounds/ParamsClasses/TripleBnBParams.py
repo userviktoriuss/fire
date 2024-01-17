@@ -1,6 +1,7 @@
 from shapely import unary_union, Polygon
 
 from Algorithms.BranchesAndBounds.Branch import Branch
+from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
 from Algorithms.BranchesAndBounds.ParamsClasses.FlexibleBnBParams import FlexibleBnBParams
 
 
@@ -15,6 +16,7 @@ class TripleBnBParams(FlexibleBnBParams):
                  ANGLE_RESOLUTION: int = 6,
                  MOVE_MULTIPLIER: float = 1.5,
                  MOVE_SCHEDULE=(lambda x: x),
+                 animation_logger: BnBAnimationLogger = None,
                  LITTLE_UNIQUE_RATE: float = 0.05):
         super().__init__(
             P=P,
@@ -25,7 +27,8 @@ class TripleBnBParams(FlexibleBnBParams):
             COVERAGE_W=COVERAGE_W,
             ANGLE_RESOLUTION=ANGLE_RESOLUTION,
             MOVE_MULTIPLIER=MOVE_MULTIPLIER,
-            MOVE_SCHEDULE=MOVE_SCHEDULE)
+            MOVE_SCHEDULE=MOVE_SCHEDULE,
+            animation_logger=animation_logger)
         self.LITTLE_UNIQUE_RATE = LITTLE_UNIQUE_RATE
 
     def find_bad_circles(self, branch: Branch) -> list[int]:

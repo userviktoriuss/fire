@@ -27,8 +27,13 @@ class FlexibleBnBAlgorithm:
 
     def run_algorithm(self):
         self.params.reset()
+
         main_branch = Branch(self.P, self.circles, self.fixed)
         self.params.calculate_metric([main_branch])
+
+        logger = self.params.animation_logger
+        if logger:
+            logger.snap(main_branch)
 
         best_branch = main_branch
 
@@ -41,10 +46,14 @@ class FlexibleBnBAlgorithm:
             main_branch = branches[cur_best]
             if main_branch.metric > best_branch.metric:
                 best_branch = main_branch
+
+            logger.snap(main_branch)
             iterations -= 1
 
         self.circles = best_branch.circles
         self.fixed = best_branch.fixed
 
-    def get_result(self):
+    def get_result(self, logger_path='log.gif'):
+        if self.params.animation_logger:
+            self.params.animation_logger.save_log(logger_path)
         return self.circles
