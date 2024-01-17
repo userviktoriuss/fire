@@ -53,7 +53,5 @@ class FlexibleBnBAlgorithm:
         self.circles = best_branch.circles
         self.fixed = best_branch.fixed
 
-    def get_result(self, logger_path='log.gif'):
-        if self.params.animation_logger:
-            self.params.animation_logger.save_log(logger_path)
+    def get_result(self):
         return self.circles

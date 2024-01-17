@@ -7,7 +7,8 @@ from Utils.drawing import draw_circles, draw_polygon
 
 class BnBAnimationLogger:
     def __init__(self, xlim=(-6, 6), ylim=(-6, 6)):
-        self.reset(xlim, ylim)
+        # self.reset(xlim, ylim)
+        pass
 
     def reset(self, xlim=(-6, 6), ylim=(-6, 6)):
         """
@@ -16,10 +17,10 @@ class BnBAnimationLogger:
         :param xlim: Ограничения для абсциссы графика.
         :param ylim: Ограничения для ординаты графика.
         """
-        fig = plt.figure()
+        self.fig = plt.figure()
         self.ax = plt.axes(xlim=xlim, ylim=ylim)
         self.ax.set_aspect('equal', adjustable='box')
-        self.camera = Camera(fig)
+        self.camera = Camera(self.fig)
 
     def snap(self, branch: Branch):
         """
@@ -35,3 +36,4 @@ class BnBAnimationLogger:
         """
         animation = self.camera.animate()
         animation.save(path, writer='imagemagick')
+        plt.close(self.fig)

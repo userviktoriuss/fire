@@ -5,6 +5,7 @@ from shapely import Polygon, unary_union, Point
 
 from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
 from Algorithms.BranchesAndBounds.Branch import Branch
+from Algorithms.BranchesAndBounds.Loggers.BnBMetricLogger import BnBMetricLogger
 from Utils.Circle import Circle
 
 
@@ -25,7 +26,8 @@ class FlexibleBnBParams:
                  ANGLE_RESOLUTION: int = 6,
                  MOVE_MULTIPLIER: float = 1.5,
                  MOVE_SCHEDULE=(lambda x: x),
-                 animation_logger: BnBAnimationLogger = None):
+                 animation_logger: BnBAnimationLogger = None,
+                 metric_logger: BnBMetricLogger = None):
         self.P = P
         self.init_circles = init_circles
 
@@ -40,6 +42,7 @@ class FlexibleBnBParams:
         self.MOVE_SCHEDULE = MOVE_SCHEDULE
 
         self.animation_logger = animation_logger
+        self.metric_logger = metric_logger
 
     def reset(self):
         """
@@ -49,6 +52,9 @@ class FlexibleBnBParams:
         if self.animation_logger:
             (minx, miny, maxx, maxy) = self.P.bounds
             self.animation_logger.reset((minx - 1, maxx + 1), (miny - 1, maxy + 1))
+
+        if self.metric_logger:
+            self.metric_logger.reset(['1 - self_inter', '1 - outside', '1 - circle_count', 'coverage'])
 
     def find_bad_circles(self, branch: Branch) -> list[int]:
         """
@@ -135,6 +141,7 @@ class FlexibleBnBParams:
     def calculate_metric(self, branches: list[Branch]):
         """
         Считает метрику для всех ветвей из массива branches.
+
         :param branches: Массив ветвей.
         """
 
@@ -161,3 +168,10 @@ class FlexibleBnBParams:
                              self.OUTSIDE_W * (1 - outside) +
                              self.CIRCLE_COUNT_W * (1 - circle_count) +
                              self.COVERAGE_W * coverage)
+
+            if self.metric_logger:
+                self.metric_logger.add_info(
+                    branch.metric,
+                    (1 - self_inter, 1 - outside, 1 - circle_count, coverage))
+        if self.metric_logger:
+            self.metric_logger.harden()

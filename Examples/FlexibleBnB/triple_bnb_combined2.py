@@ -4,6 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
 from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
+from Algorithms.BranchesAndBounds.Loggers.BnBMetricLogger import BnBMetricLogger
 from Algorithms.BranchesAndBounds.ParamsClasses.TripleBnBParams import TripleBnBParams
 from Algorithms.Hexagonal.hexagonal import HexagonalAlgorithm
 from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign
@@ -43,11 +44,19 @@ bnb_alg.set_params(
     params=TripleBnBParams(
         P,
         len(hex_ans),
-        animation_logger=BnBAnimationLogger()),
+        animation_logger=BnBAnimationLogger(),
+        metric_logger=BnBMetricLogger(),
+        MOVE_SCHEDULE=(lambda x : 0.995 * x)),
     fixed=list(inners)
 )
 bnb_alg.run_algorithm()
-bnb_grid = bnb_alg.get_result(f'triple_bnb_combined2/{poly_name}.gif')
+bnb_grid = bnb_alg.get_result()
+
+# Выгрузим логи
+if bnb_alg.params.animation_logger:
+    bnb_alg.params.animation_logger.save_log(f'triple_bnb_combined2/{poly_name}.gif')
+if bnb_alg.params.metric_logger:
+    bnb_alg.params.metric_logger.save_log(f'triple_bnb_combined2/{poly_name}_log.png')
 
 t3 = time.perf_counter()
 

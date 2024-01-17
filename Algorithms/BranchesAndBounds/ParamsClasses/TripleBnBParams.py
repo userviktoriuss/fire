@@ -2,6 +2,7 @@ from shapely import unary_union, Polygon
 
 from Algorithms.BranchesAndBounds.Branch import Branch
 from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
+from Algorithms.BranchesAndBounds.Loggers.BnBMetricLogger import BnBMetricLogger
 from Algorithms.BranchesAndBounds.ParamsClasses.FlexibleBnBParams import FlexibleBnBParams
 
 
@@ -17,6 +18,7 @@ class TripleBnBParams(FlexibleBnBParams):
                  MOVE_MULTIPLIER: float = 1.5,
                  MOVE_SCHEDULE=(lambda x: x),
                  animation_logger: BnBAnimationLogger = None,
+                 metric_logger: BnBMetricLogger = None,
                  LITTLE_UNIQUE_RATE: float = 0.05):
         super().__init__(
             P=P,
@@ -28,7 +30,9 @@ class TripleBnBParams(FlexibleBnBParams):
             ANGLE_RESOLUTION=ANGLE_RESOLUTION,
             MOVE_MULTIPLIER=MOVE_MULTIPLIER,
             MOVE_SCHEDULE=MOVE_SCHEDULE,
-            animation_logger=animation_logger)
+            animation_logger=animation_logger,
+            metric_logger=metric_logger
+        )
         self.LITTLE_UNIQUE_RATE = LITTLE_UNIQUE_RATE
 
     def find_bad_circles(self, branch: Branch) -> list[int]:
@@ -70,14 +74,9 @@ class TripleBnBParams(FlexibleBnBParams):
             unique_area = circle.polygon.difference(unary_union(near)).intersection(branch.polygon).area
             unique_area /= circle.polygon.area  # Доля уникальной площади, которую привносит круг.
 
-
-
             if unique_area < self.LITTLE_UNIQUE_RATE and unique_area < little_unique:
                 little_unique = unique_area
                 little_unique_ind = i
-
-
-
 
         ans = []
         if min_poly_inter_ind != -1:
