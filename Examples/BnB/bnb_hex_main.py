@@ -1,7 +1,7 @@
 import time
 from matplotlib import pyplot as plt
 from Algorithms.BranchesAndBounds.BranchesAndBounds import bnb
-from Algorithms.Hexagonal.hexagonal import HexagonalAlgorithm
+from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Examples.polygons import polygons_dict
 from Utils.drawing import draw_polygon, draw_circles
 

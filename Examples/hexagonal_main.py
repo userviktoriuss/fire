@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 # from Algorithms.hexagonal import hexagonal
 
 from shapely import Point, Polygon, unary_union
-from Algorithms.Hexagonal.hexagonal import hexagonal
+from Algorithms.Hexagonal.HexagonalAlgorithm import hexagonal
 from Utils.Circle import Circle
 
 EPS = 1e-3

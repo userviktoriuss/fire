@@ -3,7 +3,7 @@ import time
 import numpy as np
 from matplotlib import pyplot as plt
 from Algorithms.BranchesAndBounds.BranchesAndBounds import BnBAlgorithm
-from Algorithms.Hexagonal.hexagonal import HexagonalAlgorithm
+from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign
 from Algorithms.NBodies.RungeKuttaAlgorithm import RungeKuttaAlgorithm
 from Examples.polygons import polygons_dict

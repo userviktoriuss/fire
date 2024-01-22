@@ -47,7 +47,8 @@ class FlexibleBnBAlgorithm:
             if main_branch.metric > best_branch.metric:
                 best_branch = main_branch
 
-            logger.snap(main_branch)
+            if logger:
+                logger.snap(main_branch)
             iterations -= 1
 
         self.circles = best_branch.circles

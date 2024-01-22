@@ -1,78 +1,12 @@
-from shapely import Point, Polygon, LineString
-import math
-
-from shapely.ops import unary_union
-
-from Utils.Circle import Circle
-
-
-class HexagonalAlgorithm:
-    def __init__(self, P: Polygon, radius: float):
-        self.P = P
-        self.radius = radius
-        (minx, miny, maxx, maxy) = P.bounds
-        self.P_described = Polygon([Point(minx - radius, miny - radius),
-                                    Point(maxx + radius, miny - radius),
-                                    Point(maxx + radius, maxy + radius),
-                                    Point(minx - radius, maxy + radius)])
-
-    def set_params(self,
-                   RESOLUTION: int=5,
-                   ALPHA_RESOLUTION: int=5,
-                   EPS: float = 1e-3):
-        self.RESOLUTION = RESOLUTION
-        self.ALPHA_RESOLUTION = ALPHA_RESOLUTION
-        self.EPS = EPS
-
-    def run_algorithm(self):
-        self.best_ops = (0, 0, 0)
-        self.best_val = float('inf')
-
-        step_alpha = math.pi / 3 / self.ALPHA_RESOLUTION
-        step_x = self.radius / self.RESOLUTION
-        step_y = self.radius / self.RESOLUTION
-        alpha = 0
-        while alpha < math.pi / 3:
-            x = 0
-            while x < self.radius:
-                y = 0
-                while y < self.radius:
-                    S = Point(x, y)
-
-                    important = self.get_important(S, alpha)
-
-                    if len(important) < self.best_val:
-                        self.best_val = len(important)
-                        self.best_ops = (x, y, alpha)
-                    y += step_y
-                x += step_x
-            alpha += step_alpha
-
-    def get_important(self, S, alpha):
-        outer_grid = hexagonal(self.P_described, S, self.radius, alpha)
-
-        inside = [Circle(c, 1) for c in outer_grid if self.P.contains(c)]
-        outside = [Circle(c, 1) for c in outer_grid if not self.P.contains(c)]
-        union = unary_union([c.polygon for c in inside])
-
-        outside.sort(key=
-                     lambda c: self.P.intersection(c.polygon).area,
-                     reverse=True)
-        for c in outside:
-            c_inside_polygon = self.P.intersection(c.polygon)
-            united = unary_union([union, c_inside_polygon])
-            if abs(united.area - union.area) > self.EPS:
-                inside.append(c)
-                union = unary_union([union, c_inside_polygon])
-        return inside
-
-    def get_result(self):
-        return self.get_important(Point(self.best_ops[0], self.best_ops[1]), self.best_ops[2])
-
 
 # Заполнение путём построения шестиугольной сетки.
 # Строит сетку и возвращает центры шестиугольников,
 # которые попали внутрь заданного многоугольника
+import math
+
+import numpy as np
+from shapely import Polygon, Point, LineString
+
 
 def hexagonal(P: Polygon, S: Point, a: float = 1, alpha: float = 0):
     """
@@ -153,3 +87,66 @@ def rotate(p: Point, alpha: float):
     ny = p.x * math.sin(alpha) + p.y * math.cos(alpha)
 
     return Point(nx, ny)
+
+
+# ------------------------------------------------------------------------------
+# Реализация покрытия шестиугольной сеткой с помощью библиотеки Numpy
+# ------------------------------------------------------------------------------
+
+
+def hexagonal_np(P: Polygon, S: Point, a: float = 1, alpha: float = 0):
+    # TODO: сверить размерности
+    rotate = np.array([[np.cos(alpha), -np.sin(alpha)],
+                       [np.sin(alpha), np.cos(alpha)]])
+
+    x0 = np.array([S.x, S.y])
+    (minx, miny, maxx, maxy) = P.bounds
+
+    minx -= x0[0]
+    maxx -= x0[0]
+    miny -= x0[1]
+    maxy -= x0[1]
+
+    v = rotate @ np.array([3 * a, 0])
+    u = rotate @ np.array([3 / 2 * a, a * np.sqrt(3) / 2])
+
+    transition = np.linalg.inv(np.vstack([v, u]).T)
+
+    bounds = transition @ np.array([[minx, maxx, minx, maxx], [miny, maxy, maxy, miny]])
+
+    kminx = np.floor(np.min(bounds[0, :]))
+    kmaxx = np.ceil(np.max(bounds[0, :]))
+    kminy = np.floor(np.min(bounds[1, :]))
+    kmaxy = np.ceil(np.max(bounds[1, :]))
+
+    all_v = (np.arange(kminx, kmaxx + 1) * v.reshape(2, 1)).T
+    all_u = (np.arange(kminy, kmaxy + 1) * u.reshape(2, 1)).T
+
+    coverage = all_v[None, :, :] + all_u[:, None, :]
+
+    # Вернём в изначальную систему координат.
+    coverage += x0
+
+    (minx, miny, maxx, maxy) = P.bounds
+    # Соберём в объекты-точки только те координаты, что могут потенциально пригодиться.
+    shape = coverage.shape
+    coverage = coverage.reshape(shape[0] * shape[1], shape[2])
+
+    cond = np.logical_and(
+        np.logical_and(minx <= coverage[:, 0], coverage[:, 0] <= maxx),
+        np.logical_and(miny <= coverage[:, 1], coverage[:, 1] <= maxy))
+    useful = coverage[cond]
+
+
+    to_points = lambda c: Point(c)
+    to_points_vectorized = np.vectorize(to_points, signature='(d)->()')
+
+    ans = to_points_vectorized(useful)
+    #
+    #for i in range(coverage.shape[0]):
+    #    for j in range(coverage.shape[1]):
+    #        (x, y) = coverage[i, j]
+    #        if minx <= x <= maxx and miny <= y <= maxy:
+    #            ans.append(Point(x, y))
+
+    return list(ans)

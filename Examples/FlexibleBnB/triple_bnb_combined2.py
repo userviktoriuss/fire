@@ -6,7 +6,7 @@ from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorit
 from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
 from Algorithms.BranchesAndBounds.Loggers.BnBMetricLogger import BnBMetricLogger
 from Algorithms.BranchesAndBounds.ParamsClasses.TripleBnBParams import TripleBnBParams
-from Algorithms.Hexagonal.hexagonal import HexagonalAlgorithm
+from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign
 from Algorithms.NBodies.RungeKuttaAlgorithm import RungeKuttaAlgorithm
 from Examples.polygons import polygons_dict
@@ -45,8 +45,8 @@ def main(poly_name='P1', show_plt=False):
         params=TripleBnBParams(
             P,
             len(hex_ans),
-            animation_logger=BnBAnimationLogger(),
-            metric_logger=BnBMetricLogger(),
+            animation_logger=None, #BnBAnimationLogger(),
+            metric_logger=None, #BnBMetricLogger(),
             MOVE_SCHEDULE=(lambda x: 0.97 * x)),
         fixed=list(inners)
     )
@@ -110,6 +110,6 @@ def main(poly_name='P1', show_plt=False):
 
 
 if __name__ == '__main__':
-    for poly_name in polygons_dict.keys():
-        main(poly_name)
-    # main('P1', show_plt=True)
+    #for poly_name in polygons_dict.keys():
+    #    main(poly_name)
+    main('P8', show_plt=True)
