@@ -6,7 +6,10 @@ from Algorithms.BranchesAndBounds.Loggers.BnBMetricLogger import BnBMetricLogger
 from Algorithms.BranchesAndBounds.ParamsClasses.FlexibleBnBParams import FlexibleBnBParams
 
 
-class TripleBnBParams(FlexibleBnBParams):
+class SmarterBadCirclesBnBParams(FlexibleBnBParams):
+    """
+    То же, что и FlexibleBnBParams, но здесь плохие круги - те, что имеют: 1) минимальное пересечение с многоугольником. 2) минимальную долю уникальной общей с многоугольником площади.
+    """
     def __init__(self,
                  P: Polygon,
                  init_circles: int,

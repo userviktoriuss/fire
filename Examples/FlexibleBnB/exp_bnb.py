@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
 from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
 from Algorithms.BranchesAndBounds.Loggers.BnBMetricLogger import BnBMetricLogger
-from Algorithms.BranchesAndBounds.ParamsClasses.ExpBnBParams import ExpBnBParams
+from Algorithms.BranchesAndBounds.ParamsClasses.StretchedBnBParams import StretchedBnBParams
 from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.Hexagonal.hexagonal_coverings import hexagonal_np
 from Examples.polygons import polygons_dict
@@ -47,13 +47,13 @@ def main(poly_name='P1', show_plt=False):
     # Запустим алгоритм с приоритетом на удаление кругов.
     bnb_alg.set_params(
         max_iterations=10,
-        params=ExpBnBParams(
+        params=StretchedBnBParams(
             P,
             len(hex_ans),
             CIRCLE_COUNT_W=0.1,
-            animation_logger=BnBAnimationLogger(),  # TODO: отключить автоматический ресет логгеров
-            metric_logger=BnBMetricLogger(),
-            MOVE_SCHEDULE=(lambda x: 0.985 * x)),  # TODO: 0.985
+            animation_logger=None,  # BnBAnimationLogger(),
+            metric_logger=None,  # BnBMetricLogger(),
+            MOVE_SCHEDULE=(lambda x: 0.985 * x)),
         fixed=list(inners)
     )
     bnb_alg.run_algorithm()
@@ -99,4 +99,4 @@ def main(poly_name='P1', show_plt=False):
 if __name__ == '__main__':
     for poly_name in polygons_dict.keys():
         main(poly_name)
-    # main('P1', show_plt=True)
+    #main('P1', show_plt=True)

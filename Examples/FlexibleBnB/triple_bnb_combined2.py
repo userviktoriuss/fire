@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
 from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
 from Algorithms.BranchesAndBounds.Loggers.BnBMetricLogger import BnBMetricLogger
-from Algorithms.BranchesAndBounds.ParamsClasses.TripleBnBParams import TripleBnBParams
+from Algorithms.BranchesAndBounds.ParamsClasses.SmarterBadCirclesBnBParams import SmarterBadCirclesBnBParams
 from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign
 from Algorithms.NBodies.RungeKuttaAlgorithm import RungeKuttaAlgorithm
@@ -42,7 +42,7 @@ def main(poly_name='P1', show_plt=False):
     bnb_alg = FlexibleBnBAlgorithm(P, hex_ans)
     bnb_alg.set_params(
         max_iterations=30,
-        params=TripleBnBParams(
+        params=SmarterBadCirclesBnBParams(
             P,
             len(hex_ans),
             animation_logger=None, #BnBAnimationLogger(),

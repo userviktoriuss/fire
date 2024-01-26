@@ -7,6 +7,11 @@ from Utils.Circle import Circle
 
 
 class FlexibleBnBAlgorithm:
+    """
+    Алгоритм для метода ветвей и границ. Поддерживает различные
+    варианты параметров работы метода, задаваемых объектом класса
+    FlexibleBnBParams или его наследников.
+    """
     def __init__(self,
                  P: Polygon,
                  circles: list[Circle]):

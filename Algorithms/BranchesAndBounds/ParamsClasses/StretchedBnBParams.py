@@ -2,10 +2,14 @@ import numpy as np
 from shapely import unary_union
 
 from Algorithms.BranchesAndBounds.Branch import Branch
-from Algorithms.BranchesAndBounds.ParamsClasses.TripleBnBParams import TripleBnBParams
+from Algorithms.BranchesAndBounds.ParamsClasses.SmarterBadCirclesBnBParams import SmarterBadCirclesBnBParams
 
 
-class ExpBnBParams(TripleBnBParams):
+class StretchedBnBParams(SmarterBadCirclesBnBParams):
+    """
+    То же, что и SmarterBadCirclesBnBParams, но равномерно растягивает метрику
+    coverage из отрезка [0.96; 1] до [0; 1]
+    """
     def calculate_metric(self, branches: list[Branch]):
         """
         Считает метрику для всех ветвей из массива branches.
