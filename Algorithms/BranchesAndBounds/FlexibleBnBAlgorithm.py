@@ -15,10 +15,13 @@ class FlexibleBnBAlgorithm:
 
     def set_params(self,
                    max_iterations: int,
-                   params: FlexibleBnBParams,
+                   params: FlexibleBnBParams=None,
                    fixed: list[int] = None):
         self.max_iterations = max_iterations
-        self.params = params
+        if params:
+            self.params = params
+        elif not self.params:
+            self.params = FlexibleBnBParams(P=self.P, init_circles=len(self.circles))
 
         if fixed is None:
             self.fixed = [0] * len(self.circles)

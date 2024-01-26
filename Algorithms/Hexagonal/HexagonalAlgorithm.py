@@ -1,5 +1,4 @@
-import numpy as np
-from shapely import Point, Polygon, LineString
+from shapely import Point, Polygon
 import math
 
 from shapely.ops import unary_union
@@ -19,14 +18,14 @@ class HexagonalAlgorithm:
                                     Point(minx - radius, maxy + radius)])
 
     def set_params(self,
-                   RESOLUTION: int=5,
-                   ALPHA_RESOLUTION: int=5,
+                   RESOLUTION: int = 5,
+                   ALPHA_RESOLUTION: int = 5,
                    EPS: float = 1e-3,
                    hex_alg=hexagonal,
                    REMOVE_REDUNDANT=True):
         self.RESOLUTION = RESOLUTION
         self.ALPHA_RESOLUTION = ALPHA_RESOLUTION
-        self.EPS = EPS,
+        self.EPS = EPS
         self.hex_alg = hex_alg
         self.REMOVE_REDUNDANT = REMOVE_REDUNDANT
 

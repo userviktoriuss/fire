@@ -44,17 +44,20 @@ class FlexibleBnBParams:
         self.animation_logger = animation_logger
         self.metric_logger = metric_logger
 
-    def reset(self):
-        """
-        Готовит параметры для новой итерации алгоритма.
-        """
-        self.cur_multplier = self.MOVE_MULTIPLIER
+        # Приготовим для работы логгеры.
         if self.animation_logger:
             (minx, miny, maxx, maxy) = self.P.bounds
             self.animation_logger.reset((minx - 1, maxx + 1), (miny - 1, maxy + 1))
 
         if self.metric_logger:
             self.metric_logger.reset(['1 - self_inter', '1 - outside', '1 - circle_count', 'coverage'])
+
+
+    def reset(self):
+        """
+        Готовит параметры для новой итерации алгоритма.
+        """
+        self.cur_multplier = self.MOVE_MULTIPLIER
 
     def find_bad_circles(self, branch: Branch) -> list[int]:
         """
