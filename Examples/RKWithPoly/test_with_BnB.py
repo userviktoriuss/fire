@@ -3,6 +3,8 @@ import time
 import numpy.random
 from matplotlib import pyplot as plt
 
+from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
+from Algorithms.BranchesAndBounds.ParamsClasses.StretchedBnBParams import StretchedBnBParams
 from Algorithms.NBodies.GravityFunctions import repel_cut_gravity
 from Algorithms.NBodies.Loggers.RKAnimationLogger import RKAnimationLogger
 from Algorithms.NBodies.RundeKuttaWithPolygonAlgorithm import RungeKuttaWithPolygonAlgorithm
@@ -13,8 +15,8 @@ from Utils.drawing import draw_polygon, draw_circles
 # Выбор многоугольника
 from Utils.misc_funcs import point_inside_polygon
 
-name = 'P4'  # Название многоугольника
-k = 29  # Ожидаемое количество кругов, необходимое для покрытия.
+name = 'P9'  # Название многоугольника
+k = 3  # Ожидаемое количество кругов, необходимое для покрытия.
 P = polygons_dict[name]
 
 # Подготовка алгоритма
@@ -45,10 +47,30 @@ ans = alg.get_result()  # Получим результат - list[Circle].
 
 t2 = time.perf_counter()
 
+bnb_alg = FlexibleBnBAlgorithm(P, ans)
+
+bnb_alg.set_params(
+    max_iterations=k,
+    params=StretchedBnBParams(
+        P,
+        k,
+        animation_logger=None,  # BnBAnimationLogger(),
+        metric_logger=None,  # BnBMetricLogger(),
+        MOVE_SCHEDULE=(lambda x: 0.985 * x)),
+)
+bnb_alg.run_algorithm()
+bnb_ans = bnb_alg.get_result()
+
+t3 = time.perf_counter()
+
 # Выведем числовые результаты работы.
 print(f'Preparation time: {t1 - t0} sec.')
-print(f'Algorithm time: {t2 - t1} sec.')
-print(f'Elapsed time: {t2 - t0} sec.')
+print(f'RK Algorithm time: {t2 - t1} sec.')
+print(f'BnB Algorithm time: {t3 - t2} sec.')
+print(f'Elapsed time: {t3 - t0} sec.')
+
+print(f'Initial circle count: {k}')
+print(f'Final circle count: {len(bnb_ans)}')
 
 fig, ax = plt.subplots(nrows=1, ncols=2)
 # Отрисуем результат до запуска внутреннего алгоритма.
@@ -57,11 +79,11 @@ draw_polygon(ax[0], P)
 
 # Нарисуем разными цветами зафиксированные и незафиксированные круги.
 draw_circles(ax[0],
-             [Circle(centers[i], 1.5) for i in range(len(alg.fixed)) if
+             [ans[i] for i in range(len(alg.fixed)) if
               not alg.fixed[i]])  # TODO: отрисовывать, что было до
 
 draw_circles(ax[0],
-             [Circle(centers[i], 1.5) for i in range(len(alg.fixed)) if alg.fixed[i]],
+             [ans[i] for i in range(len(alg.fixed)) if alg.fixed[i]],
              color='red',
              center_color='darkred')
 
@@ -70,9 +92,9 @@ ax[1].set_aspect('equal', adjustable='box')
 draw_polygon(ax[1], P)
 # Нарисуем разными цветами зафиксированные и незафиксированные круги.
 draw_circles(ax[1],
-             [ans[i] for i in range(len(alg.fixed)) if not alg.fixed[i]])
+             [bnb_ans[i] for i in range(len(bnb_alg.fixed)) if not bnb_alg.fixed[i]])
 draw_circles(ax[1],
-             [ans[i] for i in range(len(alg.fixed)) if alg.fixed[i]],
+             [bnb_ans[i] for i in range(len(bnb_alg.fixed)) if bnb_alg.fixed[i]],
              color='red',
              center_color='darkred')
 

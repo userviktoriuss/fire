@@ -31,7 +31,10 @@ class StretchedBnBParams(SmarterBadCirclesBnBParams):
 
             outside /= branch.polygon.area
             all_union = unary_union([c.polygon for c in branch.circles])
-            self_inter /= all_union.area
+            if all_union.area < 1e-8:
+                self_inter = 0  # Очень странный случай, но появляется, когда все круги удалены.
+            else:
+                self_inter /= all_union.area
             circle_count = len(branch.circles) / self.init_circles
 
             coverage = all_union.intersection(branch.polygon).area / branch.polygon.area
