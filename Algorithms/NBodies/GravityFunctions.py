@@ -99,3 +99,33 @@ def repel_cut_gravity(A, B, G=6.67430, STOP_RADIUS=1.5):
         A,
         G,
         STOP_RADIUS)
+
+
+def cut_gravity_with_base_direction(A, B, G=6.67430, STOP_RADIUS=1.5, base_dir=np.array([0, 0])):
+    """
+    Перемещение тела А в сторону тела B по закону гравитации.
+    Если расстояние между телами меньше STOP_RADIUS, то
+    перемещение будет как будто расстояние было равно STOP_RADIUS
+
+    :param base_dir: точка, в сторону которой двигаться, если достигли B.
+    :param STOP_RADIUS: Расстояние, начиная с которого переходим с обратной квадратичной функции на константу.
+    :param A: Пара координат тела А.
+    :param B: Пара координат тела В.
+    :return: Величина перемещения в сторону тела В.
+    """
+    ln = np.linalg.norm(B - A)
+    if ln < 1e-3:
+        B = base_dir
+    rho = max(ln, STOP_RADIUS)
+    dir = (B - A) / rho
+    module = G * 1 * 1 / rho ** 2
+    return module * dir
+
+def repel_cut_gravity_with_base_direction(A, B, G=6.67430, STOP_RADIUS=1.5, base_dir=np.array([0, 0])):
+    ln = np.linalg.norm(B - A)
+    if ln < 1e-3:
+        B = 2 * A - base_dir
+    rho = max(ln, STOP_RADIUS)
+    dir = (B - A) / rho
+    module = G * 1 * 1 / rho ** 2
+    return -module * dir

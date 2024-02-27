@@ -3,6 +3,7 @@ from scipy.integrate import RK45
 from shapely import Point
 
 from Algorithms.NBodies.GravityFunctions import smooth_gravity_with_sign
+from Algorithms.NBodies.Loggers import RKAnimationLogger
 from Utils.Circle import Circle
 from Utils.misc_funcs import group_n
 
@@ -21,7 +22,8 @@ class RungeKuttaAlgorithm:
                    TIME_STOP: float = 50,
                    RTOL: float = 0.000001,
                    ATOL: float = 0.005,  # При таких ATOL и RTOL ошибка будет в +- пол сантиметра
-                   gravity: 'gravity function' = smooth_gravity_with_sign):
+                   gravity: 'gravity function' = smooth_gravity_with_sign,
+                   logger: RKAnimationLogger = None):
         if fixed is not None:
             self.fixed = fixed
         self.G = G
@@ -36,6 +38,8 @@ class RungeKuttaAlgorithm:
         self.RTOL = RTOL
         self.ATOL = ATOL
         self.gravity = gravity
+
+        self.logger = logger
 
     def _gravity(self, t, y: np.array):
         """
@@ -69,6 +73,16 @@ class RungeKuttaAlgorithm:
         alg = RK45(self._gravity, t, centers, self.TIME_STOP, rtol=self.RTOL, atol=self.ATOL)
         while alg.status == 'running':
             alg.step()
+            if self.logger is not None:
+                cords = alg.y.reshape(alg.y.size // 2, 2).T
+                x = cords[0]
+                y = cords[1]
+                circles = [
+                    Circle(Point(x[i], y[i]), self.radius)
+                    for i in np.arange(x.size)
+                ]
+
+                self.logger.snap(circles)
 
         centers = alg.y  # Прибавим значение дискретной производной.
         self.centers = [Point(p) for p in group_n(2, centers)]
