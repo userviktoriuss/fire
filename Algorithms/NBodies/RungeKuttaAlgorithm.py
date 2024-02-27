@@ -37,7 +37,7 @@ class RungeKuttaAlgorithm:
         self.ATOL = ATOL
         self.gravity = gravity
 
-    def __gravity(self, t, y: np.array):
+    def _gravity(self, t, y: np.array):
         """
         Вспомогательная функция для передачи в метод Рунге-Кутта.
         Вычисляет дискретную производную в точке y в момент времени t для каждого тела.
@@ -66,7 +66,7 @@ class RungeKuttaAlgorithm:
     def run_algorithm(self):
         centers = np.array([p.xy for p in self.centers]).flatten()
         t = self.TIME_START
-        alg = RK45(self.__gravity, t, centers, self.TIME_STOP, rtol=self.RTOL, atol=self.ATOL)
+        alg = RK45(self._gravity, t, centers, self.TIME_STOP, rtol=self.RTOL, atol=self.ATOL)
         while alg.status == 'running':
             alg.step()
 

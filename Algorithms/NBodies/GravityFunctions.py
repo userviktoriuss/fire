@@ -1,4 +1,5 @@
 import numpy as np
+
 """
 В этом файле заданы различные функции гравитации.
 Описание этих функций ищите в GravityFunctions.md
@@ -82,3 +83,19 @@ def smooth_gravity_on_region_with_sign(A, B, G=6.67430, STOP_RADIUS=1.5, REGION_
     if ln > REGION_RADIUS:
         return np.zeros(2)
     return smooth_gravity_with_sign(A, B, G, STOP_RADIUS)
+
+
+def repel_cut_gravity(A, B, G=6.67430, STOP_RADIUS=1.5):
+    """
+    То же, что и cut_gravity, но работает на отталкивание
+    :param A: Первая точка.
+    :param B: Вторая точка.
+    :param G: Гравитационная постоянная.
+    :param STOP_RADIUS: Радиус отсечения бесконечного хвоста
+    :return: Величина перемещения в сторону тела B.
+    """
+    return cut_gravity(
+        B,
+        A,
+        G,
+        STOP_RADIUS)
