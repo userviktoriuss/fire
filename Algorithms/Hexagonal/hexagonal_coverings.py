@@ -95,7 +95,6 @@ def rotate(p: Point, alpha: float):
 
 
 def hexagonal_np(P: Polygon, S: Point, a: float = 1, alpha: float = 0):
-    # TODO: сверить размерности
     rotate = np.array([[np.cos(alpha), -np.sin(alpha)],
                        [np.sin(alpha), np.cos(alpha)]])
 

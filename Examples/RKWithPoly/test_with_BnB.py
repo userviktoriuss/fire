@@ -13,11 +13,13 @@ from Utils.Circle import Circle
 from Utils.drawing import draw_polygon, draw_circles
 
 # Выбор многоугольника
-from Utils.misc_funcs import point_inside_polygon
+from Utils.misc_funcs import point_inside_polygon, expected_circle_count, expected_circle_count_weighted
 
-name = 'P9'  # Название многоугольника
-k = 3  # Ожидаемое количество кругов, необходимое для покрытия.
+name = 'P7'  # Название многоугольника
 P = polygons_dict[name]
+R = 1.5
+k = expected_circle_count_weighted(P, R)  # Ожидаемое количество кругов, необходимое для покрытия.
+bnb_iters = k + 5
 
 # Подготовка алгоритма
 t0 = time.perf_counter()
@@ -25,17 +27,17 @@ t0 = time.perf_counter()
 numpy.random.seed(42)
 centers = [point_inside_polygon(P) for i in range(k)]
 
-#logger = RKAnimationLogger(P)
-#logger.reset(xlim=(-1, 20), ylim=(-1, 10))
+# logger = RKAnimationLogger(P)
+# logger.reset(xlim=(-1, 20), ylim=(-1, 10))
 
-alg = RungeKuttaWithPolygonAlgorithm(P, centers, 1.5)  # Укажем данные.
+alg = RungeKuttaWithPolygonAlgorithm(P, centers, R)  # Укажем данные.
 alg.set_params(
     fixed=[0 for i in range(k)],
     G=0.2,  # 0.2,  # 0.1
     poly_G_out=10,
     poly_G_in=0.15,  # 0.2,  # 0.3
     gravity=repel_cut_gravity,
-    #logger=logger
+    # logger=logger
 )  # Укажем параметры решения.
 # Запуск алгоритма
 t1 = time.perf_counter()
@@ -43,14 +45,14 @@ alg.run_algorithm()  # Запустим алгоритм.
 
 ans = alg.get_result()  # Получим результат - list[Circle].
 
-#logger.save_log(f'{name}_rk_log_{alg.G}_{alg.poly_G_out}_{alg.poly_G_in}.gif')
+# logger.save_log(f'{name}_rk_log_{alg.G}_{alg.poly_G_out}_{alg.poly_G_in}.gif')
 
 t2 = time.perf_counter()
 
 bnb_alg = FlexibleBnBAlgorithm(P, ans)
 
 bnb_alg.set_params(
-    max_iterations=k,
+    max_iterations=bnb_iters,
     params=StretchedBnBParams(
         P,
         k,
