@@ -4,6 +4,7 @@ import tkinter.ttk as ttk
 import Back.AutoCadFacade as acf
 import Front.UiClasses.HexagonalAlgorithmFrame as haf
 import Front.UiClasses.MainFrame as mf
+from Front.Settings import ColorScheme
 
 
 class MainWindow(tk.Tk):
@@ -11,11 +12,13 @@ class MainWindow(tk.Tk):
         super().__init__()
         self.title(title)
         self.geometry(geometry)
+        self.resizable(False, False)
         self.setup_autocad()
         self.setup_ui()
 
 
     def setup_ui(self):
+        self.configure(background=ColorScheme.BG_COLOR)
         self.notebook = ttk.Notebook(self, width=300, height=200)
 
         self.algs = [
@@ -39,7 +42,7 @@ class MainWindow(tk.Tk):
         for alg in self.algs:
             self.notebook.add(alg, text=alg.title)
 
-        self.notebook.pack(padx=5, pady=5, side='left', fill='both', expand=True)
+        self.notebook.pack(side='left', fill='both', expand=True)
         self.notebook.enable_traversal()
 
     def setup_autocad(self):
