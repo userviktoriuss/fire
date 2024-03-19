@@ -1,10 +1,11 @@
-from tkinter import ttk
+import tkinter.ttk as ttk
 
-from Back.AutoCadFacade import AutoCadFacade
+import Back.AutoCadFacade as acf
 
 
 class HexagonalAlgorithmFrame(ttk.Frame):
-    def __init__(self, master, autocad: AutoCadFacade):
+    title = 'Шестиугольная сетка'
+    def __init__(self, master, autocad: acf.AutoCadFacade):
         super().__init__(master)
         self.autocad = autocad
 

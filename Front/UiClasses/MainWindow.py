@@ -1,9 +1,9 @@
 import tkinter as tk
-from tkinter import ttk
+import tkinter.ttk as ttk
 
-from Back.AutoCadFacade import AutoCadFacade
-from Front.UiClasses.HexagonalAlgorithmFrame import HexagonalAlgorithmFrame
-from Front.UiClasses.MainFrame import MainFrame
+import Back.AutoCadFacade as acf
+import Front.UiClasses.HexagonalAlgorithmFrame as haf
+import Front.UiClasses.MainFrame as mf
 
 
 class MainWindow(tk.Tk):
@@ -11,33 +11,36 @@ class MainWindow(tk.Tk):
         super().__init__()
         self.title(title)
         self.geometry(geometry)
-        # Инициализировать AutoCad нужно ДО UI, т.к. они берут ссылку на открытый чертёж.
-        # Отдавать фреймам весь MainWindow плохо.
         self.setup_autocad()
         self.setup_ui()
 
 
     def setup_ui(self):
-        self.notebook = ttk.Notebook(
-            self,
-            width=300, #self.winfo_width(),
-            height=200)# self.winfo_height())
+        self.notebook = ttk.Notebook(self, width=300, height=200)
 
-        self.main_frame = MainFrame(self.notebook, self.autocad)
-        self.hexagonal_frame = HexagonalAlgorithmFrame(self.notebook, self.autocad)
-
+        self.algs = [
+            haf.HexagonalAlgorithmFrame(self.notebook, self.autocad),
+            haf.HexagonalAlgorithmFrame(self.notebook, self.autocad), # TODO: change
+            haf.HexagonalAlgorithmFrame(self.notebook, self.autocad), # TODO: change
+            haf.HexagonalAlgorithmFrame(self.notebook, self.autocad) # TODO: change
+        ]
+        self.main_frame = mf.MainFrame(self.notebook, self)
         self.main_frame.pack(padx=5, pady=5, side='left', fill='both')
-        self.hexagonal_frame.pack(padx=5, pady=5)
+
+        for alg in self.algs:
+            alg.pack(padx=5, pady=5)
+
         # TODO: другие алгоритмы
         # TODO: Задать алгоритмам один интерфейс - мб, пронаследовать от какго-то абстрактного
         # TODO: захардкодить алгоритмам секции описания
         # TODO: добавить скроллинг для правой секции, если описание слишком длинное
 
         self.notebook.add(self.main_frame, text='Главная')
-        self.notebook.add(self.hexagonal_frame, text='Шестиугольное покрытие')
+        for alg in self.algs:
+            self.notebook.add(alg, text=alg.title)
 
         self.notebook.pack(padx=5, pady=5, side='left', fill='both', expand=True)
         self.notebook.enable_traversal()
 
     def setup_autocad(self):
-        self.autocad = AutoCadFacade()
+        self.autocad = acf.AutoCadFacade()
