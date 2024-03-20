@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.ttk as ttk
+import ttkbootstrap as btrp
 
 import Back.AutoCadFacade as acf
 import Front.UiClasses.HexagonalAlgorithmFrame as haf
@@ -7,9 +8,9 @@ import Front.UiClasses.MainFrame as mf
 from Front.Settings import ColorScheme
 
 
-class MainWindow(tk.Tk):
+class MainWindow(btrp.Window):
     def __init__(self, title, geometry):
-        super().__init__()
+        super().__init__(themename='darkly')
         self.title(title)
         self.geometry(geometry)
         self.resizable(False, False)

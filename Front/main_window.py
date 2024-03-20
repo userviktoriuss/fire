@@ -1,9 +1,12 @@
 from tkinter import ttk
+import ttkbootstrap as btrp
 
 from Front.Settings import ColorScheme
 from Front.UiClasses.MainWindow import MainWindow
 from ctypes import windll
 
+#window = btrp.Window(themename='darkly')
+#window1.mainloop()
 
 # Создадим окно.
 window = MainWindow('Дополнение для AutoCAD', '1280x720')
@@ -11,7 +14,7 @@ window = MainWindow('Дополнение для AutoCAD', '1280x720')
 # Избавимся от размытости текста.
 windll.shcore.SetProcessDpiAwareness(1)
 
-ColorScheme.configure_colors()
+#ColorScheme.configure_colors()
 
 # Запустим приложение.
 window.mainloop()

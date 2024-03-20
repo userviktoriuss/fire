@@ -5,6 +5,7 @@ import time
 import numpy as np
 from shapely.ops import unary_union
 
+from Algorithms.Algorithm import Algorithm
 from Algorithms.Baron.BaronsAlgorithm import BaronsAlgorithm
 from Algorithms.Genetic.Population import Being, Population
 from Utils.Circle import Circle, Point
@@ -28,7 +29,7 @@ from shapely import Polygon
 """
 
 
-class BnBAlgorithm:
+class BnBAlgorithm(Algorithm):
     def __init__(self,
                  P: Polygon,
                  circles: list[Circle],
@@ -120,7 +121,7 @@ class BnBAlgorithm:
             return
         self.circles = best.circles
 
-    def get_result(self):
+    def get_result(self) -> list[Circle]:
         return self.circles
 
     def __fitness(self, beings: list[Being]):
