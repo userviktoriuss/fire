@@ -1,7 +1,8 @@
 import tkinter.ttk as ttk
 import tkinter as tk
-import Front.UiClasses.MainWindow as mw
-from Front.Settings import ColorScheme
+import ttkbootstrap as btrp
+import customtkinter as ctk
+from PIL import Image
 
 
 class MainFrameMessages:
@@ -19,53 +20,52 @@ class MainFrame(ttk.Frame):
 
     def setup_ui(self):
         # Создадим и настроим виджеты. -------------------------------------------
-        self.connection_label = ttk.Label(
+        self.connection_label = btrp.Label(
             self,
             text=MainFrameMessages.NO_CONNECTED_DOCUMENT,
             anchor='center',
-            width=70
+            width=70,
+            font=('bold', 16),
         )
-        self.connect_button = ttk.Button(
+        self.connect_button = ctk.CTkButton(
             self,
             text='Подключиться',
             command=self.connect_,
-            # background=ColorScheme.BG_DARK_COLOR,
-            # activebackground=ColorScheme.BG_DARK_COLOR,
-            # foreground=ColorScheme.FG_COLOR,
-            # activeforeground=ColorScheme.FG_DARK_COLOR,
-            # highlightbackground=ColorScheme.BG_DARK_COLOR,
         )
 
+        # Кнопки для алгоритмов -------------------------------------------------------------
         algs_count = len(self.main_window.algs)
         self.algs_buttons = []
 
         self.imgs = [
-            tk.PhotoImage(file='pics/hexagonal.png'),
-            tk.PhotoImage(file='pics/hexagonal.png'),
-            tk.PhotoImage(file='pics/hexagonal.png'),
-            tk.PhotoImage(file='pics/hexagonal.png')
+            ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png'), size=(1106, 800)),
+            ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png')),
+            ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png')),
+            ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png'))
         ]
 
         self.hover_imgs = [
-            tk.PhotoImage(file='pics/hexagonal_mouse_over.png'),
-            tk.PhotoImage(file='pics/hexagonal_mouse_over.png'),
-            tk.PhotoImage(file='pics/hexagonal_mouse_over.png'),
-            tk.PhotoImage(file='pics/hexagonal_mouse_over.png')
+            ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png'), size=(1106, 800)),
+            ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png')),
+            ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png')),
+            ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png'))
         ]
 
-        tk.PhotoImage()
         for i in range(algs_count):
             # Замыкания берутся по имени переменной, а не по значению/
             # Зафиксируем значение таким способом.
-            btn = ttk.Button(self,
-                           command=lambda i=i: self.master.select(i + 1),
-                           image=self.imgs[i])
+            btn = ctk.CTkButton(self,
+                                text='',
+                                command=lambda i=i: self.master.select(i + 1),
+                                image=self.imgs[i],
+                                bg_color='transparent',
+                                fg_color='transparent'
+                                )
             btn.bind('<Enter>', lambda e, i=i: self.enter_(i, e))
             btn.bind('<Leave>', lambda e, i=i: self.leave_(i, e))
             self.algs_buttons.append(btn)
 
-
-        # Разместим виджеты.
+        # Разместим виджеты --------------------------------------------------------------
         self.connection_label.place(relx=0.2, rely=0.1)
         self.connect_button.place(relx=0.7, rely=0.1)
 
@@ -75,12 +75,18 @@ class MainFrame(ttk.Frame):
                     .place(relx=0.5 * j, rely=0.2 + 0.4 * i, relheight=0.4, relwidth=0.5)
 
     def enter_(self, i, event):
-        self.algs_buttons[i]['image'] = self.hover_imgs[i]
+        self.algs_buttons[i].configure(
+            image=self.hover_imgs[i],
+            bg_color='transparent',
+            fg_color='transparent')
 
     def leave_(self, i, event):
-        self.algs_buttons[i]['image'] = self.imgs[i]
+        self.algs_buttons[i].configure(
+            image=self.imgs[i],
+            bg_color='transparent',
+            fg_color='transparent')
 
     def connect_(self):
-        drawing = self.main_window.autocad.connect()  # TODO: навернуть проверку, кинуть месседж боксы
+        # drawing = self.main_window.autocad.connect()  # TODO: навернуть проверку, кинуть месседж боксы
+        drawing = "Чертёж21341251245.dwg"
         self.connection_label['text'] = MainFrameMessages.CONNECTED_TO.format(drawing)
-

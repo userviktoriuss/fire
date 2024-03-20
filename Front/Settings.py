@@ -1,14 +1,26 @@
 import tkinter.ttk as ttk
+# Шрифты
+FONT = 'Calibri'
+MAIN_TEXT_SIZE = 150
+INPUT_FONT_SIZE = 26
+SWITCH_FONT_SIZE = 18
+
+# Цвета
+BLUE = '#454f61'
+LIGHT_BLUE = '#535d6f'
+DARK_BLUE = '#222933'
+LIGHT_DARK_BLUE = '#303741'
+GRAY = '#727781'
+WHITE = '#f5f5f5'
+DARK_WHITE = '#bbbcbf'
 
 
+# icon by <a href="https://www.flaticon.com/free-icons/fire" title="fire icons">Fire icons created by Freepik - Flaticon</a>
+ICON = 'pics/fire.ico'
+
+
+"""
 class ColorScheme:
-    BG_COLOR = '#454f61'
-    BG_DARK_COLOR = '#222933'
-    BG_DARK_PRESSED_COLOR = '#303741'
-    LIGHT_COLOR = '#727781'
-    FG_COLOR = '#f5f5f5'
-    FG_DARK_COLOR = '#bbbcbf'
-
     @staticmethod
     def configure_colors():
         dark_theme = {
@@ -37,3 +49,4 @@ class ColorScheme:
 
         style.theme_create('dark', parent='clam', settings=dark_theme)
         style.theme_use('dark')
+"""

@@ -5,8 +5,6 @@ import Back.AutoCadFacade as acf
 import customtkinter as ctk
 import ttkbootstrap as btrp
 
-from Front.Settings import ColorScheme
-
 
 class TextInfo():
     def __init__(self,
@@ -68,7 +66,7 @@ class AlgorithmFrame(btrp.Frame):
         self.autocad = autocad
 
         self.left_part_frame = btrp.Frame(self)
-        self.left_panel = btrp.Frame(self.left_part_frame)
+        self.left_panel = ctk.CTkFrame(self.left_part_frame)
         self.fill_left_panel_()
         self.right_part_frame = DescriptionFrame(self, self.text_info)
 
@@ -77,8 +75,12 @@ class AlgorithmFrame(btrp.Frame):
         self.left_panel.pack(expand=True, side='top', fill='x')
         self.run_button.pack(side='bottom')
 
-        self.left_part_frame.pack(expand=True, side='left', fill='both', padx=5, pady=5)
-        self.right_part_frame.pack(expand=True, side='right', fill='both', padx=5, pady=5)
+        self.columnconfigure((0, 1), weight=1, uniform='a')
+        self.rowconfigure(0, weight=1)
+        self.left_part_frame.grid(row=0, column=0, sticky='nsew')
+        self.right_part_frame.grid(row=0, column=1, sticky='nsew')
+        #self.left_part_frame.pack(expand=True, side='left', fill='both', padx=5, pady=5)
+        #self.right_part_frame.pack(expand=True, side='right', fill='both', padx=5, pady=5)
 
     def fill_left_panel_(self):
         pass
