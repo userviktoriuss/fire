@@ -19,7 +19,7 @@ class TextInfo():
         self.notes = notes
 
 
-class DescriptionFrame(btrp.ScrolledText):
+class DescriptionFrame(ctk.CTkTextbox):
     def __init__(self,
                  master,
                  text_info: TextInfo):
@@ -58,8 +58,8 @@ class AlgorithmFrame(btrp.Frame):
         super().__init__(master)
         self.autocad = autocad
 
-        self.left_part_frame = btrp.Frame(self)
-        self.left_panel = ctk.CTkFrame(self.left_part_frame)
+        self.left_part_frame = ctk.CTkFrame(self, bg_color='white', fg_color='white')  # ну вот ему пофиг просто
+        self.left_panel = ctk.CTkFrame(self.left_part_frame, fg_color=GRAY, border_color='blue', background_corner_colors=('white', 'white', 'white', 'white'))
         self.fill_left_panel_()
         self.right_part_frame = DescriptionFrame(self, self.text_info)
 

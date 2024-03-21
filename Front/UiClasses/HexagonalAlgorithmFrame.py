@@ -68,10 +68,10 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
         self.left_part_frame.rowconfigure(0, weight=1)
         self.left_part_frame.rowconfigure((1, 2, 3), weight=3)
 
-        self.line1.grid(row=0, column=0, sticky='nw', pady=10)
-        self.line2.grid(row=1, column=0, sticky='nw', pady=10)
-        self.line3.grid(row=2, column=0, sticky='nw', pady=10)
-        self.line4.grid(row=3, column=0, sticky='nw', pady=10)
+        self.line1.grid(row=0, column=0, stick='news', padx=20, pady=10)
+        self.line3.grid(row=2, column=0, stick='news', padx=20, pady=10)
+        self.line2.grid(row=1, column=0, stick='news', padx=20, pady=10)
+        self.line4.grid(row=3, column=0, stick='news', padx=20, pady=10)
         # TODO: накидать UI
         pass
 
