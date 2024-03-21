@@ -28,33 +28,50 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
     )
 
     def fill_left_panel_(self):
-        self.line1 = btrp.Frame(self.left_panel)
-        self.line2 = btrp.Frame(self.left_panel)
-        self.line3 = btrp.Frame(self.left_panel)
-        self.line4 = btrp.Frame(self.left_panel)
+        self.line1 = ctk.CTkFrame(self.left_panel)
+        self.line2 = ctk.CTkFrame(self.left_panel)
+        self.line3 = ctk.CTkFrame(self.left_panel)
+        self.line4 = ctk.CTkFrame(self.left_panel)
 
         # line1 --------------------------------------------------------
-        self.alg_label = btrp.Label(self.line1, text=self.title, font=('bold', 20))
+        self.alg_label = ctk.CTkLabel(self.line1, text=self.title, font=('bold', 20))
         self.alg_label.pack(side='top')
         # line2 --------------------------------------------------------
         self.line2.columnconfigure(0, weight=1)
-        self.line2.columnconfigure(1, weight=2)
+        self.line2.columnconfigure(1, weight=4)
         self.line2.rowconfigure((0, 1), weight=1)
-        self.alpha_label = btrp.Label(self.line2, text='ALPHA')
-        self.a_label = btrp.Label(self.line2, text='A')
+        self.alpha_label = ctk.CTkLabel(self.line2, text='ALPHA')
+        self.a_label = ctk.CTkLabel(self.line2, text='A')
         self.alpha_input = ctk.CTkEntry(self.line2)
         self.a_input = ctk.CTkEntry(self.line2)
 
-        self.a_label.grid(row=0, column=0, stick='w')
-        self.a_input.grid(row=0, column=1, columnspan=2, stick='w')
-        self.alpha_label.grid(row=1, column=0, stick='w')
-        self.alpha_input.grid(row=1, column=1, columnspan=2, stick='w')
+        self.a_label.grid(row=0, column=0, sticky='w', padx=10)
+        self.a_input.grid(row=0, column=1, columnspan=2, sticky='w')
+        self.alpha_label.grid(row=1, column=0, sticky='w', padx=10)
+        self.alpha_input.grid(row=1, column=1, columnspan=2, sticky='w')
 
         # line3 ---------------------------------------------------------
-        self.line1.pack(side='top', fill='x')
-        self.line2.pack(side='top', fill='both')
-        self.line3.pack(side='top', fill='x')
-        self.line4.pack(side='top', fill='x')
+        self.line3.columnconfigure(0, weight=1)
+        self.line3.columnconfigure(1, weight=4)
+        self.line3.rowconfigure((0, 1), weight=1)
+        self.sx_label = ctk.CTkLabel(self.line3, text='Sx')
+        self.sy_label = ctk.CTkLabel(self.line3, text='Sy')
+        self.sx_input = ctk.CTkEntry(self.line3)
+        self.sy_input = ctk.CTkEntry(self.line3)
+
+        self.sx_label.grid(row=0, column=0, sticky='w', padx=10)
+        self.sx_input.grid(row=0, column=1, columnspan=2, sticky='w')
+        self.sy_label.grid(row=1, column=0, sticky='w', padx=10)
+        self.sy_input.grid(row=1, column=1, columnspan=2, sticky='w')
+
+        # Расположим все строки в левой части
+        self.left_part_frame.rowconfigure(0, weight=1)
+        self.left_part_frame.rowconfigure((1, 2, 3), weight=3)
+
+        self.line1.grid(row=0, column=0, sticky='nw', pady=10)
+        self.line2.grid(row=1, column=0, sticky='nw', pady=10)
+        self.line3.grid(row=2, column=0, sticky='nw', pady=10)
+        self.line4.grid(row=3, column=0, sticky='nw', pady=10)
         # TODO: накидать UI
         pass
 
