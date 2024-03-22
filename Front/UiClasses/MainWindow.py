@@ -15,14 +15,13 @@ class MainWindow(ctk.CTk):
         super().__init__()
         self.title(title)
         self.geometry(geometry)
-        #self.resizable(False, False)
         self.setup_autocad()
         self.setup_ui()
         self.minsize(640, 480)
 
     def setup_ui(self):
         self.config_menu()
-        self.notebook = ttk.Notebook(self, width=300, height=200)
+        self.notebook = btrp.Notebook(self, width=300, height=200)
 
         self.algs = [
             haf.HexagonalAlgorithmFrame(self.notebook, self.autocad),

@@ -8,8 +8,12 @@ from Utils.Circle import Circle
 from Utils.misc_funcs import group_n
 
 
+# TODO: may be unused
 def make_polygon_from_polyline(coords: tuple[float]) -> Polygon:
     return Polygon([Point(np.round(p[0], 3), np.round(p[1], 3)) for p in group_n(2, coords)])
+
+def make_points_from_polyline(coords: tuple[float]) -> list[Point]:
+    return [Point(np.round(p[0], 3), np.round(p[1], 3)) for p in group_n(2, coords)]
 
 
 class AutoCadFacade():
@@ -23,7 +27,7 @@ class AutoCadFacade():
         doc = ComWrapper(self.acad.doc)
         return doc.Name
 
-    def get_polygons(self) -> list[Polygon]:
+    def get_polygons(self) -> Polygon:
         selection = ComWrapper(self.acad.get_selection(text='Выберите полилинии:'))
 
         polygons = []
@@ -31,9 +35,10 @@ class AutoCadFacade():
             s = selection.Item(i)
 
             if s.EntityName == 'AcDbPolyline':
-                polygons.append(make_polygon_from_polyline(s.Coordinates))
+                polygons.append(make_points_from_polyline(s.Coordinates))
+                # TODO: Добавить каст кругов autocad к моим.
 
-        return polygons
+        return Polygon(polygons[0], polygons[1:])
 
     def draw_circles(self, circles: list[Circle]):
         model = ComWrapper(self.acad.model)

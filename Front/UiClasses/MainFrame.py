@@ -87,6 +87,5 @@ class MainFrame(ttk.Frame):
             fg_color='transparent')
 
     def connect_(self):
-        # drawing = self.main_window.autocad.connect()  # TODO: навернуть проверку, кинуть месседж боксы
-        drawing = "Чертёж21341251245.dwg"
+        drawing = self.main_window.autocad.connect()  # TODO: навернуть проверку, кинуть месседж боксы
         self.connection_label['text'] = MainFrameMessages.CONNECTED_TO.format(drawing)
