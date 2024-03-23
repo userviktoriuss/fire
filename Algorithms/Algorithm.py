@@ -3,6 +3,7 @@ from Utils.Circle import Circle
 
 
 class Algorithm(ABC):
+    # TODO: нужно ли задать конструктор?
     @abstractmethod
     def set_params(self):
         pass

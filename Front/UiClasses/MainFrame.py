@@ -1,11 +1,14 @@
 import ttkbootstrap as btrp
 import customtkinter as ctk
 from PIL import Image
+from CTkMessagebox import CTkMessagebox
+
+from Front.Fonts import Fonts
 
 
 class MainFrameMessages:
-    NO_CONNECTED_DOCUMENT = 'Нет подключённого документа'
-    CONNECTED_TO = 'Подключено к документу {0}'
+    NO_CONNECTED_DOCUMENT = 'Документ не подключен'
+    CONNECTED_TO = 'Подключено к {0}'
 
 
 class MainFrame(ctk.CTkFrame):
@@ -18,17 +21,18 @@ class MainFrame(ctk.CTkFrame):
 
     def setup_ui(self):
         # Создадим и настроим виджеты. -------------------------------------------
-        self.connection_label = btrp.Label(
+        self.connection_label = ctk.CTkLabel(
             self,
             text=MainFrameMessages.NO_CONNECTED_DOCUMENT,
             anchor='center',
             width=70,
-            font=('bold', 16),
+            font=Fonts.connection_font
         )
         self.connect_button = ctk.CTkButton(
             self,
             text='Подключиться',
             command=self.connect_,
+            font=Fonts.button_font
         )
 
         # Кнопки для алгоритмов -------------------------------------------------------------
@@ -64,7 +68,7 @@ class MainFrame(ctk.CTkFrame):
             self.algs_buttons.append(btn)
 
         # Разместим виджеты --------------------------------------------------------------
-        self.connection_label.place(relx=0.2, rely=0.1)
+        self.connection_label.place(relx=0.42, rely=0.1)
         self.connect_button.place(relx=0.7, rely=0.1)
 
         for i in range(2):
@@ -85,5 +89,13 @@ class MainFrame(ctk.CTkFrame):
             fg_color='transparent')
 
     def connect_(self):
-        drawing = self.main_window.autocad.connect()  # TODO: навернуть проверку, кинуть месседж боксы
-        self.connection_label['text'] = MainFrameMessages.CONNECTED_TO.format(drawing)
+        try:
+            drawing = self.main_window.autocad.connect()
+            self.connection_label.configure(text=MainFrameMessages.CONNECTED_TO.format(drawing))
+        except:
+            CTkMessagebox(title='Ошибка!',
+                          message='Не удалось подключиться к чертежу. \n' + \
+                                  'Запустите AutoCAD или прервите в нём все активные команды.',
+                          icon='cancel',
+                          width=580,
+                          font=Fonts.text_font)
