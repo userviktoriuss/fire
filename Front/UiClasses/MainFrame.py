@@ -1,5 +1,3 @@
-import tkinter.ttk as ttk
-import tkinter as tk
 import ttkbootstrap as btrp
 import customtkinter as ctk
 from PIL import Image
@@ -10,8 +8,8 @@ class MainFrameMessages:
     CONNECTED_TO = 'Подключено к документу {0}'
 
 
-class MainFrame(ttk.Frame):
-    def __init__(self, master: ttk.Notebook, main_window: 'MainWindow'):
+class MainFrame(ctk.CTkFrame):
+    def __init__(self, master: btrp.Notebook, main_window: 'MainWindow'):
         super().__init__(master)
         self.master = master
         self.main_window = main_window

@@ -1,5 +1,3 @@
-import tkinter as tk
-import tkinter.ttk as ttk
 import ttkbootstrap as btrp
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox

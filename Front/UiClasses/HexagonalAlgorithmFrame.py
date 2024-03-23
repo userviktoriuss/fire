@@ -1,5 +1,3 @@
-import tkinter as tk
-
 from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.Hexagonal.hexagonal_coverings import hexagonal_np
 from Front.UiClasses.AlgorithmFrame import AlgorithmFrame, TextInfo
@@ -49,10 +47,10 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
         self.line2.columnconfigure(0, weight=1)
         self.line2.columnconfigure(1, weight=4)
         self.line2.rowconfigure((0, 1), weight=1)
-        self.alpha_label = ctk.CTkLabel(self.line2, text='ALPHA')
         self.r_label = ctk.CTkLabel(self.line2, text='R')
-        self.alpha_input = ctk.CTkEntry(self.line2)
         self.r_input = ctk.CTkEntry(self.line2)
+        self.alpha_label = ctk.CTkLabel(self.line2, text='ALPHA')
+        self.alpha_input = ctk.CTkEntry(self.line2)
 
         self.r_label.grid(row=0, column=0, sticky='w', padx=10)
         self.r_input.grid(row=0, column=1, columnspan=2, sticky='w')
