@@ -41,14 +41,14 @@ class MainFrame(ctk.CTkFrame):
 
         self.imgs = [
             ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png'), size=(1106, 800)),
-            ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png')),
+            ctk.CTkImage(dark_image=Image.open('pics/genetic.png'), size=(800, 640)),
             ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png')),
             ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png'))
         ]
 
         self.hover_imgs = [
             ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png'), size=(1106, 800)),
-            ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png')),
+            ctk.CTkImage(dark_image=Image.open('pics/genetic_hovered.png'), size=(800, 640)),
             ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png')),
             ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png'))
         ]

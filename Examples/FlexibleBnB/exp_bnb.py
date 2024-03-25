@@ -26,7 +26,6 @@ def main(poly_name='P1', show_plt=False):
     hex_alg = HexagonalAlgorithm(P, R)  # Укажем данные.
     hex_alg.set_params(
         hex_alg=hexagonal_np,
-        REMOVE_REDUNDANT=False
     )  # Укажем параметры решения.
     hex_alg.run_algorithm()  # Запустим алгоритм.
     hex_ans = hex_alg.get_result()  # Получим результат - list[Circle].

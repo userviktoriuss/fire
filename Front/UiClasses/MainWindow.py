@@ -7,6 +7,7 @@ import Front.UiClasses.HexagonalAlgorithmFrame as haf
 import Front.UiClasses.MainFrame as mf
 from Front.Fonts import Fonts
 from Front.Settings import ICON, FONT, TAB_TEXT_SIZE, MENU_TEXT_SIZE
+from Front.UiClasses.HexGeneticAlgorithmFrame import HexGeneticAlgorithmFrame
 
 
 class MainWindow(ctk.CTk):
@@ -27,7 +28,7 @@ class MainWindow(ctk.CTk):
 
         self.algs = [
             haf.HexagonalAlgorithmFrame(self.notebook, self.autocad),
-            haf.HexagonalAlgorithmFrame(self.notebook, self.autocad),  # TODO: change
+            HexGeneticAlgorithmFrame(self.notebook, self.autocad),
             haf.HexagonalAlgorithmFrame(self.notebook, self.autocad),  # TODO: change
             haf.HexagonalAlgorithmFrame(self.notebook, self.autocad)  # TODO: change
         ]

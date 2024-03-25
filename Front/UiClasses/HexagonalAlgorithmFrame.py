@@ -11,7 +11,7 @@ from CTkMessagebox import CTkMessagebox
 
 class HexagonalAlgorithmFrame(AlgorithmFrame):
     '''
-    Класс для страницы алгоритма.
+    Класс для страницы покрытия методом Шестиугольной сетки.
 
     Определяет описание алгоритма, поля заполнения параметров и
     вызов алгоритма с заданными параметрами.
@@ -22,8 +22,6 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
         '''Этот алгоритм предназначен для покрытия многоугольников с помощью метода шестиугольной сетки. Хорошо покрывает симметричные фигуры правильной формы, габариты которых не сильно отличаются от чисел вида R*k.
 Также после метода можно попробовать оптимизировать количество кругов. Есть два алгоритма: жадный и генетический.
         ''',
-        # TODO: логичный порядок
-        # TODO: дописать, что делает
         params=
         '''· R - радиус кругов, которыми покрывается многоугольник.
 · ALPHA_RESOLUTION - сколько разных углов от 0 до π/3 будет перебирать алгоритм.
@@ -93,7 +91,6 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
         self.line1.grid(row=0, column=0, stick='news', padx=20, pady=10)
         self.line3.grid(row=2, column=0, stick='news', padx=20, pady=10)
         self.line2.grid(row=1, column=0, stick='news', padx=20, pady=10)
-        pass
 
     def activate_remover_choice_(self):
         self.remover.configure(state='disabled' if self.remove_unnec_circles.get() == 0 else 'readonly')
@@ -102,7 +99,7 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
         # TODO: добавить обработку для нескольких многоугольников
         # TODO: Добавить каст кругов к многоугольникам.
         # Получим многоугольник.
-        poly = None
+        # poly = None
 
         try:
             poly = self.autocad.get_polygons()
@@ -155,3 +152,4 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
                           icon='cancel',
                           width=580,
                           font=Fonts.text_font)
+
