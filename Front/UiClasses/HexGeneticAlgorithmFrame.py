@@ -58,8 +58,8 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
 · MOVE_MULTIPLIER = 1.5
 
 · SELF_INTER = 0
-· COVERAGE = 1.5
 · OUTSIDE = 0.05
+· COVERAGE = 1.5
 · DEL_CIRCLE_COUNT = 0.1
 · CIRCLE_COUNT = 0.005
 ''',
@@ -171,7 +171,7 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
             self_inter = self.get_float_entry_('SELF_INTER')
             outside = self.get_float_entry_('OUTSIDE')
             coverage = self.get_float_entry_('COVERAGE')
-            del_circle_count = self.get_float_entry_('DELETION_CIRCLE_COUNT')
+            del_circle_count = self.get_float_entry_('DEL_CIRCLE_COUNT')
             circle_count = self.get_float_entry_('CIRCLE_COUNT')
         except:
             return
