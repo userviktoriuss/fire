@@ -136,8 +136,8 @@ class AlgorithmFrame(btrp.Frame):
         self.params.put(name, options[0], str)
 
         self.__dict__[self.label_name_(name)] = ctk.CTkLabel(frame, text=label_text, font=Fonts.label_font)
-        self.__dict__[self.combobox_name_(name)] = ctk.CTkComboBox(frame, values=options, font=Fonts.label_font)
-        self.__dict__[self.label_name_(name)].grid(row=row, column=0, sticky='w')
+        self.__dict__[self.combobox_name_(name)] = ctk.CTkComboBox(frame, values=options, font=Fonts.label_font, state='readonly')
+        self.__dict__[self.label_name_(name)].grid(row=row, column=0, sticky='w', padx=10)
         self.__dict__[self.combobox_name_(name)].grid(row=row, column=1, sticky='we')
 
     def add_checkbox(self, name: str, frame: ctk.CTkFrame, text: str, command, row: int):

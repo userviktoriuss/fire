@@ -12,6 +12,7 @@ from Front.Fonts import Fonts
 from Front.Settings import FONT, TAB_TEXT_SIZE, MENU_TEXT_SIZE, PARAMS_PATH
 from Front.UiClasses.HexGeneticAlgorithmFrame import HexGeneticAlgorithmFrame
 from Front.UiClasses.MsgBox import MsgBox
+from Front.UiClasses.RkGeneticAlgorithmFrame import RkGeneticAlgorithmFrame
 
 
 class MainWindow(ctk.CTk):
@@ -35,7 +36,7 @@ class MainWindow(ctk.CTk):
         self.algs = []
         self.algs.append(haf.HexagonalAlgorithmFrame(self.notebook, self.autocad))
         self.algs.append(HexGeneticAlgorithmFrame(self.notebook, self.autocad))
-        self.algs.append(haf.HexagonalAlgorithmFrame(self.notebook, self.autocad))  # TODO: change
+        self.algs.append(RkGeneticAlgorithmFrame(self.notebook, self.autocad))  # TODO: change
         self.algs.append(haf.HexagonalAlgorithmFrame(self.notebook, self.autocad))  # TODO: change
         self.main_frame = mf.MainFrame(self.notebook, self)
         self.main_frame.pack(padx=5, pady=5, side='left', fill='both')
@@ -90,8 +91,8 @@ class MainWindow(ctk.CTk):
             MsgBox.show_error_msgbox('Не удалось загрузить параметры из файла. Возможно, это не json-файл.')
 
         for i in range(len(self.algs)):
-            if i > 1:
-                continue  # TODO: убрать!!!! это тест!!!
+            # if i > 2:
+            #     continue  # TODO: убрать!!!! это тест!!!
             for name in d[str(i)]:
                 val = d[str(i)][name]
                 self.algs[i].params.update(name, val)
@@ -105,8 +106,8 @@ class MainWindow(ctk.CTk):
         for i in range(len(self.algs)):
             # TODO: убрать!!!!!
             d[str(i)] = dict()
-            if i > 1:
-                continue
+            # if i > 2:
+            #     continue
             try:
                 self.algs[i].update_all_params_()
             except:

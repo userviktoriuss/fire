@@ -10,7 +10,7 @@ class MainFrameMessages:
     NO_CONNECTED_DOCUMENT = 'Документ не подключен'
     CONNECTED_TO = 'Подключено к {0}'
 
-
+# TODO: поставить свой icon
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master: btrp.Notebook, main_window: 'MainWindow'):
         super().__init__(master)
@@ -42,14 +42,14 @@ class MainFrame(ctk.CTkFrame):
         self.imgs = [
             ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png'), size=(1106, 800)),
             ctk.CTkImage(dark_image=Image.open('pics/genetic.png'), size=(800, 640)),
-            ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png')),
+            ctk.CTkImage(dark_image=Image.open('pics/rkbnb.png'), size=(1006, 535)),
             ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png'))
         ]
 
         self.hover_imgs = [
             ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png'), size=(1106, 800)),
             ctk.CTkImage(dark_image=Image.open('pics/genetic_hovered.png'), size=(800, 640)),
-            ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png')),
+            ctk.CTkImage(dark_image=Image.open('pics/rkbnb_hovered.png'), size=(1006, 535)),
             ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png'))
         ]
 
@@ -71,6 +71,7 @@ class MainFrame(ctk.CTkFrame):
         self.connection_label.place(relx=0.42, rely=0.1)
         self.connect_button.place(relx=0.7, rely=0.1)
 
+        # TODO: сделать grid, добавить параметр auto
         for i in range(2):
             for j in range(2):
                 self.algs_buttons[2 * i + j] \
