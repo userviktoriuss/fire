@@ -32,12 +32,11 @@ class MainWindow(ctk.CTk):
         s.configure('TNotebook.Tab', font=(FONT, str(TAB_TEXT_SIZE)))
         self.notebook = btrp.Notebook(self, width=300, height=200)
 
-        self.algs = [
-            haf.HexagonalAlgorithmFrame(self.notebook, self.autocad),
-            HexGeneticAlgorithmFrame(self.notebook, self.autocad),
-            haf.HexagonalAlgorithmFrame(self.notebook, self.autocad),  # TODO: change
-            haf.HexagonalAlgorithmFrame(self.notebook, self.autocad)  # TODO: change
-        ]
+        self.algs = []
+        self.algs.append(haf.HexagonalAlgorithmFrame(self.notebook, self.autocad))
+        self.algs.append(HexGeneticAlgorithmFrame(self.notebook, self.autocad))
+        self.algs.append(haf.HexagonalAlgorithmFrame(self.notebook, self.autocad))  # TODO: change
+        self.algs.append(haf.HexagonalAlgorithmFrame(self.notebook, self.autocad))  # TODO: change
         self.main_frame = mf.MainFrame(self.notebook, self)
         self.main_frame.pack(padx=5, pady=5, side='left', fill='both')
 
@@ -91,12 +90,14 @@ class MainWindow(ctk.CTk):
             MsgBox.show_error_msgbox('Не удалось загрузить параметры из файла. Возможно, это не json-файл.')
 
         for i in range(len(self.algs)):
-            if i != 1:
+            if i > 1:
                 continue  # TODO: убрать!!!! это тест!!!
             for name in d[str(i)]:
                 val = d[str(i)][name]
                 self.algs[i].params.update(name, val)
-                self.algs[i].set_entry_(name, str(val))
+                self.algs[i].set_(name, val)  # TODO: заработает?
+
+        pass
 
     # Сохранить текущие параметры в файл.
     def save_params_(self, path):
@@ -104,7 +105,7 @@ class MainWindow(ctk.CTk):
         for i in range(len(self.algs)):
             # TODO: убрать!!!!!
             d[str(i)] = dict()
-            if i != 1:
+            if i > 1:
                 continue
             try:
                 self.algs[i].update_all_params_()

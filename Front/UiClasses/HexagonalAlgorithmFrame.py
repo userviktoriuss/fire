@@ -58,32 +58,19 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
         self.line2.columnconfigure(0, weight=1)
         self.line2.columnconfigure(1, weight=4)
         self.line2.rowconfigure((0, 1, 2), weight=1)
-        self.r_label = ctk.CTkLabel(self.line2, text='R', font=Fonts.label_font)
-        self.r_input = ctk.CTkEntry(self.line2)
-        self.alpha_res_label = ctk.CTkLabel(self.line2, text='ALPHA_RESOLUTION', font=Fonts.label_font)
-        self.alpha_res_input = ctk.CTkEntry(self.line2)
-        self.res_label = ctk.CTkLabel(self.line2, text='RESOLUTION', font=Fonts.label_font)
-        self.res_input = ctk.CTkEntry(self.line2)
 
-        self.r_label.grid(row=0, column=0, sticky='w', padx=10)
-        self.r_input.grid(row=0, column=1, columnspan=2, sticky='e')
-        self.alpha_res_label.grid(row=1, column=0, sticky='w', padx=10)
-        self.alpha_res_input.grid(row=1, column=1, columnspan=2, sticky='e')
-        self.res_label.grid(row=2, column=0, sticky='w', padx=10)
-        self.res_input.grid(row=2, column=1, columnspan=2, sticky='e')
+        self.add_label_input_pair_('R', self.line2, row=0)
+        self.add_label_input_pair_('ALPHA_RESOLUTION', self.line2, row=1, type_=int)
+        self.add_label_input_pair_('RESOLUTION', self.line2, row=2, type_=int)
         # line3 ---------------------------------------------------------
-        self.line3.columnconfigure((0, 1, 2), weight=1)
+        self.line3.columnconfigure(0, weight=1)
+        self.line3.columnconfigure(1, weight=2)
         self.line3.rowconfigure((0, 1), weight=1)
-        self.remove_unnec_circles = ctk.CTkCheckBox(self.line3, text='Убрать лишние круги',
-                                                    command=self.activate_remover_choice_,
-                                                    font=Fonts.label_font)
-        self.remover_label = ctk.CTkLabel(self.line3, text='Способ:', font=Fonts.label_font)
-        self.remover = ctk.CTkComboBox(self.line3, values=list(self.removers.keys()), font=Fonts.label_font)
+
+        self.add_checkbox('DO_REMOVE', self.line3, 'Убрать лишние круги', self.activate_remover_choice_, 0)
+        self.add_label_combobox_pair_('REMOVER', self.line3, 'Способ:', list(self.removers.keys()), 1)
         self.activate_remover_choice_()
 
-        self.remove_unnec_circles.grid(row=0, column=0, columnspan=3, sticky='w')
-        self.remover_label.grid(row=1, column=0, sticky='w')
-        self.remover.grid(row=1, column=1, columnspan=2, sticky='we')
         # grid ------------------------------------------------------------
         # Расположим все строки в левой части.
         self.left_part_frame.columnconfigure(0, weight=1)
@@ -95,7 +82,8 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
         self.line2.grid(row=1, column=0, stick='news', padx=20, pady=10)
 
     def activate_remover_choice_(self):
-        self.remover.configure(state='disabled' if self.remove_unnec_circles.get() == 0 else 'readonly')
+        self.__dict__[self.combobox_name_('REMOVER')]\
+            .configure(state='disabled' if self.get_('DO_REMOVE') == 0 else 'readonly')
 
     def run_alg_(self):
         # TODO: добавить обработку для нескольких многоугольников
@@ -111,15 +99,15 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
 
         # Получим параметры алгоритма.
         try:
-            R = Exctractor.get_float(self.r_input.get(), 'R')
-            alpha_res = Exctractor.get_int(self.alpha_res_input.get(), 'ALPHA_RESOLUTION')
-            res = Exctractor.get_int(self.res_input.get(), 'RESOLUTION')
+            R = self.get_('R')
+            alpha_res = self.get_('ALPHA_RESOLUTION')
+            res = self.get_('RESOLUTION')
         except:
             return
 
-        remove_redundant = self.remove_unnec_circles.get() == 1
+        remove_redundant = self.get_('DO_REMOVE') == 1
 
-        remover = self.remover.get()
+        remover = self.get_('REMOVER')
 
         # Запустим алгоритм.
         hex_alg = HexagonalAlgorithm(poly, R)  # Укажем данные.

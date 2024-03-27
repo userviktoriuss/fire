@@ -2,20 +2,23 @@ import json
 import customtkinter as ctk
 import ttkbootstrap as btrp
 
-window = ctk.CTk()
+class params:
+    def __init__(self):
+        self.d = dict()
+
+class algorithm:
+    def __init__(self):
+        self.p = params()
 
 
+class alg1(algorithm):
+    pass
 
-params = {
-    1: 1.5,
-    2: 6
-}
+class alg2(algorithm):
+    pass
 
-with open('strings.json', 'w') as f:
-    json.dump(params, f)
+a1 = alg1()
+a2 = alg2()
 
-with open('strings.json', 'r') as f:
-    d = json.load(f)
-    print(d)
-
-window.mainloop()
+a1.p.d[int] = 5
+print(a1.p.d, a2.p.d)

@@ -134,22 +134,22 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
 
         # Получим параметры алгоритма.
         try:
-            R = self.get_entry_('R')
-            alpha_res = self.get_entry_('ALPHA_RESOLUTION')
-            res = self.get_entry_('RESOLUTION')
+            R = self.get_('R')
+            alpha_res = self.get_('ALPHA_RESOLUTION')
+            res = self.get_('RESOLUTION')
             # ---
-            iterations_mult_del = self.get_entry_('ITERATIONS_MULT_DELETION')
-            iterations_mult_moving = self.get_entry_('ITERATIONS_MULT_MOVING')
-            INNER_BOUND = self.get_entry_('INNER_BOUND')
-            move_schedule_mult = self.get_entry_('MOVE_SCHEDULE_MULT')
+            iterations_mult_del = self.get_('ITERATIONS_MULT_DELETION')
+            iterations_mult_moving = self.get_('ITERATIONS_MULT_MOVING')
+            INNER_BOUND = self.get_('INNER_BOUND')
+            move_schedule_mult = self.get_('MOVE_SCHEDULE_MULT')
             # ---
-            angle_res = self.get_entry_('ANGLE_RESOLUTION')
-            move_mult = self.get_entry_('MOVE_MULTIPLIER')
-            self_inter = self.get_entry_('SELF_INTER')
-            outside = self.get_entry_('OUTSIDE')
-            coverage = self.get_entry_('COVERAGE')
-            del_circle_count = self.get_entry_('DEL_CIRCLE_COUNT')
-            circle_count = self.get_entry_('CIRCLE_COUNT')
+            angle_res = self.get_('ANGLE_RESOLUTION')
+            move_mult = self.get_('MOVE_MULTIPLIER')
+            self_inter = self.get_('SELF_INTER')
+            outside = self.get_('OUTSIDE')
+            coverage = self.get_('COVERAGE')
+            del_circle_count = self.get_('DEL_CIRCLE_COUNT')
+            circle_count = self.get_('CIRCLE_COUNT')
         except:
             print('Parsing exception')
             return
