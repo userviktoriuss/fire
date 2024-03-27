@@ -4,12 +4,12 @@ from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorit
 from Algorithms.BranchesAndBounds.ParamsClasses.StretchedBnBParams import StretchedBnBParams
 from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.Hexagonal.hexagonal_coverings import hexagonal_np
-from Front.Extractor import Exctractor
 from Front.Fonts import Fonts
 from Front.UiClasses.AlgorithmFrame import AlgorithmFrame, TextInfo
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
 
+from Front.UiClasses.MsgBox import MsgBox
 from Utils.layering import get_layers
 
 
@@ -83,8 +83,8 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
         self.line2.rowconfigure((0, 1, 2), weight=1)
 
         self.add_label_input_pair_('R', self.line2, row=0)
-        self.add_label_input_pair_('ALPHA_RESOLUTION', self.line2, row=1)
-        self.add_label_input_pair_('RESOLUTION', self.line2, row=2)
+        self.add_label_input_pair_('ALPHA_RESOLUTION', self.line2, row=1, type_=int)
+        self.add_label_input_pair_('RESOLUTION', self.line2, row=2, type_=int)
 
         # line3 ---------------------------------------------------------
         self.line3.columnconfigure(0, weight=1)
@@ -93,7 +93,7 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
 
         self.add_label_input_pair_('ITERATIONS_MULT_DELETION', self.line3, row=0)
         self.add_label_input_pair_('ITERATIONS_MULT_MOVING', self.line3, row=1)
-        self.add_label_input_pair_('INNER_BOUND', self.line3, row=2)
+        self.add_label_input_pair_('INNER_BOUND', self.line3, row=2, type_=int)
         self.add_label_input_pair_('MOVE_SCHEDULE_MULT', self.line3, row=3)
 
         # line4 -----------------------------------------------------------
@@ -101,7 +101,7 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
         self.line4.columnconfigure(1, weight=4)
         self.line4.rowconfigure(tuple(range(7)), weight=1)
 
-        self.add_label_input_pair_('ANGLE_RESOLUTION', self.line4, row=0)
+        self.add_label_input_pair_('ANGLE_RESOLUTION', self.line4, row=0, type_=int)
         self.add_label_input_pair_('MOVE_MULTIPLIER', self.line4, row=1)
         self.add_label_input_pair_('SELF_INTER', self.line4, row=2)
         self.add_label_input_pair_('OUTSIDE', self.line4, row=3)
@@ -120,24 +120,6 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
         self.line3.grid(row=2, column=0, stick='news', padx=20, pady=10)
         self.line4.grid(row=3, column=0, stick='news', padx=20, pady=10)
 
-    def label_name_(self, name: str):
-        return f'{name}_label'
-
-    def entry_name_(self, name: str):
-        return f'{name}_entry'
-
-    def add_label_input_pair_(self, name: str, frame: ctk.CTkFrame, row: int):
-        self.__dict__[self.label_name_(name)] = ctk.CTkLabel(frame, text=name, font=Fonts.label_font)
-        self.__dict__[self.entry_name_(name)] = ctk.CTkEntry(frame)
-        self.__dict__[self.label_name_(name)].grid(row=row, column=0, sticky='w', padx=10)
-        self.__dict__[self.entry_name_(name)].grid(row=row, column=1, columnspan=2, sticky='e')
-        # TODO: check that works ok
-
-    def get_float_entry_(self, field: str):
-        return Exctractor.get_float(self.__dict__[self.entry_name_(field)].get(), field)
-
-    def get_int_entry_(self, field: str):
-        return Exctractor.get_int(self.__dict__[self.entry_name_(field)].get(), field)
 
     def run_alg_(self):
         # TODO: добавить обработку для нескольких многоугольников
@@ -147,33 +129,29 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
         try:
             poly = self.autocad.get_polygons()
         except:
-            CTkMessagebox(title='Ошибка!',
-                          message='Не удалось получить многоугольник(и). \n' + \
-                                  'Прервите все активные команды и попробуйте снова.',
-                          icon='cancel',
-                          width=580,
-                          font=Fonts.text_font)
+            MsgBox.show_error_msgbox('Не удалось получить многоугольник(и). \nПрервите все активные команды и попробуйте снова.')
             return
 
         # Получим параметры алгоритма.
         try:
-            R = self.get_float_entry_('R')
-            alpha_res = self.get_int_entry_('ALPHA_RESOLUTION')
-            res = self.get_int_entry_('RESOLUTION')
+            R = self.get_entry_('R')
+            alpha_res = self.get_entry_('ALPHA_RESOLUTION')
+            res = self.get_entry_('RESOLUTION')
             # ---
-            iterations_mult_del = self.get_float_entry_('ITERATIONS_MULT_DELETION')
-            iterations_mult_moving = self.get_float_entry_('ITERATIONS_MULT_MOVING')
-            INNER_BOUND = self.get_int_entry_('INNER_BOUND')
-            move_schedule_mult = self.get_float_entry_('MOVE_SCHEDULE_MULT')
+            iterations_mult_del = self.get_entry_('ITERATIONS_MULT_DELETION')
+            iterations_mult_moving = self.get_entry_('ITERATIONS_MULT_MOVING')
+            INNER_BOUND = self.get_entry_('INNER_BOUND')
+            move_schedule_mult = self.get_entry_('MOVE_SCHEDULE_MULT')
             # ---
-            angle_res = self.get_int_entry_('ANGLE_RESOLUTION')
-            move_mult = self.get_float_entry_('MOVE_MULTIPLIER')
-            self_inter = self.get_float_entry_('SELF_INTER')
-            outside = self.get_float_entry_('OUTSIDE')
-            coverage = self.get_float_entry_('COVERAGE')
-            del_circle_count = self.get_float_entry_('DEL_CIRCLE_COUNT')
-            circle_count = self.get_float_entry_('CIRCLE_COUNT')
+            angle_res = self.get_entry_('ANGLE_RESOLUTION')
+            move_mult = self.get_entry_('MOVE_MULTIPLIER')
+            self_inter = self.get_entry_('SELF_INTER')
+            outside = self.get_entry_('OUTSIDE')
+            coverage = self.get_entry_('COVERAGE')
+            del_circle_count = self.get_entry_('DEL_CIRCLE_COUNT')
+            circle_count = self.get_entry_('CIRCLE_COUNT')
         except:
+            print('Parsing exception')
             return
 
         # Запустим алгоритм.
@@ -225,9 +203,4 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
         try:
             self.autocad.draw_circles(circles)
         except:
-            CTkMessagebox(title='Ошибка!',
-                          message='Не удалось отрисовать покрытие. \n' + \
-                                  'Прервите все активные команды и попробуйте снова.',
-                          icon='cancel',
-                          width=580,
-                          font=Fonts.text_font)
+            MsgBox.show_error_msgbox('Не удалось отрисовать покрытие. \nПрервите все активные команды и попробуйте снова.')

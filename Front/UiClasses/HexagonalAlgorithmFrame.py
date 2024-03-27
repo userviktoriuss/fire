@@ -8,6 +8,8 @@ from Front.UiClasses.AlgorithmFrame import AlgorithmFrame, TextInfo
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
 
+from Front.UiClasses.MsgBox import MsgBox
+
 
 class HexagonalAlgorithmFrame(AlgorithmFrame):
     '''
@@ -104,14 +106,8 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
         try:
             poly = self.autocad.get_polygons()
         except:
-            CTkMessagebox(title='Ошибка!',
-                          message='Не удалось получить многоугольник(и). \n' + \
-                                  'Прервите все активные команды и попробуйте снова.',
-                          icon='cancel',
-                          width=580,
-                          font=Fonts.text_font)
+            MsgBox.show_error_msgbox('Не удалось получить многоугольник(и). \nПрервите все активные команды и попробуйте снова.')
             return
-            pass
 
         # Получим параметры алгоритма.
         try:
@@ -146,10 +142,5 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
         try:
             self.autocad.draw_circles(circles)
         except:
-            CTkMessagebox(title='Ошибка!',
-                          message='Не удалось отрисовать покрытие. \n' + \
-                                  'Прервите все активные команды и попробуйте снова.',
-                          icon='cancel',
-                          width=580,
-                          font=Fonts.text_font)
+            MsgBox.show_error_msgbox('Не удалось отрисовать покрытие. \nПрервите все активные команды и попробуйте снова.')
 

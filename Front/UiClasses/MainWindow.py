@@ -1,16 +1,22 @@
+import json
+import tkinter as tk
+import tkinter.filedialog
+
 import ttkbootstrap as btrp
 import customtkinter as ctk
-from CTkMessagebox import CTkMessagebox
 
 import Back.AutoCadFacade as acf
 import Front.UiClasses.HexagonalAlgorithmFrame as haf
 import Front.UiClasses.MainFrame as mf
 from Front.Fonts import Fonts
-from Front.Settings import ICON, FONT, TAB_TEXT_SIZE, MENU_TEXT_SIZE
+from Front.Settings import FONT, TAB_TEXT_SIZE, MENU_TEXT_SIZE, PARAMS_PATH
 from Front.UiClasses.HexGeneticAlgorithmFrame import HexGeneticAlgorithmFrame
+from Front.UiClasses.MsgBox import MsgBox
 
 
 class MainWindow(ctk.CTk):
+    open_file = None
+
     def __init__(self, title, geometry):
         super().__init__()
         self.title(title)
@@ -39,9 +45,7 @@ class MainWindow(ctk.CTk):
             alg.pack(padx=5, pady=5)
 
         # TODO: другие алгоритмы
-        # TODO: Задать алгоритмам один интерфейс - мб, пронаследовать от какго-то абстрактного
         # TODO: захардкодить алгоритмам секции описания
-        # TODO: добавить скроллинг для правой секции, если описание слишком длинное
 
         self.notebook.add(self.main_frame, text='Главная')
         for alg in self.algs:
@@ -50,39 +54,86 @@ class MainWindow(ctk.CTk):
         self.notebook.pack(side='left', fill='both', expand=True)
         self.notebook.enable_traversal()
 
+        # Загрузим параметры по умолчанию
+        self.load_params_()
+
     def config_menu(self):
         fnt = (FONT, MENU_TEXT_SIZE)
         self.menu = btrp.Menu(self, font=fnt)
         self.file_menu = btrp.Menu(self.menu, tearoff=0, font=fnt)
 
-        self.file_menu.add_command(label='Сохранить параметры', command=self.save_params_)
-        self.file_menu.add_command(label='Сохранить параметры как', command=self.save_params_as_)
-        self.file_menu.add_command(label='Загрузить параметры', command=self.load_params_)
+        self.file_menu.add_command(label='Открыть', command=self.open_params_)
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label='Сохранить', command=lambda: self.save_params_(path=self.open_file))
+        self.file_menu.add_command(label='Сохранить как', command=self.save_params_as_)
+        self.file_menu.add_command(label='Назначить по умолчанию',
+                                   command=lambda: self.save_params_(path=PARAMS_PATH))
         self.file_menu.add_separator()
         self.file_menu.add_command(label='Выйти', command=self.quit)
 
         self.menu.add_cascade(menu=self.file_menu, label='Файл', font=fnt)
         self.config(menu=self.menu)
 
-        self.menu.add_command(command=self.show_info_msgbox_, label='О программе', font=fnt)
+        self.menu.add_command(command=MsgBox.show_about_program_msgbox_, label='О программе', font=fnt)
 
-    def save_params_(self):
-        pass  # TODO:
+    # Загружает параметры из файла.
+    def load_params_(self, path=None):
+        if path is None:
+            path = PARAMS_PATH
 
+        self.open_file = path
+
+        d = None
+        try:
+            with open(path, 'r') as f:
+                d = json.load(f)
+        except:
+            MsgBox.show_error_msgbox('Не удалось загрузить параметры из файла. Возможно, это не json-файл.')
+
+        for i in range(len(self.algs)):
+            if i != 1:
+                continue  # TODO: убрать!!!! это тест!!!
+            for name in d[str(i)]:
+                val = d[str(i)][name]
+                self.algs[i].params.update(name, val)
+                self.algs[i].set_entry_(name, str(val))
+
+    # Сохранить текущие параметры в файл.
+    def save_params_(self, path):
+        d = dict()
+        for i in range(len(self.algs)):
+            # TODO: убрать!!!!!
+            d[str(i)] = dict()
+            if i != 1:
+                continue
+            try:
+                self.algs[i].update_all_params_()
+            except:
+                return
+            d[str(i)] = self.algs[i].params.get_one_dict()
+
+        try:
+            with open(path, 'w') as f:
+                json.dump(d, f)
+        except:
+            MsgBox.show_error_msgbox('Не удалось сохранить параметры.')
+
+    # Сохранить текущие параметры в отдельный файл.
     def save_params_as_(self):
-        pass  # TODO:
+        path = tk.filedialog.asksaveasfilename(defaultextension=".json")
+        if not path.endswith('.json'):
+            path += '.json'
+        if path is None or path == '':
+            return
+        self.open_file = path
+        self.save_params_(path)
 
-    def load_params_(self):
-        pass  # TODO:
-
-    def show_info_msgbox_(self):
-        CTkMessagebox(title='О программе',
-                      message='-= Дополнение для AutoCAD =-\n\n' + \
-                              'Версия 1.0\n\n' + \
-                              'Филимонов Виктор, 2024',
-                      icon=ICON,
-                      width=580,
-                      font=Fonts.text_font)  # TODO:
+    # Загрузить параметры из файла.
+    def open_params_(self):
+        path = tk.filedialog.askopenfilename(defaultextension=".json", filetypes=(("json files","*.json"),))
+        if path is None or path == '':
+            return
+        self.load_params_(path)
 
     def setup_autocad(self):
         self.autocad = acf.AutoCadFacade()
