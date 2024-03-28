@@ -8,28 +8,26 @@ import matplotlib.pyplot as plt
 
 # Зародыш TDD
 #P = Polygon([Point(0, 0), Point(2, 0), Point(6, 2), Point(1, 5), Point(1, 4)])
+from Examples.polygons import polygons_dict
 from Utils.Circle import Circle
 
 #P = Polygon([Point(0, 0), Point(5, 0), Point(5, 5), Point(0, 5)])
 #plt.plot(P.exterior.xy[0], P.exterior.xy[1])
+from Utils.misc_funcs import expected_circle_count_weighted
+
 dx = 1.5
 theta = 60
 hypot = dx / math.cos(theta)
 dy = math.sqrt(hypot ** 2 - dx ** 2)
 
-P = Polygon([Point(dx * k / 10, (dx * k / 10) ** 6) for k in range(10)] + [Point(0.5 * dx, (0.9 * dx) ** 6)])
-(minx, miny, maxx, maxy) = P.bounds
-P_described = Polygon([Point(minx - 1, miny - 1), Point(maxx + 1, miny - 1), Point(maxx + 1, maxy + 1), Point(minx - 1, maxy + 1)])
-inners = []
-
-for inn in inners:
-    P = P.difference(inn)
+P = polygons_dict['P1']
+R = 1.5
 
 t0 = time.perf_counter()
 alg = BaronsAlgorithm(
     polygon=P,
-    n_barons=5,
-    radius=1.0,
+    n_barons=expected_circle_count_weighted(P, R),
+    radius=R,
 )
 
 alg.run_algorithm(
@@ -41,7 +39,7 @@ alg.run_algorithm(
     far_mult=1.7,
     covered_mult=1,
     verbose=True
-) # avg time 32 sec
+)
 
 circles = alg.get_circles()
 

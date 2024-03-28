@@ -8,9 +8,9 @@ from Utils.Circle import Circle
 from Utils.misc_funcs import group_n
 
 
-# TODO: may be unused
 def make_polygon_from_polyline(coords: tuple[float]) -> Polygon:
     return Polygon([Point(np.round(p[0], 3), np.round(p[1], 3)) for p in group_n(2, coords)])
+
 
 def make_points_from_polyline(coords: tuple[float]) -> list[Point]:
     return [Point(np.round(p[0], 3), np.round(p[1], 3)) for p in group_n(2, coords)]
@@ -27,6 +27,22 @@ class AutoCadFacade():
         doc = ComWrapper(self.acad.doc)
         return doc.Name
 
+    def get_polygon_and_circles(self) -> tuple[Polygon, list[Circle]]:
+        selection = ComWrapper(self.acad.get_selection(text='Выберите полилинии:'))
+
+        polygon = None
+        circles = []
+        for i in range(selection.Count):
+            s = selection.Item(i)
+
+            if s.EntityName == 'AcDbCircle':
+                circles.append(Circle(Point(s.center[0], s.center[1]), s.radius))
+
+            if s.EntityName == 'AcDbPolyline':
+                polygon = make_polygon_from_polyline(s.Coordinates)
+
+        return (polygon, circles)
+
     def get_polygons(self) -> Polygon:
         selection = ComWrapper(self.acad.get_selection(text='Выберите полилинии:'))
 
@@ -34,9 +50,11 @@ class AutoCadFacade():
         for i in range(selection.Count):
             s = selection.Item(i)
 
+            if s.EntityName == 'AcDbCircle':
+                polygons.append(Circle(Point(s.center[0], s.center[1]), s.radius).polygon)
+
             if s.EntityName == 'AcDbPolyline':
                 polygons.append(make_points_from_polyline(s.Coordinates))
-                # TODO: Добавить каст кругов autocad к моим.
 
         return Polygon(polygons[0], polygons[1:])
 
