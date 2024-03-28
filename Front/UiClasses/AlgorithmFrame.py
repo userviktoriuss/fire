@@ -124,11 +124,11 @@ class AlgorithmFrame(btrp.Frame):
     def get_variants_(self, name: str):
         return [self.entry_name_(name), self.combobox_name_(name), self.checkbox_name_(name)]
 
-    def add_label_input_pair_(self, name: str, frame: ctk.CTkFrame, row: int, type_: 'the type' = float):
+    def add_label_input_pair_(self, name: str, frame: ctk.CTkFrame, row: int, type_: 'the type' = float, width: int=140):
         self.params.put(name, type_('0'), type_)
 
         self.__dict__[self.label_name_(name)] = ctk.CTkLabel(frame, text=name, font=Fonts.label_font)
-        self.__dict__[self.entry_name_(name)] = ctk.CTkEntry(frame)
+        self.__dict__[self.entry_name_(name)] = ctk.CTkEntry(frame, width=width)
         self.__dict__[self.label_name_(name)].grid(row=row, column=0, sticky='w', padx=10)
         self.__dict__[self.entry_name_(name)].grid(row=row, column=1, columnspan=2, sticky='e')
 

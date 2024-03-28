@@ -103,8 +103,9 @@ class RkGeneticAlgorithmFrame(AlgorithmFrame):
 
     def fill_left_panel_(self):
         self.line1 = ctk.CTkFrame(self.left_panel)
-        self.line2 = ctk.CTkFrame(self.left_panel)
-        self.line3 = ctk.CTkFrame(self.left_panel)
+        self.line23 = ctk.CTkFrame(self.left_panel)
+        self.line2 = ctk.CTkFrame(self.line23)
+        self.line3 = ctk.CTkFrame(self.line23)
         self.line4 = ctk.CTkFrame(self.left_panel)
         self.line5 = ctk.CTkFrame(self.left_panel)
         self.line6 = ctk.CTkFrame(self.left_panel)
@@ -131,8 +132,8 @@ class RkGeneticAlgorithmFrame(AlgorithmFrame):
         self.line3.columnconfigure(1, weight=4)
         self.line3.rowconfigure(tuple(range(2)), weight=1)
 
-        self.add_label_input_pair_('TIME_START', self.line3, row=0)
-        self.add_label_input_pair_('TIME_STOP', self.line3, row=1)
+        self.add_label_input_pair_('TIME_START', self.line3, row=0, width=50)
+        self.add_label_input_pair_('TIME_STOP', self.line3, row=1, width=50)
 
         # line4 -----------------------------------------------------------
         self.line4.columnconfigure(0, weight=1)
@@ -179,23 +180,18 @@ class RkGeneticAlgorithmFrame(AlgorithmFrame):
 
         # grid ------------------------------------------------------------
         # Расположим все строки в левой части.
-        self.left_part_frame.columnconfigure(0, weight=1)
-        self.left_part_frame.rowconfigure(0, weight=1)
-        self.left_part_frame.rowconfigure((1, 2, 3), weight=3)
+        self.line2.grid(row=0, column=0, stick='news', padx=5, pady=10)
+        self.line3.grid(row=0, column=1, stick='news', padx=10, pady=10)
 
         self.line1.grid(row=0, column=0, stick='news', padx=20, pady=10)
-        self.line2.grid(row=1, column=0, stick='news', padx=20, pady=10)
-        self.line3.grid(row=2, column=0, stick='news', padx=20, pady=10)
-        self.line4.grid(row=3, column=0, stick='news', padx=20, pady=10)
-        self.line5.grid(row=4, column=0, stick='news', padx=20, pady=10)
-        self.line6.grid(row=5, column=0, stick='news', padx=20, pady=10)
+        self.line23.grid(row=1, column=0, stick='news', padx=20, pady=10)
+        self.line4.grid(row=2, column=0, stick='news', padx=20, pady=10)
+        self.line5.grid(row=3, column=0, stick='news', padx=20, pady=10)
+        self.line6.grid(row=4, column=0, stick='news', padx=20, pady=10)
 
 
     def run_alg_(self):
-        # TODO: добавить обработку для нескольких многоугольников
-        # TODO: Добавить каст кругов к многоугольникам.
         # Получим многоугольник.
-
         try:
             poly = self.autocad.get_polygons()
         except:

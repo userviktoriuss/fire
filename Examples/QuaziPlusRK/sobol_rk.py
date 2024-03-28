@@ -1,9 +1,5 @@
-import math
-import random
 import time
 
-from Algorithms.Halton.Halton import halton
-from shapely import Polygon, Point
 import matplotlib.pyplot as plt
 
 from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign

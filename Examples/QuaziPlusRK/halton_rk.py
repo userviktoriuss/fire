@@ -1,5 +1,3 @@
-import math
-import random
 import time
 
 from Algorithms.Halton.Halton import halton
