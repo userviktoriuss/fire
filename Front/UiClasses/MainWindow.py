@@ -4,12 +4,13 @@ import tkinter.filedialog
 
 import ttkbootstrap as btrp
 import customtkinter as ctk
+from PIL import ImageTk
 
 import Back.AutoCadFacade as acf
 import Front.UiClasses.HexagonalAlgorithmFrame as haf
 import Front.UiClasses.MainFrame as mf
 from Front.Fonts import Fonts
-from Front.Settings import FONT, TAB_TEXT_SIZE, MENU_TEXT_SIZE, PARAMS_PATH
+from Front.Settings import FONT, TAB_TEXT_SIZE, MENU_TEXT_SIZE, PARAMS_PATH, ICON
 from Front.UiClasses.HexGeneticAlgorithmFrame import HexGeneticAlgorithmFrame
 from Front.UiClasses.MsgBox import MsgBox
 from Front.UiClasses.RkGeneticAlgorithmFrame import RkGeneticAlgorithmFrame
@@ -21,6 +22,9 @@ class MainWindow(ctk.CTk):
     def __init__(self, title, geometry):
         super().__init__()
         self.title(title)
+        self.iconbitmap()
+        icopath = ImageTk.PhotoImage(file=ICON, master=self)
+        self.iconphoto(True, icopath)
         self.geometry(geometry)
         self.setup_autocad()
         Fonts.setup_fonts()
@@ -36,16 +40,13 @@ class MainWindow(ctk.CTk):
         self.algs = []
         self.algs.append(haf.HexagonalAlgorithmFrame(self.notebook, self.autocad))
         self.algs.append(HexGeneticAlgorithmFrame(self.notebook, self.autocad))
-        self.algs.append(RkGeneticAlgorithmFrame(self.notebook, self.autocad))  # TODO: change
+        self.algs.append(RkGeneticAlgorithmFrame(self.notebook, self.autocad))
         self.algs.append(haf.HexagonalAlgorithmFrame(self.notebook, self.autocad))  # TODO: change
         self.main_frame = mf.MainFrame(self.notebook, self)
         self.main_frame.pack(padx=5, pady=5, side='left', fill='both')
 
         for alg in self.algs:
             alg.pack(padx=5, pady=5)
-
-        # TODO: другие алгоритмы
-        # TODO: захардкодить алгоритмам секции описания
 
         self.notebook.add(self.main_frame, text='Главная')
         for alg in self.algs:
@@ -91,12 +92,10 @@ class MainWindow(ctk.CTk):
             MsgBox.show_error_msgbox('Не удалось загрузить параметры из файла. Возможно, это не json-файл.')
 
         for i in range(len(self.algs)):
-            # if i > 2:
-            #     continue  # TODO: убрать!!!! это тест!!!
             for name in d[str(i)]:
                 val = d[str(i)][name]
                 self.algs[i].params.update(name, val)
-                self.algs[i].set_(name, val)  # TODO: заработает?
+                self.algs[i].set_(name, val)
 
         pass
 
@@ -104,10 +103,7 @@ class MainWindow(ctk.CTk):
     def save_params_(self, path):
         d = dict()
         for i in range(len(self.algs)):
-            # TODO: убрать!!!!!
             d[str(i)] = dict()
-            # if i > 2:
-            #     continue
             try:
                 self.algs[i].update_all_params_()
             except:
@@ -132,7 +128,7 @@ class MainWindow(ctk.CTk):
 
     # Загрузить параметры из файла.
     def open_params_(self):
-        path = tk.filedialog.askopenfilename(defaultextension=".json", filetypes=(("json files","*.json"),))
+        path = tk.filedialog.askopenfilename(defaultextension=".json", filetypes=(("json files", "*.json"),))
         if path is None or path == '':
             return
         self.load_params_(path)

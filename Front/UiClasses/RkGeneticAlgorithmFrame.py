@@ -224,7 +224,8 @@ class RkGeneticAlgorithmFrame(AlgorithmFrame):
             coverage = self.get_('COVERAGE')
             circle_count = self.get_('CIRCLE_COUNT')
         except:
-            print('Parsing exception')  # TODO: кидать здесь и в других сообщение, а-то непонятно, что ничего не считается.
+            MsgBox.show_info_msgbox('Запуск отменён.')
+            print('Parsing exception')
             return
 
         # Запустим алгоритм.

@@ -5,7 +5,6 @@ from Front.Settings import ICON
 
 
 class MsgBox:
-    # TODO: вынести все штуки с msgbox в статический класс.
     @staticmethod
     def show_error_msgbox(text, title='Ошибка!'):
         CTkMessagebox(title=title,
@@ -20,7 +19,7 @@ class MsgBox:
                       message=text,
                       icon='info',
                       width=580,
-                      font=Fonts.text_font)  # TODO:
+                      font=Fonts.text_font)
 
     @staticmethod
     def show_about_program_msgbox_():
@@ -30,4 +29,4 @@ class MsgBox:
                               'Филимонов Виктор, 2024',
                       icon=ICON,
                       width=580,
-                      font=Fonts.text_font)  # TODO:
+                      font=Fonts.text_font)

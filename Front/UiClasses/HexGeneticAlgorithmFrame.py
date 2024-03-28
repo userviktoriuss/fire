@@ -122,8 +122,6 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
 
 
     def run_alg_(self):
-        # TODO: добавить обработку для нескольких многоугольников
-        # TODO: Добавить каст кругов к многоугольникам.
         # Получим многоугольник.
 
         try:
@@ -151,6 +149,7 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
             del_circle_count = self.get_('DEL_CIRCLE_COUNT')
             circle_count = self.get_('CIRCLE_COUNT')
         except:
+            MsgBox.show_info_msgbox('Запуск отменён.')
             print('Parsing exception')
             return
 

@@ -86,8 +86,6 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
             .configure(state='disabled' if self.get_('DO_REMOVE') == 0 else 'readonly')
 
     def run_alg_(self):
-        # TODO: добавить обработку для нескольких многоугольников
-        # TODO: Добавить каст кругов к многоугольникам.
         # Получим многоугольник.
         # poly = None
 
@@ -103,6 +101,7 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
             alpha_res = self.get_('ALPHA_RESOLUTION')
             res = self.get_('RESOLUTION')
         except:
+            MsgBox.show_info_msgbox('Запуск отменён.')
             return
 
         remove_redundant = self.get_('DO_REMOVE') == 1

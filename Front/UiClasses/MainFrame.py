@@ -4,13 +4,15 @@ from PIL import Image
 from CTkMessagebox import CTkMessagebox
 
 from Front.Fonts import Fonts
+from Front.Settings import HEX, HEX_SIZE, GENETIC, GENETIC_SIZE, RK, RK_SIZE, QUAZI, QUAZI_SIZE, HEX_HOVERED, \
+    GENETIC_HOVERED, RK_HOVERED, QUAZI_HOVERED
 
 
 class MainFrameMessages:
     NO_CONNECTED_DOCUMENT = 'Документ не подключен'
     CONNECTED_TO = 'Подключено к {0}'
 
-# TODO: поставить свой icon
+
 class MainFrame(ctk.CTkFrame):
     def __init__(self, master: btrp.Notebook, main_window: 'MainWindow'):
         super().__init__(master)
@@ -40,17 +42,17 @@ class MainFrame(ctk.CTkFrame):
         self.algs_buttons = []
 
         self.imgs = [
-            ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png'), size=(1106, 800)),
-            ctk.CTkImage(dark_image=Image.open('pics/genetic.png'), size=(800, 640)),
-            ctk.CTkImage(dark_image=Image.open('pics/rkbnb.png'), size=(1006, 535)),
-            ctk.CTkImage(dark_image=Image.open('pics/hexagonal.png'))
+            ctk.CTkImage(dark_image=Image.open(HEX), size=HEX_SIZE),
+            ctk.CTkImage(dark_image=Image.open(GENETIC), size=GENETIC_SIZE),
+            ctk.CTkImage(dark_image=Image.open(RK), size=RK_SIZE),
+            ctk.CTkImage(dark_image=Image.open(QUAZI), size=QUAZI_SIZE)
         ]
 
         self.hover_imgs = [
-            ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png'), size=(1106, 800)),
-            ctk.CTkImage(dark_image=Image.open('pics/genetic_hovered.png'), size=(800, 640)),
-            ctk.CTkImage(dark_image=Image.open('pics/rkbnb_hovered.png'), size=(1006, 535)),
-            ctk.CTkImage(dark_image=Image.open('pics/hexagonal_hovered.png'))
+            ctk.CTkImage(dark_image=Image.open(HEX_HOVERED), size=HEX_SIZE),
+            ctk.CTkImage(dark_image=Image.open(GENETIC_HOVERED), size=GENETIC_SIZE),
+            ctk.CTkImage(dark_image=Image.open(RK_HOVERED), size=RK_SIZE),
+            ctk.CTkImage(dark_image=Image.open(QUAZI_HOVERED), size=QUAZI_SIZE)
         ]
 
         for i in range(algs_count):

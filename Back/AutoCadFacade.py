@@ -17,9 +17,6 @@ def make_points_from_polyline(coords: tuple[float]) -> list[Point]:
 
 
 class AutoCadFacade():
-    # TODO: всё проверить, на всё навесить try catch,
-    # TODO: возвращать статусы / кидать ошибки так, чтобы по ним можно было строить мессадж боксы
-
     def __init__(self):
         self.acad = pyautocad.Autocad()
 
