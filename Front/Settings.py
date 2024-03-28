@@ -33,5 +33,4 @@ QUAZI_HOVERED = 'pics/hexagonal_hovered.png'
 QUAZI_SIZE = (1106, 800)
 
 # Логгирование
-LOGGING_CONF = 'settings/logging.conf'
-#LOGGING_PATH = 'logs/log.log'
+LOGGING_PATH = 'logs/logs.log'

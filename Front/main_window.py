@@ -1,14 +1,16 @@
-from Front.Settings import LOGGING_CONF
+from Front.Settings import LOGGING_PATH
 from Front.UiClasses.CantLoadWindow import CantLoadWindow
 from Front.UiClasses.MainWindow import MainWindow
 from ctypes import windll
 import logging.config
 
-
 if __name__ == '__main__':
     try:
         # Подключим логирование.
-        logging.config.fileConfig(LOGGING_CONF)
+        logging.basicConfig(
+            filename=LOGGING_PATH,
+            level=logging.INFO
+        )
         # Создадим окно.
         window = MainWindow('Дополнение для AutoCAD', '1280x720')
     except Exception as e:
