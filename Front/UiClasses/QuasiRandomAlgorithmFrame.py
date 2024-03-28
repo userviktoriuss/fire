@@ -5,10 +5,11 @@ from Algorithms.NBodies.RundeKuttaWithPolygonAlgorithm import RungeKuttaWithPoly
 from Front.Fonts import Fonts
 from Front.UiClasses.AlgorithmFrame import AlgorithmFrame, TextInfo
 import customtkinter as ctk
-
 from Front.UiClasses.MsgBox import MsgBox
 from Utils.misc_funcs import expected_circle_count, expected_circle_count2, expected_circle_count_weighted
+import logging
 
+logger = logging.getLogger(__name__)
 
 class QuasiRandomAlgorithmFrame(AlgorithmFrame):
     '''
@@ -173,7 +174,8 @@ P1 и P2 нужно брать взаимно простыми примерно 
         # Получим многоугольник.
         try:
             poly = self.autocad.get_polygons()
-        except:
+        except Exception as e:
+            logger.error('Can\'t get polygon from AutoCAD: %s', str(e))
             MsgBox.show_error_msgbox(
                 'Не удалось получить многоугольник(и). \nПрервите все активные команды и попробуйте снова.')
             return
@@ -199,7 +201,8 @@ P1 и P2 нужно брать взаимно простыми примерно 
             g_in_poly = self.get_('G_IN_POLY')
             g_outside_poly = self.get_('G_OUTSIDE_POLY')
             stop_radius = self.get_('STOP_RADIUS')
-        except:
+        except Exception as e:
+            logger.error('Can\'t get params for algorithm: %s', str(e))
             MsgBox.show_info_msgbox('Запуск отменён.')
             print('Parsing exception')
             return
@@ -236,6 +239,10 @@ P1 и P2 нужно брать взаимно простыми примерно 
         # Вернём ответ.
         try:
             self.autocad.draw_circles(circles)
-        except:
+        except Exception as e:
+            logger.debug('Can\'t send circles to AutoCAD: %s', str(e))
             MsgBox.show_error_msgbox(
                 'Не удалось отрисовать покрытие. \nПрервите все активные команды и попробуйте снова.')
+            return
+
+        logger.info('QuasiRandom algorithm successfully ended.')

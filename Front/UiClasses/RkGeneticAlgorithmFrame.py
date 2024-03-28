@@ -1,5 +1,4 @@
 import numpy as np
-
 from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
 from Algorithms.BranchesAndBounds.ParamsClasses.StretchedBnBParams import StretchedBnBParams
 from Algorithms.NBodies.GravityFunctions import repel_cut_gravity
@@ -8,11 +7,12 @@ from Algorithms.NBodies.RundeKuttaWithPolygonAlgorithm import RungeKuttaWithPoly
 from Front.Fonts import Fonts
 from Front.UiClasses.AlgorithmFrame import AlgorithmFrame, TextInfo
 import customtkinter as ctk
-
 from Front.UiClasses.MsgBox import MsgBox
 from Utils.misc_funcs import expected_circle_count, expected_circle_count2, expected_circle_count_weighted, \
     point_inside_polygon
+import logging
 
+logger = logging.getLogger(__name__)
 
 class RkGeneticAlgorithmFrame(AlgorithmFrame):
     '''
@@ -195,7 +195,8 @@ class RkGeneticAlgorithmFrame(AlgorithmFrame):
         # Получим многоугольник.
         try:
             poly = self.autocad.get_polygons()
-        except:
+        except Exception as e:
+            logger.error('Can\'t get polygon from AutoCAD: %s', str(e))
             MsgBox.show_error_msgbox('Не удалось получить многоугольник(и). \nПрервите все активные команды и попробуйте снова.')
             return
 
@@ -224,9 +225,9 @@ class RkGeneticAlgorithmFrame(AlgorithmFrame):
             outside = self.get_('OUTSIDE')
             coverage = self.get_('COVERAGE')
             circle_count = self.get_('CIRCLE_COUNT')
-        except:
+        except Exception as e:
+            logger.error('Can\'t get params for algorithm: %s', str(e))
             MsgBox.show_info_msgbox('Запуск отменён.')
-            print('Parsing exception')
             return
 
         # Запустим алгоритм.
@@ -271,5 +272,10 @@ class RkGeneticAlgorithmFrame(AlgorithmFrame):
         # Вернём ответ.
         try:
             self.autocad.draw_circles(circles)
-        except:
-            MsgBox.show_error_msgbox('Не удалось отрисовать покрытие. \nПрервите все активные команды и попробуйте снова.')
+        except Exception as e:
+            logger.debug('Can\'t send circles to AutoCAD: %s', str(e))
+            MsgBox.show_error_msgbox(
+                'Не удалось отрисовать покрытие. \nПрервите все активные команды и попробуйте снова.')
+            return
+
+        logger.info('RkGenetic algorithm successfully ended.')

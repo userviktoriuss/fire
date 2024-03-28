@@ -1,11 +1,11 @@
 from shapely import Point, Polygon
 import math
-
-from shapely.ops import unary_union
-
 from Algorithms.Hexagonal.hexagonal_coverings import hexagonal
-from Algorithms.RedundantRemovers.RedundantRemover import RedundantRemover
 from Utils.Circle import Circle
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class HexagonalAlgorithm:
@@ -51,6 +51,8 @@ class HexagonalAlgorithm:
                     y += step_y
                 x += step_x
             alpha += step_alpha
+
+        logger.info('Algorithm finished successfully')
 
     def get_important(self, S, alpha):
         outer_grid = self.hex_alg(self.P_described, S, self.radius, alpha)

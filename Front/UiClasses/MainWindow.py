@@ -15,6 +15,10 @@ from Front.UiClasses.HexGeneticAlgorithmFrame import HexGeneticAlgorithmFrame
 from Front.UiClasses.MsgBox import MsgBox
 from Front.UiClasses.QuasiRandomAlgorithmFrame import QuasiRandomAlgorithmFrame
 from Front.UiClasses.RkGeneticAlgorithmFrame import RkGeneticAlgorithmFrame
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 # TODO: отрефакторить структуру проекта; убрать в перспективе не используемые методы и файлы.
 class MainWindow(ctk.CTk):
@@ -30,6 +34,8 @@ class MainWindow(ctk.CTk):
         self.setup_autocad()
         Fonts.setup_fonts()
         self.setup_ui()
+        logger.debug('UI set-upped successfully')
+
         self.minsize(660, 480)
 
     def setup_ui(self):
@@ -58,6 +64,7 @@ class MainWindow(ctk.CTk):
 
         # Загрузим параметры по умолчанию
         self.load_params_()
+        logger.debug('Notebook\'s Frames created')
 
     def config_menu(self):
         fnt = (FONT, MENU_TEXT_SIZE)
@@ -77,6 +84,7 @@ class MainWindow(ctk.CTk):
         self.config(menu=self.menu)
 
         self.menu.add_command(command=MsgBox.show_about_program_msgbox_, label='О программе', font=fnt)
+        logger.debug('Menu set up successfully')
 
     # Загружает параметры из файла.
     def load_params_(self, path=None):
@@ -90,6 +98,7 @@ class MainWindow(ctk.CTk):
             with open(path, 'r') as f:
                 d = json.load(f)
         except:
+            logger.error('Can\'t read from file %s', path)
             MsgBox.show_error_msgbox('Не удалось загрузить параметры из файла. Возможно, это не json-файл.')
 
         for i in range(len(self.algs)):
@@ -97,8 +106,7 @@ class MainWindow(ctk.CTk):
                 val = d[str(i)][name]
                 self.algs[i].params.update(name, val)
                 self.algs[i].set_(name, val)
-
-        pass
+        logger.debug('Successfully loaded params from file %s', path)
 
     # Сохранить текущие параметры в файл.
     def save_params_(self, path):
@@ -115,7 +123,10 @@ class MainWindow(ctk.CTk):
             with open(path, 'w') as f:
                 json.dump(d, f)
         except:
+            logger.error('Can\'t write to file %s', path)
             MsgBox.show_error_msgbox('Не удалось сохранить параметры.')
+
+        logger.debug('Successfully stored params in file %s', path)
 
     # Сохранить текущие параметры в отдельный файл.
     def save_params_as_(self):

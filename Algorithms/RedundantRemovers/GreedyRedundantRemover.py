@@ -1,6 +1,9 @@
 from shapely import unary_union
-
 from Algorithms.RedundantRemovers.RedundantRemover import RedundantRemover
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class GreedyRedundantRemover(RedundantRemover):
@@ -27,3 +30,5 @@ class GreedyRedundantRemover(RedundantRemover):
                 union = unary_union([union, c_inside_polygon])
 
         self.circles = inside
+
+        logger.info('Algorithm finished successfully')

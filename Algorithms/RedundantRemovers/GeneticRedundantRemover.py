@@ -1,9 +1,12 @@
 import numpy as np
-
 from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
 from Algorithms.BranchesAndBounds.ParamsClasses.StretchedBnBParams import StretchedBnBParams
 from Algorithms.RedundantRemovers.RedundantRemover import RedundantRemover
 from Utils.layering import get_layers
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class GeneticRedundantRemover(RedundantRemover):
@@ -33,3 +36,4 @@ class GeneticRedundantRemover(RedundantRemover):
         )
         bnb_alg.run_algorithm()
         self.circles = bnb_alg.get_result()
+        logger.info('Algorithm finished successfully')

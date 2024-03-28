@@ -3,14 +3,17 @@
 круги многоугольника.
 """
 from queue import Queue
-
 import numpy as np
 from shapely import Polygon
-
 from Utils import Circle
+import logging
 
-INT_MAX = np.iinfo(np.int16).max  # Это максимальное значение (и удобная заглушка), которое будут принимать слои при адекватных входных данных.
+logger = logging.getLogger(__name__)
+
+INT_MAX = np.iinfo(
+    np.int16).max  # Это максимальное значение (и удобная заглушка), которое будут принимать слои при адекватных входных данных.
 EPS = 1e-9
+
 
 # Здесь внешние круги - круги, имеющие общую площадь с областью
 # вне многоугольника.
@@ -51,6 +54,8 @@ def get_layers(P: Polygon, circles: list[Circle]) -> np.array:
             grid[key] = [i]
         cell[i] = key
 
+    logger.info('Layers built')
+
     def get_neighbors(v):
         """
         Находит все круги, которые пересекаются с кругом с индексом v.
@@ -59,7 +64,7 @@ def get_layers(P: Polygon, circles: list[Circle]) -> np.array:
         :return: Список индексов кругов, с которыми пересекается заданный круг.
         """
         key = cell[v]
-        x,y = key
+        x, y = key
         neighbors = []
         for dx in range(-1, 2):
             for dy in range(-1, 2):

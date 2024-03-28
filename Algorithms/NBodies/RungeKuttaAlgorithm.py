@@ -6,6 +6,9 @@ from Algorithms.NBodies.GravityFunctions import smooth_gravity_with_sign
 from Algorithms.NBodies.Loggers import RKAnimationLogger
 from Utils.Circle import Circle
 from Utils.misc_funcs import group_n
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class RungeKuttaAlgorithm:
@@ -86,6 +89,7 @@ class RungeKuttaAlgorithm:
 
         centers = alg.y  # Прибавим значение дискретной производной.
         self.centers = [Point(p) for p in group_n(2, centers)]
+        logger.info('Algorithm finished successfully')
 
     def get_result(self):  # TODO: Может ему не надо строить прямо-таки круги?
         return [Circle(Point(c), self.radius) for c in self.centers]

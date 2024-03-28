@@ -4,6 +4,9 @@ from shapely import Polygon
 from Algorithms.BranchesAndBounds.Branch import Branch
 from Algorithms.BranchesAndBounds.ParamsClasses.FlexibleBnBParams import FlexibleBnBParams
 from Utils.Circle import Circle
+import logging
+
+program_logger = logging.getLogger(__name__)
 
 
 class FlexibleBnBAlgorithm:
@@ -12,6 +15,7 @@ class FlexibleBnBAlgorithm:
     варианты параметров работы метода, задаваемых объектом класса
     FlexibleBnBParams или его наследников.
     """
+
     def __init__(self,
                  P: Polygon,
                  circles: list[Circle]):
@@ -20,7 +24,7 @@ class FlexibleBnBAlgorithm:
 
     def set_params(self,
                    max_iterations: int,
-                   params: FlexibleBnBParams=None,
+                   params: FlexibleBnBParams = None,
                    fixed: list[int] = None):
         self.max_iterations = max_iterations
         if params:
@@ -61,6 +65,8 @@ class FlexibleBnBAlgorithm:
 
         self.circles = best_branch.circles
         self.fixed = best_branch.fixed
+
+        program_logger.info('Algorithm finished successfully')
 
     def get_result(self):
         return self.circles

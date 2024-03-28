@@ -1,5 +1,4 @@
 import numpy as np
-
 from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
 from Algorithms.BranchesAndBounds.ParamsClasses.StretchedBnBParams import StretchedBnBParams
 from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
@@ -7,10 +6,11 @@ from Algorithms.Hexagonal.hexagonal_coverings import hexagonal_np
 from Front.Fonts import Fonts
 from Front.UiClasses.AlgorithmFrame import AlgorithmFrame, TextInfo
 import customtkinter as ctk
-from CTkMessagebox import CTkMessagebox
-
 from Front.UiClasses.MsgBox import MsgBox
 from Utils.layering import get_layers
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class HexGeneticAlgorithmFrame(AlgorithmFrame):
@@ -127,7 +127,8 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
 
         try:
             poly = self.autocad.get_polygons()
-        except:
+        except Exception as e:
+            logger.error('Can\'t get polygon from AutoCAD: %s', str(e))
             MsgBox.show_error_msgbox('Не удалось получить многоугольник(и). \nПрервите все активные команды и попробуйте снова.')
             return
 
@@ -149,13 +150,12 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
             coverage = self.get_('COVERAGE')
             del_circle_count = self.get_('DEL_CIRCLE_COUNT')
             circle_count = self.get_('CIRCLE_COUNT')
-        except:
+        except Exception as e:
+            logger.error('Can\'t get params for algorithm: %s', str(e))
             MsgBox.show_info_msgbox('Запуск отменён.')
-            print('Parsing exception')
             return
 
         # Запустим алгоритм.
-
         # Построим покрытие шестиугольной сеткой.
         hex_alg = HexagonalAlgorithm(poly, R)  # Укажем данные.
         hex_alg.set_params(
@@ -202,5 +202,10 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
         # Вернём ответ.
         try:
             self.autocad.draw_circles(circles)
-        except:
-            MsgBox.show_error_msgbox('Не удалось отрисовать покрытие. \nПрервите все активные команды и попробуйте снова.')
+        except Exception as e:
+            logger.debug('Can\'t send circles to AutoCAD: %s', str(e))
+            MsgBox.show_error_msgbox(
+                'Не удалось отрисовать покрытие. \nПрервите все активные команды и попробуйте снова.')
+            return
+
+        logger.info('HexGenetic algorithm successfully ended.')

@@ -1,18 +1,13 @@
 import numpy as np
-from scipy.integrate import RK45
 from shapely import Point, Polygon
-
 from Algorithms.NBodies.GravityFunctions import smooth_gravity_with_sign
 from Algorithms.NBodies.Loggers import RKAnimationLogger
 from Algorithms.NBodies.PolyGravityFunctions import side_gravity
 from Algorithms.NBodies.RungeKuttaAlgorithm import RungeKuttaAlgorithm
-from Utils.Circle import Circle
-from Utils.misc_funcs import group_n
 
 
 # По сути, тот же РК, что и RungeKuttaAlgorithm, но этот учитывает
 # параметры многоугольника.
-
 class RungeKuttaWithPolygonAlgorithm(RungeKuttaAlgorithm):
     def __init__(self, P: Polygon, centers: list[Point], radius: float):
         super().__init__(centers, radius)
@@ -30,7 +25,7 @@ class RungeKuttaWithPolygonAlgorithm(RungeKuttaAlgorithm):
                    ATOL: float = 0.005,  # При таких ATOL и RTOL ошибка будет в +- пол сантиметра
                    gravity: 'gravity function' = smooth_gravity_with_sign,
                    poly_gravity: 'gravity function with polygon' = side_gravity,
-                   logger: RKAnimationLogger=None):  # TODO: гравитация!!!
+                   logger: RKAnimationLogger = None):  # TODO: гравитация!!!
         super().set_params(
             fixed,
             G,

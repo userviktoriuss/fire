@@ -2,10 +2,12 @@ import ttkbootstrap as btrp
 import customtkinter as ctk
 from PIL import Image
 from CTkMessagebox import CTkMessagebox
-
 from Front.Fonts import Fonts
 from Front.Settings import HEX, HEX_SIZE, GENETIC, GENETIC_SIZE, RK, RK_SIZE, QUAZI, QUAZI_SIZE, HEX_HOVERED, \
     GENETIC_HOVERED, RK_HOVERED, QUAZI_HOVERED
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class MainFrameMessages:
@@ -79,6 +81,8 @@ class MainFrame(ctk.CTkFrame):
                 self.algs_buttons[2 * i + j] \
                     .place(relx=0.5 * j, rely=0.2 + 0.4 * i, relheight=0.4, relwidth=0.5)
 
+        logger.debug('UI set-upped successfully')
+
     def enter_(self, i, event):
         self.algs_buttons[i].configure(
             image=self.hover_imgs[i],
@@ -95,7 +99,9 @@ class MainFrame(ctk.CTkFrame):
         try:
             drawing = self.main_window.autocad.connect()
             self.connection_label.configure(text=MainFrameMessages.CONNECTED_TO.format(drawing))
-        except:
+            logger.info('Connected to AutoCAD')
+        except Exception as e:
+            logger.error('Can\'t connect to AutoCAD: %s', str(e))
             CTkMessagebox(title='Ошибка!',
                           message='Не удалось подключиться к чертежу. \n' + \
                                   'Запустите AutoCAD или прервите в нём все активные команды.',

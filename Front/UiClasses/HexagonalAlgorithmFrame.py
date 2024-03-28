@@ -2,13 +2,14 @@ from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.Hexagonal.hexagonal_coverings import hexagonal_np
 from Algorithms.RedundantRemovers.GeneticRedundantRemover import GeneticRedundantRemover
 from Algorithms.RedundantRemovers.GreedyRedundantRemover import GreedyRedundantRemover
-from Front.Extractor import Exctractor
 from Front.Fonts import Fonts
 from Front.UiClasses.AlgorithmFrame import AlgorithmFrame, TextInfo
 import customtkinter as ctk
-from CTkMessagebox import CTkMessagebox
-
 from Front.UiClasses.MsgBox import MsgBox
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class HexagonalAlgorithmFrame(AlgorithmFrame):
@@ -91,7 +92,8 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
 
         try:
             poly = self.autocad.get_polygons()
-        except:
+        except Exception as e:
+            logger.error('Can\'t get polygon from AutoCAD: %s', str(e))
             MsgBox.show_error_msgbox('Не удалось получить многоугольник(и). \nПрервите все активные команды и попробуйте снова.')
             return
 
@@ -100,7 +102,8 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
             R = self.get_('R')
             alpha_res = self.get_('ALPHA_RESOLUTION')
             res = self.get_('RESOLUTION')
-        except:
+        except Exception as e:
+            logger.error('Can\'t get params for algorithm: %s', str(e))
             MsgBox.show_info_msgbox('Запуск отменён.')
             return
 
@@ -126,8 +129,12 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
             # Получим ответ.
             circles = remover_alg.get_result()
 
+
         try:
             self.autocad.draw_circles(circles)
-        except:
+        except Exception as e:
+            logger.debug('Can\'t send circles to AutoCAD: %s', str(e))
             MsgBox.show_error_msgbox('Не удалось отрисовать покрытие. \nПрервите все активные команды и попробуйте снова.')
+            return
 
+        logger.info('Hexagonal algorithm successfully ended.')
