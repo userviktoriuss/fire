@@ -7,15 +7,16 @@ import customtkinter as ctk
 from PIL import ImageTk
 
 import Back.AutoCadFacade as acf
-import Front.UiClasses.HexagonalAlgorithmFrame as haf
+from Front.UiClasses.HexagonalAlgorithmFrame import HexagonalAlgorithmFrame
 import Front.UiClasses.MainFrame as mf
 from Front.Fonts import Fonts
 from Front.Settings import FONT, TAB_TEXT_SIZE, MENU_TEXT_SIZE, PARAMS_PATH, ICON
 from Front.UiClasses.HexGeneticAlgorithmFrame import HexGeneticAlgorithmFrame
 from Front.UiClasses.MsgBox import MsgBox
+from Front.UiClasses.QuasiRandomAlgorithmFrame import QuasiRandomAlgorithmFrame
 from Front.UiClasses.RkGeneticAlgorithmFrame import RkGeneticAlgorithmFrame
 
-
+# TODO: отрефакторить структуру проекта; убрать в перспективе не используемые методы и файлы.
 class MainWindow(ctk.CTk):
     open_file = None
 
@@ -23,8 +24,8 @@ class MainWindow(ctk.CTk):
         super().__init__()
         self.title(title)
         self.iconbitmap()
-        icopath = ImageTk.PhotoImage(file=ICON, master=self)
-        self.iconphoto(True, icopath)
+        iconpath = ImageTk.PhotoImage(file=ICON, master=self)
+        self.iconphoto(True, iconpath)
         self.geometry(geometry)
         self.setup_autocad()
         Fonts.setup_fonts()
@@ -38,10 +39,10 @@ class MainWindow(ctk.CTk):
         self.notebook = btrp.Notebook(self, width=300, height=200)
 
         self.algs = []
-        self.algs.append(haf.HexagonalAlgorithmFrame(self.notebook, self.autocad))
+        self.algs.append(HexagonalAlgorithmFrame(self.notebook, self.autocad))
         self.algs.append(HexGeneticAlgorithmFrame(self.notebook, self.autocad))
         self.algs.append(RkGeneticAlgorithmFrame(self.notebook, self.autocad))
-        self.algs.append(haf.HexagonalAlgorithmFrame(self.notebook, self.autocad))  # TODO: change
+        self.algs.append(QuasiRandomAlgorithmFrame(self.notebook, self.autocad))  # TODO: change
         self.main_frame = mf.MainFrame(self.notebook, self)
         self.main_frame.pack(padx=5, pady=5, side='left', fill='both')
 

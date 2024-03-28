@@ -19,17 +19,17 @@ class TextInfo():
         self.recommended_values = recommended_values
         self.notes = notes
 
-
+# TODO: выводить заголовки жирным? или хотя бы капсом
 class DescriptionFrame(ctk.CTkTextbox):
     def __init__(self,
                  master,
                  text_info: TextInfo):
         super().__init__(master, font=Fonts.text_font)
 
-        text = '-= Описание =-\n' + text_info.description + '\n' + \
-               '-= Параметры =-\n' + text_info.params + '\n' + \
-               '-= Рекомендуемые значения =-\n' + text_info.recommended_values + '\n' + \
-               '-= Примечание =-\n' + text_info.notes
+        text = '-= ОПИСАНИЕ =-\n' + text_info.description + '\n' + \
+               '-= ПАРАМЕТРЫ =-\n' + text_info.params + '\n' + \
+               '-= РЕКОМЕНДУЕМЫЕ ЗНАЧЕНИЯ =-\n' + text_info.recommended_values + '\n' + \
+               '-= ПРИМЕЧАНИЕ =-\n' + text_info.notes
         self.insert(END, text)
         self.configure(state='disabled')
 

@@ -1,23 +1,31 @@
+import logging
 import time
 
 from Algorithms.Halton.Halton import halton
 from shapely import Polygon, Point
 import matplotlib.pyplot as plt
 
-from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign
+from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign, repel_cut_gravity
+from Algorithms.NBodies.RundeKuttaWithPolygonAlgorithm import RungeKuttaWithPolygonAlgorithm
 from Algorithms.NBodies.RungeKuttaAlgorithm import RungeKuttaAlgorithm
 from Examples.polygons import polygons_dict
 from Utils.drawing import draw_polygon, draw_circles
+from Utils.misc_funcs import expected_circle_count_weighted
 
-R = 1
+R = 1.5
 P = polygons_dict['P9']
-(minx, miny, maxx, maxy) = P.bounds
-P_described = Polygon([Point(minx - R, miny - R), Point(maxx + R, miny - R), Point(maxx + R, maxy + R), Point(minx - R, maxy + R)])
 
 t0 = time.perf_counter()
+expected_circles = expected_circle_count_weighted(P, R)
+
+logger = logging.getLogger('halton')
+logging.basicConfig(filename='myapp.log', level=logging.INFO)
+logger.info('Expect %d circles', expected_circles)
+
 centers = halton(
-    P=P_described,
-    n_points=4,
+    P=P,
+    margin=0,
+    n_points=expected_circles,
     p1=2,
     p2=3,
     start=1,
@@ -25,14 +33,16 @@ centers = halton(
 )
 
 t1 = time.perf_counter()
-rk_alg = RungeKuttaAlgorithm(centers, R)
-rk_alg.set_params(
-    STOP_RADIUS=1.5 * R,
-    TIME_STOP=50,
-    gravity=smooth_gravity_on_region_with_sign
-)
-rk_alg.run_algorithm()
-ans = rk_alg.get_result()
+alg = RungeKuttaWithPolygonAlgorithm(P, centers, R)  # Укажем данные.
+alg.set_params(
+    fixed=[0 for _ in range(len(centers))],
+    gravity=repel_cut_gravity,
+    G=0.2,
+    poly_G_out=10,
+    poly_G_in=0.15,  # 0.2,  # 0.3
+)  # Укажем параметры решения.
+alg.run_algorithm()
+ans = alg.get_result()
 #ans = list(filter(lambda c: P.contains(c.center), ans))
 
 t2 = time.perf_counter()

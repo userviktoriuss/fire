@@ -16,7 +16,8 @@ from Utils.misc_funcs import expected_circle_count, expected_circle_count2, expe
 
 class RkGeneticAlgorithmFrame(AlgorithmFrame):
     '''
-    Класс для страницы покрытия методом Шестиугольной сетки.
+    Класс для страницы покрытия с помощью Генетического алгоритма,
+    запущенного для построенной методом Рунге-Кутты сетки.
 
     Определяет описание алгоритма, поля заполнения параметров и
     вызов алгоритма с заданными параметрами.
@@ -61,8 +62,8 @@ class RkGeneticAlgorithmFrame(AlgorithmFrame):
         recommended_values=
         '''· EXPECTED_CIRCLE_COUNT = Комбинированная
 
-· TIME_START - время, начиная с которого будем моделировать систему.
-· TIME_STOP - время, до которого моделируем систему.
+· TIME_START = 0
+· TIME_STOP = 50 (между временем моделирования и временем работы линейная зависимость)
 
 · GRAVITY = Ограниченное отталкивание.
 · G = 0.2
@@ -248,14 +249,9 @@ class RkGeneticAlgorithmFrame(AlgorithmFrame):
         # Запуск алгоритма
 
         alg.run_algorithm()  # Запустим алгоритм.
-
         ans = alg.get_result()  # Получим результат - list[Circle].
 
-        # logger.save_log(f'{name}_rk_log_{alg.G}_{alg.poly_G_out}_{alg.poly_G_in}.gif')
-
-
         bnb_alg = FlexibleBnBAlgorithm(poly, ans)
-
         bnb_alg.set_params(
             max_iterations=int(np.ceil(iters_mult * expected_circles)),
             params=StretchedBnBParams(

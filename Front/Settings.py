@@ -31,3 +31,7 @@ RK_SIZE = (1006, 535)
 QUAZI = 'pics/hexagonal.png'
 QUAZI_HOVERED = 'pics/hexagonal_hovered.png'
 QUAZI_SIZE = (1106, 800)
+
+# Логгирование
+LOGGING_CONF = 'settings/logging.conf'
+#LOGGING_PATH = 'logs/log.log'
