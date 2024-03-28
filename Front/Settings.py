@@ -28,9 +28,9 @@ RK = 'pics/rkbnb.png'
 RK_HOVERED = 'pics/rkbnb_hovered.png'
 RK_SIZE = (1006, 535)
 
-QUAZI = 'pics/hexagonal.png'
-QUAZI_HOVERED = 'pics/hexagonal_hovered.png'
-QUAZI_SIZE = (1106, 800)
+QUASI = 'pics/quasi.png'
+QUASI_HOVERED = 'pics/quasi_hovered.png'
+QUASI_SIZE = (754, 753)
 
 # Логгирование
 LOGGING_PATH = 'logs/logs.log'

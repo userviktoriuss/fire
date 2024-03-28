@@ -3,8 +3,8 @@ import customtkinter as ctk
 from PIL import Image
 from CTkMessagebox import CTkMessagebox
 from Front.Fonts import Fonts
-from Front.Settings import HEX, HEX_SIZE, GENETIC, GENETIC_SIZE, RK, RK_SIZE, QUAZI, QUAZI_SIZE, HEX_HOVERED, \
-    GENETIC_HOVERED, RK_HOVERED, QUAZI_HOVERED
+from Front.Settings import HEX, HEX_SIZE, GENETIC, GENETIC_SIZE, RK, RK_SIZE, QUASI, QUASI_SIZE, HEX_HOVERED, \
+    GENETIC_HOVERED, RK_HOVERED, QUASI_HOVERED
 import logging
 
 logger = logging.getLogger(__name__)
@@ -47,14 +47,14 @@ class MainFrame(ctk.CTkFrame):
             ctk.CTkImage(dark_image=Image.open(HEX), size=HEX_SIZE),
             ctk.CTkImage(dark_image=Image.open(GENETIC), size=GENETIC_SIZE),
             ctk.CTkImage(dark_image=Image.open(RK), size=RK_SIZE),
-            ctk.CTkImage(dark_image=Image.open(QUAZI), size=QUAZI_SIZE)
+            ctk.CTkImage(dark_image=Image.open(QUASI), size=QUASI_SIZE)
         ]
 
         self.hover_imgs = [
             ctk.CTkImage(dark_image=Image.open(HEX_HOVERED), size=HEX_SIZE),
             ctk.CTkImage(dark_image=Image.open(GENETIC_HOVERED), size=GENETIC_SIZE),
             ctk.CTkImage(dark_image=Image.open(RK_HOVERED), size=RK_SIZE),
-            ctk.CTkImage(dark_image=Image.open(QUAZI_HOVERED), size=QUAZI_SIZE)
+            ctk.CTkImage(dark_image=Image.open(QUASI_HOVERED), size=QUASI_SIZE)
         ]
 
         for i in range(algs_count):
