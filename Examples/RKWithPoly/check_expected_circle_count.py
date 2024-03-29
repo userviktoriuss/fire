@@ -1,7 +1,7 @@
 import numpy as np
 
 from Examples.polygons import polygons_dict
-from Utils.misc_funcs import expected_circle_count, expected_circle_count2
+from Utils.circle_count import expected_circle_count, expected_circle_count2
 
 for e in polygons_dict:
     P = polygons_dict[e]

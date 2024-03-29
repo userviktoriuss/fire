@@ -1,8 +1,12 @@
 from Front.Settings import LOGGING_PATH
-from Front.UiClasses.CantLoadWindow import CantLoadWindow
-from Front.UiClasses.MainWindow import MainWindow
+from Front.UiClasses.MainWindows.CantLoadWindow import CantLoadWindow
+from Front.UiClasses.MainWindows.MainWindow import MainWindow
 from ctypes import windll
 import logging.config
+
+# Это корневой файл программы.
+# Его следует запускать, чтобы начать работу.
+
 
 if __name__ == '__main__':
     try:

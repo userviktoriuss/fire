@@ -13,7 +13,8 @@ from Utils.Circle import Circle
 from Utils.drawing import draw_polygon, draw_circles
 
 # Выбор многоугольника
-from Utils.misc_funcs import point_inside_polygon, expected_circle_count, expected_circle_count_weighted
+from Utils.misc_funcs import point_inside_polygon
+from Utils.circle_count import expected_circle_count, expected_circle_count_weighted
 
 name = 'P7'  # Название многоугольника
 P = polygons_dict[name]
