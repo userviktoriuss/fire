@@ -78,7 +78,6 @@ class MainFrame(ctk.CTkFrame):
         self.connection_label.place(relx=0.42, rely=0.1)
         self.connect_button.place(relx=0.7, rely=0.1)
 
-        # TODO: сделать grid, добавить параметр auto
         for i in range(2):
             for j in range(2):
                 self.algs_buttons[2 * i + j] \
