@@ -62,6 +62,9 @@ class MainFrame(ctk.CTkFrame):
             # Зафиксируем значение таким способом.
             btn = ctk.CTkButton(self,
                                 text='',
+                                border_width=0,
+                                border_spacing=0,
+                                corner_radius=0,
                                 command=lambda i=i: self.master.select(i + 1),
                                 image=self.imgs[i],
                                 bg_color='transparent',

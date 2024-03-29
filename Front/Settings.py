@@ -30,7 +30,7 @@ RK_SIZE = (1006, 535)
 
 QUASI = 'pics/quasi.png'
 QUASI_HOVERED = 'pics/quasi_hovered.png'
-QUASI_SIZE = (754, 753)
+QUASI_SIZE = (954, 753)
 
 # Логгирование.
 LOGGING_PATH = 'logs/logs.log'
