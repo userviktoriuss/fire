@@ -3,8 +3,6 @@ import time
 import numpy as np
 from matplotlib import pyplot as plt
 from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
-from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
-from Algorithms.BranchesAndBounds.Loggers.BnBMetricLogger import BnBMetricLogger
 from Algorithms.BranchesAndBounds.ParamsClasses.StretchedBnBParams import StretchedBnBParams
 from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.Hexagonal.hexagonal_coverings import hexagonal_np

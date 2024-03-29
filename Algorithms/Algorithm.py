@@ -3,6 +3,9 @@ from Utils.Circle import Circle
 
 
 class Algorithm(ABC):
+    """
+    Абстрактный базовый класс для всех алгоритмов.
+    """
     # TODO: нужно ли задать конструктор?
     @abstractmethod
     def set_params(self):
