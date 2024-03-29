@@ -96,4 +96,4 @@ def main(poly_name='P1', show_plt=False):
 if __name__ == '__main__':
     for poly_name in polygons_dict.keys():
         main(poly_name)
-    #main('P1', show_plt=True)
+    # main('P1', show_plt=True)

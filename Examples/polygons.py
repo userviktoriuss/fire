@@ -4,7 +4,7 @@ from shapely import Point, Polygon
 from Utils.Circle import Circle
 polygons_dict = dict()
 
-# Описание многоугольников
+# Описание многоугольников, использованных для тестирования
 
 # P1 ----------------------------------------------------------------
 P1 = Polygon([Point(0, 0), Point(2, 0), Point(6, 2), Point(1, 5), Point(1, 4)])
