@@ -1,6 +1,6 @@
 from CTkMessagebox import CTkMessagebox
 
-from Front.Fonts import Fonts
+from Front.Utils.Fonts import Fonts
 from Front.Settings import ICON
 
 

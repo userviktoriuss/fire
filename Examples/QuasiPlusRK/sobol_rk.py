@@ -8,7 +8,7 @@ from Algorithms.NBodies.RundeKuttaWithPolygonAlgorithm import RungeKuttaWithPoly
 from Algorithms.Sobol.Sobol import sobol
 from Examples.polygons import polygons_dict
 from Utils.drawing import draw_polygon, draw_circles
-from Utils.misc_funcs import expected_circle_count_weighted
+from Utils.circle_count import expected_circle_count_weighted
 
 R = 1.5
 P = polygons_dict['P7']

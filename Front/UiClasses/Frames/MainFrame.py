@@ -2,7 +2,7 @@ import ttkbootstrap as btrp
 import customtkinter as ctk
 from PIL import Image
 from CTkMessagebox import CTkMessagebox
-from Front.Fonts import Fonts
+from Front.Utils.Fonts import Fonts
 from Front.Settings import HEX, HEX_SIZE, GENETIC, GENETIC_SIZE, RK, RK_SIZE, QUASI, QUASI_SIZE, HEX_HOVERED, \
     GENETIC_HOVERED, RK_HOVERED, QUASI_HOVERED
 import logging

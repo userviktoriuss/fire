@@ -1,5 +1,7 @@
 from shapely import Point, Polygon
 import math
+
+from Algorithms.Algorithm import Algorithm
 from Algorithms.Hexagonal.hexagonal_coverings import hexagonal
 from Utils.Circle import Circle
 import logging
@@ -8,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class HexagonalAlgorithm:
+class HexagonalAlgorithm(Algorithm):
     def __init__(self, P: Polygon, radius: float):
         self.P = P
         self.radius = radius

@@ -3,10 +3,10 @@ from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorit
 from Algorithms.BranchesAndBounds.ParamsClasses.StretchedBnBParams import StretchedBnBParams
 from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.Hexagonal.hexagonal_coverings import hexagonal_np
-from Front.Fonts import Fonts
-from Front.UiClasses.AlgorithmFrame import AlgorithmFrame, TextInfo
+from Front.Utils.Fonts import Fonts
+from Front.UiClasses.Frames.AlgorithmFrame import AlgorithmFrame, TextInfo
 import customtkinter as ctk
-from Front.UiClasses.MsgBox import MsgBox
+from Front.Utils.MsgBox import MsgBox
 from Utils.layering import get_layers
 import logging
 

@@ -4,15 +4,16 @@ import logging
 import comtypes
 from comtypes.client import lazybind
 
-_DELAY = 0.05  # seconds
-_TIMEOUT = 60.0  # seconds
+_DELAY = 0.05  # Seconds.
+_TIMEOUT = 60.0  # Seconds.
+
 
 # TODO: здесь в 2+ местах надо ловить не все COMError, а только связанные с вызовом (мб не по имени, т.к. оно локале зависимо)
 def _com_call_wrapper(f, *args, **kwargs):
     """
     Вспомогательная функция для ComWrapper.
     Выполняет повторные вызовы до тех пор, пока возникает
-    исключение 'Вызов отклонён', но не дольше заданного времени.
+    исключение типа COMError, но не дольше заданного времени.
     """
     #
     args = [arg._wrapped_object if isinstance(arg, ComWrapper) else arg for arg in args]
@@ -27,10 +28,10 @@ def _com_call_wrapper(f, *args, **kwargs):
             result = f(*args, **kwargs)
         except comtypes.COMError as e:
             print(e)
-            #if e.strerror == 'Call was rejected by callee.':
+            # if e.strerror == 'Call was rejected by callee.':
             if start_time is None:
                 start_time = time.time()
-                logging.warning('Call was rejected by callee.')
+                logging.warning('Call was rejected.')
 
             elif time.time() - start_time >= _TIMEOUT:
                 raise
@@ -46,7 +47,7 @@ def _com_call_wrapper(f, *args, **kwargs):
 
 class ComWrapper(object):
     """
-    Обёртка для отлавливания ошибок работе с COM.
+    Обёртка для отлавливания ошибок при работе с COM.
     Адаптировано с https://stackoverflow.com/questions/3718037/error-while-working-with-excel-using-python.
     """
 
@@ -75,6 +76,3 @@ class ComWrapper(object):
 
 if __name__ == '__main__':
     pass
-
-# Do stuff with xl instead of _xl, and calls will be attempted until the timeout is
-# reached if "Call was rejected by callee."-exceptions are thrown.

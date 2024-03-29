@@ -4,8 +4,8 @@ import Back.AutoCadFacade as acf
 import customtkinter as ctk
 import ttkbootstrap as btrp
 
-from Front.Extractor import Exctractor
-from Front.Fonts import Fonts
+from Front.Utils.Extractor import Exctractor
+from Front.Utils.Fonts import Fonts
 
 # TODO: определить в свои классы
 class TextInfo():

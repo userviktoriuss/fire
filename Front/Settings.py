@@ -1,4 +1,4 @@
-# Шрифты
+# Шрифты.
 FONT = 'Calibri'
 TEXT_SIZE = 18
 HEADER_SIZE = 26
@@ -8,7 +8,7 @@ TAB_TEXT_SIZE = 20
 MENU_TEXT_SIZE = 16
 LABEL_TEXT_SIZE = 16
 
-# Иконка приложения
+# Иконка приложения.
 # icon by <a href="https://www.flaticon.com/free-icons/fire" title="fire icons">Fire icons created by Freepik - Flaticon</a>
 ICON = 'pics/fire.ico'
 
@@ -32,5 +32,5 @@ QUASI = 'pics/quasi.png'
 QUASI_HOVERED = 'pics/quasi_hovered.png'
 QUASI_SIZE = (754, 753)
 
-# Логгирование
+# Логгирование.
 LOGGING_PATH = 'logs/logs.log'

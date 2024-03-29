@@ -2,10 +2,10 @@ from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.Hexagonal.hexagonal_coverings import hexagonal_np
 from Algorithms.RedundantRemovers.GeneticRedundantRemover import GeneticRedundantRemover
 from Algorithms.RedundantRemovers.GreedyRedundantRemover import GreedyRedundantRemover
-from Front.Fonts import Fonts
-from Front.UiClasses.AlgorithmFrame import AlgorithmFrame, TextInfo
+from Front.Utils.Fonts import Fonts
+from Front.UiClasses.Frames.AlgorithmFrame import AlgorithmFrame, TextInfo
 import customtkinter as ctk
-from Front.UiClasses.MsgBox import MsgBox
+from Front.Utils.MsgBox import MsgBox
 import logging
 
 

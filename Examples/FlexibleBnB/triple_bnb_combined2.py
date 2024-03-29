@@ -3,8 +3,6 @@ import time
 import numpy as np
 from matplotlib import pyplot as plt
 from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
-from Algorithms.BranchesAndBounds.Loggers.BnBAnimationLogger import BnBAnimationLogger
-from Algorithms.BranchesAndBounds.Loggers.BnBMetricLogger import BnBMetricLogger
 from Algorithms.BranchesAndBounds.ParamsClasses.SmarterBadCirclesBnBParams import SmarterBadCirclesBnBParams
 from Algorithms.Hexagonal.HexagonalAlgorithm import HexagonalAlgorithm
 from Algorithms.NBodies.GravityFunctions import smooth_gravity_on_region_with_sign
@@ -45,8 +43,8 @@ def main(poly_name='P1', show_plt=False):
         params=SmarterBadCirclesBnBParams(
             P,
             len(hex_ans),
-            animation_logger=None, #BnBAnimationLogger(),
-            metric_logger=None, #BnBMetricLogger(),
+            animation_logger=None,  # BnBAnimationLogger(),
+            metric_logger=None,  # BnBMetricLogger(),
             MOVE_SCHEDULE=(lambda x: 0.97 * x)),
         fixed=list(inners)
     )
@@ -110,6 +108,6 @@ def main(poly_name='P1', show_plt=False):
 
 
 if __name__ == '__main__':
-    #for poly_name in polygons_dict.keys():
+    # for poly_name in polygons_dict.keys():
     #    main(poly_name)
     main('P8', show_plt=True)

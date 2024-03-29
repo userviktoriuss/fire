@@ -1,6 +1,10 @@
 from matplotlib import pyplot as plt
 from shapely import Polygon
 
+# В этом файле заданы функции, используемые при тестировании
+# для отрисовки кругов и многоугольников средствами
+# библиотеки matplotlib.
+
 # TODO: комментарии и типы
 
 def draw_circle(axes, circle, color='turquoise', center_color='drakblue') -> None:

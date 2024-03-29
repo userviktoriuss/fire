@@ -7,14 +7,14 @@ import customtkinter as ctk
 from PIL import ImageTk
 
 import Back.AutoCadFacade as acf
-from Front.UiClasses.HexagonalAlgorithmFrame import HexagonalAlgorithmFrame
-import Front.UiClasses.MainFrame as mf
-from Front.Fonts import Fonts
+from Front.UiClasses.Frames.HexagonalAlgorithmFrame import HexagonalAlgorithmFrame
+import Front.UiClasses.Frames.MainFrame as mf
+from Front.Utils.Fonts import Fonts
 from Front.Settings import FONT, TAB_TEXT_SIZE, MENU_TEXT_SIZE, PARAMS_PATH, ICON
-from Front.UiClasses.HexGeneticAlgorithmFrame import HexGeneticAlgorithmFrame
-from Front.UiClasses.MsgBox import MsgBox
-from Front.UiClasses.QuasiRandomAlgorithmFrame import QuasiRandomAlgorithmFrame
-from Front.UiClasses.RkGeneticAlgorithmFrame import RkGeneticAlgorithmFrame
+from Front.UiClasses.Frames.HexGeneticAlgorithmFrame import HexGeneticAlgorithmFrame
+from Front.Utils.MsgBox import MsgBox
+from Front.UiClasses.Frames.QuasiRandomAlgorithmFrame import QuasiRandomAlgorithmFrame
+from Front.UiClasses.Frames.RkGeneticAlgorithmFrame import RkGeneticAlgorithmFrame
 import logging
 
 logger = logging.getLogger(__name__)

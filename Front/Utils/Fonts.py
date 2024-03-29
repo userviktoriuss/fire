@@ -3,6 +3,9 @@ from Settings import *
 
 
 class Fonts:
+    """
+    Этот класс хранит набор шрифтов, используемых всеми виджетами.
+    """
     text_font = None
     header_font = None
     connection_font = None
