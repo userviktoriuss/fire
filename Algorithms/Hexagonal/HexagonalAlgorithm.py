@@ -6,11 +6,15 @@ from Algorithms.Hexagonal.hexagonal_coverings import hexagonal
 from Utils.Circle import Circle
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 
 class HexagonalAlgorithm(Algorithm):
+    """
+    Алгоритм, покрывающий заданный многоугольник кругами заданного радиуса
+    с помощью эвристики Шестиугольной сеткой.
+    """
+
     def __init__(self, P: Polygon, radius: float):
         self.P = P
         self.radius = radius

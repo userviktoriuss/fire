@@ -1,5 +1,6 @@
 import customtkinter as ctk
-from Settings import *
+
+from Front.Settings import FONT, TEXT_SIZE, HEADER_SIZE, CONNECTION_TEXT_SIZE, BUTTON_TEXT_SIZE, LABEL_TEXT_SIZE
 
 
 class Fonts:

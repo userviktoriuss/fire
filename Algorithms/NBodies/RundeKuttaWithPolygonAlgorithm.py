@@ -1,14 +1,16 @@
 import numpy as np
 from shapely import Point, Polygon
-from Algorithms.NBodies.GravityFunctions import smooth_gravity_with_sign
+from Algorithms.NBodies.GravityFunctions.GravityFunctions import smooth_gravity_with_sign
 from Algorithms.NBodies.Loggers import RKAnimationLogger
-from Algorithms.NBodies.PolyGravityFunctions import side_gravity
+from Algorithms.NBodies.GravityFunctions.PolyGravityFunctions import side_gravity
 from Algorithms.NBodies.RungeKuttaAlgorithm import RungeKuttaAlgorithm
 
 
-# По сути, тот же РК, что и RungeKuttaAlgorithm, но этот учитывает
-# параметры многоугольника.
 class RungeKuttaWithPolygonAlgorithm(RungeKuttaAlgorithm):
+    """
+    То же, что и RungeKuttaAlgorithm, но этот алгоритм учитывает параметры многоугольника.
+    """
+
     def __init__(self, P: Polygon, centers: list[Point], radius: float):
         super().__init__(centers, radius)
         self.P = P

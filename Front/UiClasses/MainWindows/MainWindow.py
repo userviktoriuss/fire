@@ -20,8 +20,10 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-# TODO: отрефакторить структуру проекта; убрать в перспективе не используемые методы и файлы.
 class MainWindow(ctk.CTk):
+    """
+    Основное окно программы.
+    """
     open_file = None
 
     def __init__(self, title, geometry):

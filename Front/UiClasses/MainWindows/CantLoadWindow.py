@@ -1,6 +1,11 @@
 import customtkinter as ctk
 
+
 class CantLoadWindow(ctk.CTk):
+    """
+    Это окно отображается, когда вследствие критической ошибки не удалось создать основное окно.
+    """
+
     def __init__(self, title, geometry):
         super().__init__()
         self.title(title)

@@ -1,13 +1,11 @@
 import numpy as np
 from shapely import Point, Polygon
 
-from Algorithms.NBodies.GravityFunctions import cut_gravity, repel_cut_gravity, smooth_gravity_with_sign, \
-    cut_gravity_with_base_direction, repel_cut_gravity_with_base_direction
+from Algorithms.NBodies.GravityFunctions.GravityFunctions import cut_gravity_with_base_direction, \
+    repel_cut_gravity_with_base_direction
 
-"""
-В этом файле заданы различные функции гравитации между кругом и многоугольником.
-ТВА: Описание этих функций ищите в PolyGravityFunctions.md
-"""
+
+# В этом файле заданы различные функции гравитации между кругом и многоугольником.
 
 
 def side_gravity(A: Point, P: Polygon, G_in: float, G_out: float, STOP_RADIUS: float) -> np.array:
@@ -30,12 +28,6 @@ def side_gravity(A: Point, P: Polygon, G_in: float, G_out: float, STOP_RADIUS: f
 
     if P.contains(A):
         # Внутри многоугольника стенки всё равно толкают круг
-        """return smooth_gravity_with_sign(
-            np.array(A.xy).flatten(),
-            np.array(proj.xy).flatten(),
-            G_in,
-            STOP_RADIUS)"""
-
         return repel_cut_gravity_with_base_direction(
             np.array(A.xy).flatten(),
             np.array(proj.xy).flatten(),

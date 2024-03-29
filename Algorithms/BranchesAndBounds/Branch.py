@@ -5,6 +5,11 @@ from shapely import Polygon
 
 
 class Branch():
+    """
+    Ветвь в методе ветвей и границ.
+    Хранит одно из состояний, в которое перейдёт алгоритм.
+    """
+
     def __init__(self,
                  polygon: Polygon,
                  circles: list[Circle],

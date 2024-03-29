@@ -1,9 +1,8 @@
 import numpy as np
 
-"""
-В этом файле заданы различные функции гравитации.
-Описание этих функций ищите в GravityFunctions.md
-"""
+
+# В этом файле заданы различные функции гравитации.
+# Описание этих функций ищите в GravityFunctions.md
 
 
 def gravity(A, B, G=6.67430):
@@ -120,6 +119,7 @@ def cut_gravity_with_base_direction(A, B, G=6.67430, STOP_RADIUS=1.5, base_dir=n
     dir = (B - A) / rho
     module = G * 1 * 1 / rho ** 2
     return module * dir
+
 
 def repel_cut_gravity_with_base_direction(A, B, G=6.67430, STOP_RADIUS=1.5, base_dir=np.array([0, 0])):
     ln = np.linalg.norm(B - A)

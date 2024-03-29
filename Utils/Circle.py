@@ -7,6 +7,7 @@ class Circle():
     Этот класс описывает круг.
     Круг задаётся многоугольником с circle_resolution гранями.
     """
+
     def __init__(self,
                  center: Point,
                  radius: float,

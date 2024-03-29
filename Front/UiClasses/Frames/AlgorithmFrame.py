@@ -7,7 +7,7 @@ import ttkbootstrap as btrp
 from Front.Utils.Extractor import Exctractor
 from Front.Utils.Fonts import Fonts
 
-# TODO: определить в свои классы
+
 class TextInfo():
     def __init__(self,
                  description,
@@ -19,7 +19,7 @@ class TextInfo():
         self.recommended_values = recommended_values
         self.notes = notes
 
-# TODO: выводить заголовки жирным? или хотя бы капсом
+
 class DescriptionFrame(ctk.CTkTextbox):
     def __init__(self,
                  master,

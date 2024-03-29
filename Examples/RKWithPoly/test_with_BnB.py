@@ -5,16 +5,14 @@ from matplotlib import pyplot as plt
 
 from Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm import FlexibleBnBAlgorithm
 from Algorithms.BranchesAndBounds.ParamsClasses.StretchedBnBParams import StretchedBnBParams
-from Algorithms.NBodies.GravityFunctions import repel_cut_gravity
-from Algorithms.NBodies.Loggers.RKAnimationLogger import RKAnimationLogger
+from Algorithms.NBodies.GravityFunctions.GravityFunctions import repel_cut_gravity
 from Algorithms.NBodies.RundeKuttaWithPolygonAlgorithm import RungeKuttaWithPolygonAlgorithm
 from Examples.polygons import polygons_dict
-from Utils.Circle import Circle
 from Utils.drawing import draw_polygon, draw_circles
 
 # Выбор многоугольника
 from Utils.misc_funcs import point_inside_polygon
-from Utils.circle_count import expected_circle_count, expected_circle_count_weighted
+from Utils.circle_count import expected_circle_count_weighted
 
 name = 'P7'  # Название многоугольника
 P = polygons_dict[name]

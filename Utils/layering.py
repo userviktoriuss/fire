@@ -1,12 +1,12 @@
-"""
-В этом файле описаны способы определить "внешние" и "внутренние"
-круги многоугольника.
-"""
 from queue import Queue
 import numpy as np
 from shapely import Polygon
 from Utils import Circle
 import logging
+
+# В этом файле описаны способы определить "внешние" и "внутренние"
+# круги многоугольника.
+
 
 logger = logging.getLogger(__name__)
 

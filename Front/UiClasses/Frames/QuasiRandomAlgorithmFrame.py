@@ -1,6 +1,6 @@
 from Algorithms.Halton.Halton import halton
-from Algorithms.NBodies.GravityFunctions import repel_cut_gravity
-from Algorithms.NBodies.PolyGravityFunctions import side_gravity
+from Algorithms.NBodies.GravityFunctions.GravityFunctions import repel_cut_gravity
+from Algorithms.NBodies.GravityFunctions.PolyGravityFunctions import side_gravity
 from Algorithms.NBodies.RundeKuttaWithPolygonAlgorithm import RungeKuttaWithPolygonAlgorithm
 from Front.Utils.Fonts import Fonts
 from Front.UiClasses.Frames.AlgorithmFrame import AlgorithmFrame, TextInfo
@@ -10,6 +10,7 @@ from Utils.circle_count import expected_circle_count, expected_circle_count2, ex
 import logging
 
 logger = logging.getLogger(__name__)
+
 
 class QuasiRandomAlgorithmFrame(AlgorithmFrame):
     '''

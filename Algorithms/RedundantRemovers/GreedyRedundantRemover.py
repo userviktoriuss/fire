@@ -2,11 +2,13 @@ from shapely import unary_union
 from Algorithms.RedundantRemovers.RedundantRemover import RedundantRemover
 import logging
 
-
 logger = logging.getLogger(__name__)
 
 
 class GreedyRedundantRemover(RedundantRemover):
+    """
+    Жадным образом удаляет круги: останутся только те, что вносят значительный по площади вклад в покрытие.
+    """
     EPS = 1e-3
 
     def set_params(self, EPS: float = None):

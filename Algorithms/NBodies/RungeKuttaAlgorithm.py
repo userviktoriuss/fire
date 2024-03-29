@@ -2,7 +2,7 @@ import numpy as np
 from scipy.integrate import RK45
 from shapely import Point
 
-from Algorithms.NBodies.GravityFunctions import smooth_gravity_with_sign
+from Algorithms.NBodies.GravityFunctions.GravityFunctions import smooth_gravity_with_sign
 from Algorithms.NBodies.Loggers import RKAnimationLogger
 from Utils.Circle import Circle
 from Utils.misc_funcs import group_n
@@ -12,6 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 class RungeKuttaAlgorithm:
+    """
+    Алгоритм, использующий метод Рунге-Кутта для моделирования
+    состояния системы из n тел, взаимодействующих согласно
+    заданной функции скорости (gravity).
+    """
+
     def __init__(self, centers: list[Point], radius: float):
         self.radius = radius
         self.centers = centers
@@ -91,5 +97,5 @@ class RungeKuttaAlgorithm:
         self.centers = [Point(p) for p in group_n(2, centers)]
         logger.info('Algorithm finished successfully')
 
-    def get_result(self):  # TODO: Может ему не надо строить прямо-таки круги?
+    def get_result(self):
         return [Circle(Point(c), self.radius) for c in self.centers]

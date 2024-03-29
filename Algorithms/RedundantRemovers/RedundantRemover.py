@@ -1,5 +1,3 @@
-from abc import ABC, abstractmethod
-
 from shapely import Polygon
 
 from Algorithms.Algorithm import Algorithm
@@ -7,6 +5,10 @@ from Utils.Circle import Circle
 
 
 class RedundantRemover(Algorithm):
+    """
+    Абстрактный базовый класс для алгоритмов, удаляющих лишние круги из готовых покрытий.
+    """
+
     def __init__(self, P: Polygon, circles: list[Circle]):
         self.circles = None
         self.input_ = circles

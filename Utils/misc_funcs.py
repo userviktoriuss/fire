@@ -5,6 +5,11 @@ import random
 
 
 def point_inside_polygon(polygon: Polygon) -> Point:
+    """
+    Генерирует случайную точку внутри заданного многоугольника.
+    :param polygon: Многоугольник.
+    :return: Точка.
+    """
     minx, miny, maxx, maxy = polygon.bounds
 
     while True:
@@ -16,7 +21,14 @@ def point_inside_polygon(polygon: Polygon) -> Point:
 
 
 def group_n(n, iterable, fill_value=None):
-    """Вот это мощь питона!"""
+    """
+    Группирует заданную последовательность в наборы по n элементов.
+    :param n: По сколько элементов группировать.
+    :param iterable: Последовательность.
+    :param fill_value: Чем дополнить последнюю группу, если в последовательности не хватило элементов.
+    :return: Список групп.
+    """
+    # Вот это мощь питона!
     args = [iter(iterable)] * n
     return list(zip_longest(fillvalue=fill_value, *args))
 

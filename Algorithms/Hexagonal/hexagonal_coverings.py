@@ -6,6 +6,7 @@ import math
 import numpy as np
 from shapely import Polygon, Point, LineString
 
+
 # ------------------------------------------------------------------------------
 # Реализация покрытия шестиугольной сеткой с помощью библиотеки Shapely
 # ------------------------------------------------------------------------------
@@ -62,7 +63,7 @@ def get_parallel(P: Polygon, line: LineString, move: Point) -> list[LineString]:
     """
 
     ans = []
-    cpy = LineString([c for c in line.coords])  # TODO: правда сохранил, и смогу сходить в др. сторону?
+    cpy = LineString([c for c in line.coords])
 
     while not P.intersection(line).is_empty:
         ans.append(line)
@@ -138,16 +139,9 @@ def hexagonal_np(P: Polygon, S: Point, a: float = 1, alpha: float = 0):
         np.logical_and(miny <= coverage[:, 1], coverage[:, 1] <= maxy))
     useful = coverage[cond]
 
-
     to_points = lambda c: Point(c)
     to_points_vectorized = np.vectorize(to_points, signature='(d)->()')
 
     ans = to_points_vectorized(useful)
-    #
-    #for i in range(coverage.shape[0]):
-    #    for j in range(coverage.shape[1]):
-    #        (x, y) = coverage[i, j]
-    #        if minx <= x <= maxx and miny <= y <= maxy:
-    #            ans.append(Point(x, y))
 
     return list(ans)

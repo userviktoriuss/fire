@@ -14,6 +14,17 @@ def halton(P: Polygon,
            p2: int,
            start: int = 1,
            step: int = 1) -> list[Point]:
+    """
+    Заполнение многоугольника с помощью квазислучайных точек, полученных из последовательности Халтона
+    :param P: Многоугольник, внутри которого генерируются точки.
+    :param margin: Смещение границ описанного прямоугольника.
+    :param n_points: Количество точек, которое нужно сгенерировать.
+    :param p1: Параметр последовательности Халтона для оси х.
+    :param p2: Параметр последовательности Халтона для оси у.
+    :param start: Номер первого элемента последовательности, который возьмём.
+    :param step: Шаг, с которым берём элементы.
+    :return: Список сгенерированных точек.
+    """
     (minx, miny, maxx, maxy) = P.bounds
     P_described = Polygon(
         [Point(minx - margin, miny - margin), Point(maxx + margin, miny - margin), Point(maxx + margin, maxy + margin),

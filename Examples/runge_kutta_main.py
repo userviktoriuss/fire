@@ -44,7 +44,7 @@ draw_polygon(ax[0], P)
 # Нарисуем разными цветами зафиксированные и незафиксированные круги.
 draw_circles(ax[0],
              [Circle(centers[i], 1.5) for i in range(len(alg.fixed)) if
-              not alg.fixed[i]])  # TODO: отрисовывать, что было до
+              not alg.fixed[i]])
 
 draw_circles(ax[0],
              [Circle(centers[i], 1.5) for i in range(len(alg.fixed)) if alg.fixed[i]],

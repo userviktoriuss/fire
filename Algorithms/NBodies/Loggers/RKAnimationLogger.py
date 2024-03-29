@@ -7,6 +7,10 @@ from Utils.drawing import draw_polygon, draw_circles
 
 
 class RKAnimationLogger:
+    """
+    Сохраняет промежуточные состояния работы метода Рунге-Кутты и строит по ним анимацию.
+    """
+
     def __init__(self, P: Polygon):
         self.P = P
 

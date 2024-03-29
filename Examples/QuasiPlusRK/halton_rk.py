@@ -4,7 +4,7 @@ import time
 from Algorithms.Halton.Halton import halton
 import matplotlib.pyplot as plt
 
-from Algorithms.NBodies.GravityFunctions import repel_cut_gravity
+from Algorithms.NBodies.GravityFunctions.GravityFunctions import repel_cut_gravity
 from Algorithms.NBodies.RundeKuttaWithPolygonAlgorithm import RungeKuttaWithPolygonAlgorithm
 from Examples.polygons import polygons_dict
 from Utils.drawing import draw_polygon, draw_circles
@@ -41,7 +41,6 @@ alg.set_params(
 )  # Укажем параметры решения.
 alg.run_algorithm()
 ans = alg.get_result()
-#ans = list(filter(lambda c: P.contains(c.center), ans))
 
 t2 = time.perf_counter()
 
@@ -56,4 +55,3 @@ draw_polygon(ax, P)
 draw_circles(ax, ans)
 
 plt.show()
-

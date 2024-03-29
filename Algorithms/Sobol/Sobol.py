@@ -8,7 +8,14 @@ from Utils.Circle import Circle
 
 def sobol(P: Polygon,
           n_points: int,
-          radius: float = 1):
+          radius: float = 1) -> list[Circle]:
+    """
+    Квазислучайно генерирует круги внутри многоугольника с помощью метода Соболя.
+    :param P: Данный многоугольник.
+    :param n_points: Сколько кругов надо сгенерировать.
+    :param radius: Радиус кругов.
+    :return: Список кругов.
+    """
     sampler = qmc.Sobol(d=2, scramble=False)
     sample = sampler.random_base2(m=math.ceil(log2(n_points)))
     (minx, miny, maxx, maxy) = P.bounds

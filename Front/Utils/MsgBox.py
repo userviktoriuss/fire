@@ -5,6 +5,10 @@ from Front.Settings import ICON
 
 
 class MsgBox:
+    """
+    Содержит методы для вызова сообщений типа MessageBox в едином стиле.
+    """
+
     @staticmethod
     def show_error_msgbox(text, title='Ошибка!'):
         CTkMessagebox(title=title,

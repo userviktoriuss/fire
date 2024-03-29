@@ -8,7 +8,6 @@ _DELAY = 0.05  # Seconds.
 _TIMEOUT = 60.0  # Seconds.
 
 
-# TODO: здесь в 2+ местах надо ловить не все COMError, а только связанные с вызовом (мб не по имени, т.к. оно локале зависимо)
 def _com_call_wrapper(f, *args, **kwargs):
     """
     Вспомогательная функция для ComWrapper.
@@ -72,7 +71,3 @@ class ComWrapper(object):
 
     def __repr__(self):
         return 'ComWrapper<{}>'.format(repr(self._wrapped_object))
-
-
-if __name__ == '__main__':
-    pass

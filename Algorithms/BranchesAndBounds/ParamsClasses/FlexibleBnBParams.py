@@ -157,7 +157,7 @@ class FlexibleBnBParams:
                            for c in branch.circles
                            if c != circle and
                            c.center.distance(
-                               circle.center) < 2 * circle.radius]  # TODO: проверить, что работает корректно
+                               circle.center) < 2 * circle.radius]
                 self_inter += unary_union(without).intersection(circle.polygon).area / circle.area
 
             outside /= branch.polygon.area

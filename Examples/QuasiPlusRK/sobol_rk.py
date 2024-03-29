@@ -3,7 +3,7 @@ import time
 
 import matplotlib.pyplot as plt
 
-from Algorithms.NBodies.GravityFunctions import repel_cut_gravity
+from Algorithms.NBodies.GravityFunctions.GravityFunctions import repel_cut_gravity
 from Algorithms.NBodies.RundeKuttaWithPolygonAlgorithm import RungeKuttaWithPolygonAlgorithm
 from Algorithms.Sobol.Sobol import sobol
 from Examples.polygons import polygons_dict
@@ -28,7 +28,7 @@ alg.set_params(
     gravity=repel_cut_gravity,
     G=0.2,
     poly_G_out=10,
-    poly_G_in=0.15,  # 0.2,  # 0.3
+    poly_G_in=0.15,
 )  # Укажем параметры решения.
 # Запуск алгоритма
 
@@ -49,4 +49,3 @@ draw_polygon(ax, P)
 draw_circles(ax, ans)
 
 plt.show()
-
