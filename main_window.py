@@ -20,7 +20,7 @@ if __name__ == '__main__':
     except Exception as e:
         print(e)
         # Создадим окно с сообщением о критической ошибке
-        window = CantLoadWindow('Дополнение для AutoCAD', '320x130')
+        window = CantLoadWindow('Дополнение для AutoCAD', '320x130', str(e))
 
     # Избавимся от размытости текста.
     windll.shcore.SetProcessDpiAwareness(1)
