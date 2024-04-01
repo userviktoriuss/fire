@@ -104,7 +104,6 @@ class HexagonalAlgorithmFrame(AlgorithmFrame):
             res = self.get_('RESOLUTION')
         except Exception as e:
             logger.error('Can\'t get params for algorithm: %s', str(e))
-            MsgBox.show_info_msgbox('Запуск отменён.')
             return
 
         remove_redundant = self.get_('DO_REMOVE') == 1

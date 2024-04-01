@@ -204,7 +204,6 @@ P1 и P2 нужно брать взаимно простыми примерно 
             stop_radius = self.get_('STOP_RADIUS')
         except Exception as e:
             logger.error('Can\'t get params for algorithm: %s', str(e))
-            MsgBox.show_info_msgbox('Запуск отменён.')
             print('Parsing exception')
             return
 

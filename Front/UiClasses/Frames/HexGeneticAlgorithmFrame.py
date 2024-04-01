@@ -152,7 +152,6 @@ class HexGeneticAlgorithmFrame(AlgorithmFrame):
             circle_count = self.get_('CIRCLE_COUNT')
         except Exception as e:
             logger.error('Can\'t get params for algorithm: %s', str(e))
-            MsgBox.show_info_msgbox('Запуск отменён.')
             return
 
         # Запустим алгоритм.
