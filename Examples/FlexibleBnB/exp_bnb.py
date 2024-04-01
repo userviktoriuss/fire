@@ -15,7 +15,7 @@ def main(poly_name='P1', show_plt=False):
     print(f"\n\nProcessing {poly_name}")
 
     P = polygons_dict[poly_name]
-    R = 1  # Радиус.
+    R = 1.5  # Радиус.
     INNER_BOUND = 2  # Начиная с этого слоя по удалению от внешних границ многоугольника круг считается внутренним.
 
     # Построим покрытие шестиугольной сеткой.
@@ -95,4 +95,6 @@ def main(poly_name='P1', show_plt=False):
 
 if __name__ == '__main__':
     for poly_name in polygons_dict.keys():
+        if poly_name in ['P5', 'P6']:
+            continue
         main(poly_name)

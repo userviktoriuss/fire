@@ -11,7 +11,6 @@ LABEL_TEXT_SIZE = 16
 # Иконка приложения.
 # icon by <a href="https://www.flaticon.com/free-icons/fire" title="fire icons">Fire icons created by Freepik - Flaticon</a>
 ICON = 'pics/fire.ico'
-
 # Файл с настройками параметров алгоритмов по умолчанию.
 PARAMS_PATH = 'settings/settings.json'
 

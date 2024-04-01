@@ -25,9 +25,13 @@ P4 = Polygon(
     [Point(0, 0), Point(16, 0), Point(15, 2), Point(14, 3), Point(12, 4), Point(4, 4), Point(2, 3), Point(1, 2)])
 polygons_dict['P4'] = P4
 
+# P5 ----------------------------------------------------------------
+P5 = Polygon([Point(40, 0), Point(100, 40), Point(100, 100), Point(60, 120), Point(0, 80), Point(0, 20)])
+polygons_dict['P5'] = P5
+
 # P6 ----------------------------------------------------------------
-# P6 = Polygon([Point(0, 0), Point(40, 0), Point(40, 40), Point(20, 30), Point(0, 40)])
-# polygons_dict['P6'] = P6
+P6 = Polygon([Point(0, 0), Point(50, 0), Point(50, 50), Point(0, 50)])
+polygons_dict['P6'] = P6
 
 # P7 ----------------------------------------------------------------
 P7 = Polygon([Point(0, 0), Point(5, 0), Point(5, 4), Point(0, 4)])
