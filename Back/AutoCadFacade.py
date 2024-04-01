@@ -68,11 +68,12 @@ class AutoCadFacade():
             s = selection.Item(i)
 
             if s.EntityName == 'AcDbCircle':
-                polygons.append(Circle(Point(s.center[0], s.center[1]), s.radius).polygon)
+                polygons.append(Circle(Point(s.center[0], s.center[1]), s.radius).polygon.exterior)
 
             if s.EntityName == 'AcDbPolyline':
                 polygons.append(make_points_from_polyline(s.Coordinates))
 
+        polygons.sort(reverse=True, key=lambda p: Polygon(p).area)
         return Polygon(polygons[0], polygons[1:])
 
     def draw_circles(self, circles: list[Circle]):
