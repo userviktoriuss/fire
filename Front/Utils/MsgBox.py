@@ -30,7 +30,8 @@ class MsgBox:
         CTkMessagebox(title='О программе',
                       message='-= Дополнение для AutoCAD =-\n\n' + \
                               'Версия 1.0\n\n' + \
-                              'Филимонов Виктор, 2024',
+                              'Филимонов Виктор, 2024\n' + \
+                              'CC BY-NC-ND',
                       icon=ICON,
                       width=580,
                       font=Fonts.text_font)
