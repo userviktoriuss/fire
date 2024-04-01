@@ -1,0 +1,181 @@
+INFO:Front.UiClasses.MainFrame:Connected to AutoCAD
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.RkGeneticAlgorithmFrame:RkGenetic algorithm successfully ended.
+ERROR:Front.UiClasses.MainFrame:Can't connect to AutoCAD: [WinError -2147221021] Операция недоступна
+INFO:Front.UiClasses.MainFrame:Connected to AutoCAD
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GreedyRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
+INFO:Front.UiClasses.MainFrame:Connected to AutoCAD
+ERROR:Front.UiClasses.RkGeneticAlgorithmFrame:Can't get polygon from AutoCAD: Item
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.RkGeneticAlgorithmFrame:RkGenetic algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.HexGeneticAlgorithmFrame:HexGenetic algorithm successfully ended.
+INFO:Front.UiClasses.MainFrame:Connected to AutoCAD
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GreedyRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GeneticRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Front.UiClasses.MainFrame:Connected to AutoCAD
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GreedyRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+ERROR:Front.UiClasses.HexagonalAlgorithmFrame:Can't get polygon from AutoCAD: Item
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GeneticRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+ERROR:Front.UiClasses.HexGeneticAlgorithmFrame:Can't get polygon from AutoCAD: Item
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.HexGeneticAlgorithmFrame:HexGenetic algorithm successfully ended.
+ERROR:Front.UiClasses.RkGeneticAlgorithmFrame:Can't get polygon from AutoCAD: (-2147352567, 'Ошибка.', ('Именованный набор объектов уже существует', 'AutoCAD', 'C:\\Program Files\\Autodesk\\AutoCAD 2024\\HELP\\OLE_ERR.CHM', -2145320851, None))
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.RkGeneticAlgorithmFrame:RkGenetic algorithm successfully ended.
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+ERROR:Front.UiClasses.HexagonalAlgorithmFrame:Can't get polygon from AutoCAD: Item
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Front.UiClasses.MainFrame:Connected to AutoCAD
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
+ERROR:Front.UiClasses.RkGeneticAlgorithmFrame:Can't get polygon from AutoCAD: center
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.RkGeneticAlgorithmFrame:RkGenetic algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.HexGeneticAlgorithmFrame:HexGenetic algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GeneticRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Front.UiClasses.MainFrame:Connected to AutoCAD
+ERROR:Front.UiClasses.QuasiRandomAlgorithmFrame:Can't get polygon from AutoCAD: Item
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
+INFO:Front.UiClasses.Frames.MainFrame:Connected to AutoCAD
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GreedyRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+WARNING:root:Call was rejected.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GeneticRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexGeneticAlgorithmFrame:HexGenetic algorithm successfully ended.
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.RkGeneticAlgorithmFrame:RkGenetic algorithm successfully ended.
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
+ERROR:Front.UiClasses.Frames.MainFrame:Can't connect to AutoCAD: (-2147418111, 'Вызов был отклонен.', (None, None, None, 0, None))
+INFO:Front.UiClasses.Frames.MainFrame:Connected to AutoCAD
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GreedyRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GeneticRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+WARNING:root:Call was rejected.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexGeneticAlgorithmFrame:HexGenetic algorithm successfully ended.
+WARNING:root:Call was rejected.
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.RkGeneticAlgorithmFrame:RkGenetic algorithm successfully ended.
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
+ERROR:Front.UiClasses.Frames.MainFrame:Can't connect to AutoCAD: [WinError -2147221021] Операция недоступна
+ERROR:Front.UiClasses.Frames.MainFrame:Can't connect to AutoCAD: [WinError -2147221021] Операция недоступна
+INFO:Front.UiClasses.Frames.MainFrame:Connected to AutoCAD
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
+ERROR:Front.UiClasses.Frames.QuasiRandomAlgorithmFrame:Can't get polygon from AutoCAD: 'Polygon' object is not iterable
+ERROR:Front.UiClasses.Frames.QuasiRandomAlgorithmFrame:Can't get polygon from AutoCAD: Item
+INFO:Front.UiClasses.Frames.MainFrame:Connected to AutoCAD
+INFO:Front.UiClasses.Frames.MainFrame:Connected to AutoCAD
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
+INFO:Front.UiClasses.Frames.MainFrame:Connected to AutoCAD
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
+INFO:Front.UiClasses.Frames.MainFrame:Connected to AutoCAD
+ERROR:Front.UiClasses.Frames.HexagonalAlgorithmFrame:Can't get polygon from AutoCAD: Item
+WARNING:root:Call was rejected.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GreedyRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GeneticRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GeneticRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.RedundantRemovers.GeneticRedundantRemover:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexagonalAlgorithmFrame:Hexagonal algorithm successfully ended.
+INFO:Algorithms.Hexagonal.HexagonalAlgorithm:Algorithm finished successfully
+INFO:Utils.layering:Layers built
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.HexGeneticAlgorithmFrame:HexGenetic algorithm successfully ended.
+WARNING:root:Call was rejected.
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Algorithms.BranchesAndBounds.FlexibleBnBAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.RkGeneticAlgorithmFrame:RkGenetic algorithm successfully ended.
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
+INFO:Algorithms.Halton.Halton:Algorithm finished successfully
+INFO:Algorithms.NBodies.RungeKuttaAlgorithm:Algorithm finished successfully
+INFO:Front.UiClasses.Frames.QuasiRandomAlgorithmFrame:QuasiRandom algorithm successfully ended.
